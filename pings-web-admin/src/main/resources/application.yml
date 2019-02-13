@@ -1,0 +1,38 @@
+# spring
+spring:
+  # redis
+  redis:
+    host: '192.168.1.233'
+    password: '123456'
+    port: 6379
+
+# Dubbo
+dubbo:
+  # Base packages to scan Dubbo Components (e.g @Service , @Reference)
+  scan:
+    basePackages: cn.pings.web.admin
+
+  # ApplicationConfig Bean
+  application:
+   id: pings-web-admin
+   name: pings-web-admin
+
+  # ProtocolConfig Bean
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 20880
+
+  # RegistryConfig Bean
+  registry:
+    id: client-admin
+    address: zookeeper://192.168.1.233:2181
+
+# sys config
+sys:
+  # Service version
+  service:
+    version: 0.0.1
+  # token过期时长(分钟)
+  jwt:
+    expireTime: 200

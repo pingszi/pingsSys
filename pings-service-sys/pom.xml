@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cn.pings</groupId>
+		<artifactId>pings-sys</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>cn.pings.service.sys</groupId>
+	<artifactId>pings-service-sys</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>pings-service-sys</name>
+	<description>权限管理系统</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- mybatis -->
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>${mybatis-spring-boot-starter.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-autoconfigure</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-boot-starter-jdbc</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-boot-starter</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- mybatis-plus -->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<version>${mybatis-plus-boot-starter.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-starter-jdbc</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-boot-autoconfigure</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- mysql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- druid -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>${druid-spring-boot-starter.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-autoconfigure</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- jdbc -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<!-- redis -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+		<!-- dubbo-starter -->
+		<dependency>
+			<groupId>com.alibaba.boot</groupId>
+			<artifactId>dubbo-spring-boot-starter</artifactId>
+			<version>${dubbo-spring-boot-starter.version}</version>
+		</dependency>
+		<!-- Dubbo -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>${dubbo.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Spring Context Extras -->
+		<dependency>
+			<groupId>com.alibaba.spring</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring-context-support.version}</version>
+		</dependency>
+		<!-- zookeeper -->
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>${zookeeper.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- zookeeper client -->
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+			<version>${curator-framework.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>zookeeper</artifactId>
+					<groupId>org.apache.zookeeper</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- other -->
+		<!-- fastjson -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+
+		<!-- pings-service-api -->
+		<dependency>
+			<groupId>cn.pings.service.api</groupId>
+			<artifactId>pings-service-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- test and devtools  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
