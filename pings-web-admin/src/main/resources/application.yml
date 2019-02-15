@@ -5,6 +5,7 @@ spring:
     host: '192.168.1.233'
     password: '123456'
     port: 6379
+    timeout: 5000
 
 # Dubbo
 dubbo:

@@ -6,9 +6,11 @@ import cn.pings.service.api.sys.entity.User;
 import cn.pings.service.api.sys.service.UserService;
 import cn.pings.web.admin.controller.AbstractBaseController;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,9 +25,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserController extends AbstractBaseController {
 
-    @Autowired
-    private UserService iUserService;
-
     /**
      *********************************************************
      ** @desc ： 获取当前用户
@@ -38,7 +37,7 @@ public class UserController extends AbstractBaseController {
     @GetMapping(value = "/currentUser")
     @RequiresAuthentication
     public ApiResponse currentUser(){
-        return new ApiResponse(200, this.iUserService.getByUserName(this.getToken()));
+        return new ApiResponse(200, this.iUserService.getByUserName(this.getCurrentUserName()));
     }
 
     /**
@@ -55,5 +54,41 @@ public class UserController extends AbstractBaseController {
     public ApiResponse list(ReactPage<User> page, User entity){
         ReactPage<User> list = (ReactPage<User>)this.iUserService.findPage(page, entity);
         return new ApiResponse(200, list.toReactPageFormat());
+    }
+
+    /**
+     *********************************************************
+     ** @desc ： 验证用户名称是否唯一
+     ** @author Pings
+     ** @date   2019/2/14
+     ** @return ApiResponse
+     * *******************************************************
+     */
+    @ApiOperation(value="验证用户名称是否唯一", notes="验证用户名称是否唯一")
+    @GetMapping(value = "/validateUserNameUnique/{userName}")
+    public ApiResponse validateUserNameUnique(@PathVariable("userName") String userName){
+        User user = this.iUserService.getByUserName(userName);
+        return new ApiResponse(200, user == null);
+    }
+
+    /**
+     *********************************************************
+     ** @desc ： 保存用户
+     ** @author Pings
+     ** @date   2019/2/15
+     ** @return ApiResponse
+     * *******************************************************
+     */
+    @ApiOperation(value="保存用户", notes="保存用户")
+    @PostMapping(value = "/save")
+    @RequiresPermissions("sys:user:save")
+    public ApiResponse save(User entity){
+        entity.editAddWhoOrEditWho(this.getCurrentUser());
+        if(StringUtils.isNotBlank(entity.getPassword()))
+            entity.setPassword(DigestUtils.md5DigestAsHex(entity.getPassword().getBytes()));
+
+        User user = this.iUserService.save(entity);
+
+        return new ApiResponse(200,"保存成功", user);
     }
 }

@@ -42,6 +42,6 @@ public class DeptController extends AbstractBaseController {
     @RequiresAuthentication
     public ApiResponse findAll(){
         List<Dept> depts = this.deptService.findTreeAll();
-        return new ApiResponse(200, AbstractReactTreeEntity.toReactTreeList(depts));
+        return new ApiResponse(200, depts);
     }
 }

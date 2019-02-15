@@ -41,7 +41,8 @@ public class IUserServiceImpl implements UserService {
 
     @Override
     public IPage<User> findPage(IPage<User> page, User entity) {
-        return this.userService.findPage(page, entity);
+        IPage<User> rst = this.userService.findPage(page, entity);
+        return rst;
     }
 
     @Override

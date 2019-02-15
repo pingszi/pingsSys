@@ -1,5 +1,7 @@
 package cn.pings.web.admin.controller;
 
+import cn.pings.service.api.sys.entity.User;
+import cn.pings.service.api.sys.service.UserService;
 import cn.pings.web.admin.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +28,17 @@ public abstract class AbstractBaseController {
     @Autowired
     protected HttpServletResponse response;
 
-    /**获取权限认证标记*/
-    protected String getToken(){
+    @Autowired
+    protected UserService iUserService;
+
+    /**获取当前用户名称*/
+    protected String getCurrentUserName(){
         String token = this.request.getHeader("Authorization");
         return JwtUtil.getUserName(token);
+    }
+
+    /**获取当前用户*/
+    protected User getCurrentUser() {
+        return this.iUserService.getByUserName(this.getCurrentUserName());
     }
 }
