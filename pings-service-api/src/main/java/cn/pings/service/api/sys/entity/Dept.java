@@ -44,13 +44,12 @@ public class Dept extends AbstractReactTreeEntity {
     }
 
     @Override
-    public Map<String, Object> toReactTreeMap(){
-        Map<String, Object> rst = new HashMap<>();
-        rst.put("key", this.getId());
-        rst.put("value", this.getId());
-        rst.put("title", this.getName());
-        rst.put("parentId", this.getParentId());
+    public String getValue() {
+        return this.getId() + "";
+    }
 
-        return rst;
+    @Override
+    public String getTitle() {
+        return this.getName();
     }
 }

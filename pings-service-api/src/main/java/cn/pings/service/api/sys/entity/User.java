@@ -2,6 +2,8 @@ package cn.pings.service.api.sys.entity;
 
 import cn.pings.service.api.common.entity.AbstractBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -24,6 +26,8 @@ public class User extends AbstractBaseEntity {
     private Integer deptId;
     private String mobile;
     private String loginIp;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
     private Integer enabled;
     private Integer delFlag;

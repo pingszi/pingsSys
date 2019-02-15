@@ -26,7 +26,7 @@ public abstract class AbstractTreeEntity extends AbstractBaseEntity {
     private Integer parentId;
     //**子节点列表
     @TableField(exist = false)
-    private List<AbstractTreeEntity> childs;
+    private List<AbstractTreeEntity> children;
 
     public Integer getParentId() {
         return parentId;
@@ -36,12 +36,12 @@ public abstract class AbstractTreeEntity extends AbstractBaseEntity {
         this.parentId = parentId;
     }
 
-    public List<AbstractTreeEntity> getChilds() {
-        return childs;
+    public List<AbstractTreeEntity> getChildren() {
+        return children;
     }
 
-    public void setChilds(List<AbstractTreeEntity> childs) {
-        this.childs = childs;
+    public void setChildren(List<AbstractTreeEntity> children) {
+        this.children = children;
     }
 
     public AbstractTreeEntity instance() {
@@ -78,8 +78,8 @@ public abstract class AbstractTreeEntity extends AbstractBaseEntity {
                 .forEach(node -> {
                     AbstractTreeEntity parentNode = map.get(node.getParentId());
                     if(parentNode != null){
-                        parentNode.setChilds(new ArrayList<>());
-                        parentNode.getChilds().add(node);
+                        parentNode.setChildren(new ArrayList<>());
+                        parentNode.getChildren().add(node);
                     }
                 });
         return map.values().stream()

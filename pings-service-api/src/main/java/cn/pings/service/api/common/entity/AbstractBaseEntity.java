@@ -19,11 +19,11 @@ public abstract class AbstractBaseEntity implements Serializable {
     //**编号
     private Integer id;
     //**添加人
-    private String addWho;
+    private Integer addWho;
     //**添加时间
     private Date addTime;
     //**编辑人
-    private String editWho;
+    private Integer editWho;
     //**编辑时间
     private Date editTime;
 
@@ -35,11 +35,11 @@ public abstract class AbstractBaseEntity implements Serializable {
         this.id = id;
     }
 
-    public String getAddWho() {
+    public Integer getAddWho() {
         return addWho;
     }
 
-    public void setAddWho(String addWho) {
+    public void setAddWho(Integer addWho) {
         this.addWho = addWho;
     }
 
@@ -51,11 +51,11 @@ public abstract class AbstractBaseEntity implements Serializable {
         this.addTime = addTime;
     }
 
-    public String getEditWho() {
+    public Integer getEditWho() {
         return editWho;
     }
 
-    public void setEditWho(String editWho) {
+    public void setEditWho(Integer editWho) {
         this.editWho = editWho;
     }
 
@@ -69,5 +69,17 @@ public abstract class AbstractBaseEntity implements Serializable {
 
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
+
+    /**设置添加/修改人*/
+    public void editAddWhoOrEditWho(int currentUserId) {
+        if(this.id != null) this.setEditWho(currentUserId);
+        else this.setAddWho(currentUserId);
+    }
+
+    /**设置添加/修改人*/
+    public void editAddWhoOrEditWho(AbstractBaseEntity entity) {
+        if(this.id != null) this.setEditWho(entity.getId());
+        else this.setAddWho(entity.getId());
     }
 }
