@@ -28,7 +28,7 @@ public class TestServiceTests {
 		User user = new User();
 		user.setUserName("test");
 		user.setPassword("123456");
-		user.setAddWho("1");
+		user.setAddWho(1);
 
 		assert this.testService.save(user) == 1;
 		System.out.println(user);

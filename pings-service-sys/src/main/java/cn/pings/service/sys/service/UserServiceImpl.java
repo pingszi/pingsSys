@@ -9,6 +9,7 @@ import cn.pings.service.sys.mapper.UserMapper;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,7 @@ import static java.util.stream.Collectors.toList;
  ** @version v1.0
  * *******************************************************
  */
-@Service(version = "${sys.service.version}", cache = "lru")
+@Service(version = "${sys.service.version}")
 @Component
 public class UserServiceImpl implements UserService {
 
@@ -65,7 +66,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        this.userMapper.insert(user);
+        if(user.getId() != null)
+            this.userMapper.updateById(user);
+        else
+            this.userMapper.insert(user);
         return user;
     }
 }

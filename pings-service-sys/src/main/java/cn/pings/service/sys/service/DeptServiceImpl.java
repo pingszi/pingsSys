@@ -19,7 +19,7 @@ import java.util.List;
  ** @version v1.0
  * *******************************************************
  */
-@Service(version = "${sys.service.version}", cache = "lru")
+@Service(version = "${sys.service.version}")
 @Component
 public class DeptServiceImpl implements DeptService {
 
