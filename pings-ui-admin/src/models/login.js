@@ -1,11 +1,9 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
 import { accountLogin } from '@/services/login';
-import { setAuthority } from '@/utils/authority';
+import { setAuthority, removeAuthorization } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
-
-import { removeAuthorization } from '@/utils/authority';
 
 export default {
   namespace: 'login',
@@ -19,7 +17,7 @@ export default {
       const response = yield call(accountLogin, payload);
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: { ...response, status: response.code === 200 ? true : false },
       });
       // Login successfully
       if (response.code === 200) {
@@ -49,7 +47,6 @@ export default {
         type: 'changeLoginStatus',
         payload: {
           status: false,
-          currentAuthority: 'guest',
         },
       });
 
@@ -70,12 +67,12 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      let currentAuthority = payload.code === 200 ? payload.data : 'guest';
+      const currentAuthority = payload.status ? payload.data : 'guest';
       setAuthority(currentAuthority);
 
       return {
         ...state,
-        status: payload.code === 200 ? 'ok' : 'error',
+        status: payload.status ? 'ok' : payload.code ? 'error' : '',
       };
     },
   },

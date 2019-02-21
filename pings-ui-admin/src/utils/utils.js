@@ -176,3 +176,20 @@ export function formatWan(val) {
   }
   return result;
 }
+
+/**
+ * 提交到后台时格式化参数
+ * 1. <Input type="number" /> 为空时，值为undefined，删除
+ * 2. <DatePicker format='YYYY-MM-DD' />，值为moment类型，转换为string
+ */
+export function formatParams(jsonObj) {
+  const rst = {};
+
+  Object.keys(jsonObj).forEach(key => {
+    const value = jsonObj[key];
+
+    if (value instanceof moment) rst[key] = value.format('YYYY-MM-DD');
+    else if (value !== undefined) rst[key] = value;
+  });
+  return rst;
+}

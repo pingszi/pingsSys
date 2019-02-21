@@ -1,4 +1,6 @@
-import { queryList, queryCurrent } from '@/services/sys/user';
+import { queryList, queryCurrent, save } from '@/services/sys/user';
+
+import { notification } from 'antd';
 
 export default {
   namespace: 'user',
@@ -13,6 +15,7 @@ export default {
   },
 
   effects: {
+    /**查询用户列表 */
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryList, payload);
       yield put({
@@ -20,12 +23,19 @@ export default {
         payload: response.data,
       });
     },
+    /**获取当前用户 */
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
       yield put({
         type: 'saveCurrentUser',
         payload: response.data,
       });
+    },
+    /**保存 */
+    *saveObj({ payload, callback }, { call }) {
+      const response = yield call(save, payload);
+      if (response.code === 200) callback(response);
+      else notification.error({ message: response.msg });
     },
   },
 
