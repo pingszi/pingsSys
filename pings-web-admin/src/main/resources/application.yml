@@ -36,4 +36,4 @@ sys:
     version: 0.0.1
   # token过期时长(分钟)
   jwt:
-    expireTime: 200
+    expireTime: 500
