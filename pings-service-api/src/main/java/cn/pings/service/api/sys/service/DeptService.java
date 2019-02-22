@@ -1,5 +1,6 @@
 package cn.pings.service.api.sys.service;
 
+import cn.pings.service.api.common.service.BaseService;
 import cn.pings.service.api.sys.entity.Dept;
 
 import java.util.List;
@@ -12,15 +13,28 @@ import java.util.List;
  ** @version v1.0
  * *******************************************************
  */
-public interface DeptService {
+public interface DeptService extends BaseService<Dept> {
 
     /**
      *********************************************************
      ** @desc ： 查询所有部门的树形结构
      ** @author Pings
      ** @date   2019/1/30
+     ** @param  dept
      ** @return List
      * *******************************************************
      */
-    List<Dept> findTreeAll();
+    List<Dept> findTreeAll(Dept dept);
+
+    /**
+     *********************************************************
+     ** @desc ： 根据编码获取部门
+     ** @author Pings
+     ** @date   2019/1/30
+     ** @param  code  部门编码
+     ** @return Dept
+     * *******************************************************
+     */
+    Dept getByCode(String code);
+
 }

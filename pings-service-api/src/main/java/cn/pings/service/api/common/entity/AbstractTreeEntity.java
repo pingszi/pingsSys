@@ -78,7 +78,9 @@ public abstract class AbstractTreeEntity extends AbstractBaseEntity {
                 .forEach(node -> {
                     AbstractTreeEntity parentNode = map.get(node.getParentId());
                     if(parentNode != null){
-                        parentNode.setChildren(new ArrayList<>());
+                        if(parentNode.getChildren() == null)
+                            parentNode.setChildren(new ArrayList<>());
+
                         parentNode.getChildren().add(node);
                     }
                 });

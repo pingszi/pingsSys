@@ -1,5 +1,6 @@
 package cn.pings.service.api.common.service;
 
+import cn.pings.service.api.common.entity.AbstractBaseEntity;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
@@ -10,7 +11,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
  ** @version v1.0
  * *******************************************************
  */
-public interface AbstractBaseService<T> {
+public interface BaseService<T extends AbstractBaseEntity> {
 
     /**
      *********************************************************

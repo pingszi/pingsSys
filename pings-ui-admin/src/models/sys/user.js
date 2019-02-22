@@ -1,4 +1,4 @@
-import { queryList, queryCurrent, save } from '@/services/sys/user';
+import { queryList, queryCurrent, save, deleteById } from '@/services/sys/user';
 
 import { notification } from 'antd';
 
@@ -34,6 +34,12 @@ export default {
     /**保存 */
     *saveObj({ payload, callback }, { call }) {
       const response = yield call(save, payload);
+      if (response.code === 200) callback(response);
+      else notification.error({ message: response.msg });
+    },
+    /**根据id删除*/
+    *deleteById({ payload, callback }, { call }) {
+      const response = yield call(deleteById, payload);
       if (response.code === 200) callback(response);
       else notification.error({ message: response.msg });
     },

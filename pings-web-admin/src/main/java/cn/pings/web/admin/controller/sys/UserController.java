@@ -89,4 +89,21 @@ public class UserController extends AbstractBaseController {
 
         return new ApiResponse(200,"保存成功", user);
     }
+
+    /**
+     *********************************************************
+     ** @desc ： 删除用户
+     ** @author Pings
+     ** @date   2019/2/20
+     ** @return ApiResponse
+     * *******************************************************
+     */
+    @ApiOperation(value="删除用户", notes="删除用户")
+    @DeleteMapping(value = "/deleteById/{id}")
+    @RequiresPermissions("sys:user:delete")
+    public ApiResponse deleteById(@PathVariable("id") int id){
+        this.iUserService.deleteById(id);
+
+        return new ApiResponse(200,"删除成功");
+    }
 }

@@ -11,4 +11,5 @@ export default {
 
   'menu.sys': '权限管理',
   'menu.sys.user': '用户管理',
+  'menu.sys.dept': '部门管理',
 };

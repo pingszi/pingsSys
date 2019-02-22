@@ -52,6 +52,12 @@ export default [
             icon: 'user',
             component: './Sys/User/User',
           },
+          {
+            path: '/sys/dept',
+            name: 'dept',
+            icon: 'team',
+            component: './Sys/Dept/Dept',
+          },
         ],
       },
     ],

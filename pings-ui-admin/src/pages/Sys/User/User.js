@@ -61,7 +61,7 @@ class UserPage extends PureComponent {
         <Fragment>
           <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
           <Divider type="vertical" />
-          <a href="">删除</a>
+          <a onClick={() => this.handleDelete(record.id)}>删除</a>
         </Fragment>
       ),
     },
@@ -127,6 +127,25 @@ class UserPage extends PureComponent {
         this.handleModalVisible();
         dispatch({ type: 'user/fetch', payload: formValues });
       },
+    });
+  };
+
+  //**删除 */
+  handleDelete = id => {
+    const { dispatch } = this.props;
+    const { formValues } = this.state;
+
+    Modal.confirm({
+      title: '删除',
+      content: '确定删除吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () =>
+        dispatch({
+          type: 'user/deleteById',
+          payload: id,
+          callback: () => dispatch({ type: 'user/fetch', payload: formValues }),
+        }),
     });
   };
 

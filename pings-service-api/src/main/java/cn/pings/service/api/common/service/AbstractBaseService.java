@@ -14,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  ** @version v1.0
  * *******************************************************
  */
-public abstract class AbstractBaseServiceI<M extends BaseMapper<T>, T extends AbstractBaseEntity> implements BaseService<T> {
+public abstract class AbstractBaseService<M extends BaseMapper<T>, T extends AbstractBaseEntity> implements BaseService<T> {
 
     @Autowired
-    private M baseMapper;
+    protected M baseMapper;
 
     /**
      *********************************************************
@@ -43,6 +43,7 @@ public abstract class AbstractBaseServiceI<M extends BaseMapper<T>, T extends Ab
      ** @return Dept
      * *******************************************************
      */
+    @Override
     public T save(T entity){
         if(entity.getId() != null)
             this.baseMapper.updateById(entity);
@@ -60,6 +61,7 @@ public abstract class AbstractBaseServiceI<M extends BaseMapper<T>, T extends Ab
      ** @return int
      * *******************************************************
      */
+    @Override
     public int deleteById(int id){
         return this.baseMapper.deleteById(id);
     }

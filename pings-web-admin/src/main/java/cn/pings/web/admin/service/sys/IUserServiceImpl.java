@@ -54,4 +54,9 @@ public class IUserServiceImpl implements UserService {
 
         return user;
     }
+
+    @Override
+    public int deleteById(int id) {
+        return this.userService.deleteById(id);
+    }
 }

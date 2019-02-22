@@ -3,7 +3,6 @@ import { notification } from 'antd';
 import router from 'umi/router';
 
 import { setAuthorization, getAuthorization } from '@/utils/authority';
-import { object } from 'prop-types';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -48,7 +47,7 @@ const checkStatus = response => {
  * *******************************************************
  */
 const toFormData = json => {
-  let formData = new FormData();
+  const formData = new FormData();
   Object.keys(json).forEach(key => {
     formData.append(key, json[key]);
   });
@@ -72,13 +71,13 @@ export default function request(url, option) {
     (option.method === 'POST' || option.method === 'PUT' || option.method === 'DELETE')
   ) {
     //**转换参数为FormData */
-    if (!(option.body instanceof FormData)) {
+    if (option.body && !(option.body instanceof FormData)) {
       option.body = toFormData(option.body);
     }
   } else if (option) {
     //**转换参数为test?a=1&b=2*/
     option =
-      typeof option == 'object'
+      typeof option === 'object'
         ? Object.keys(option)
             .filter(key => option[key])
             .map(key => `${key}=${option[key]}`)
@@ -95,7 +94,7 @@ export default function request(url, option) {
   }
 
   //**添加权限标记token */
-  let token = getAuthorization();
+  const token = getAuthorization();
   if (token) option.headers.Authorization = token;
 
   return fetch(url, option)
@@ -103,8 +102,7 @@ export default function request(url, option) {
     .then(response => {
       if (response.url.endsWith('/api/login/account')) {
         //**设置token权限标记
-        const token = response.headers.get('Authorization');
-        setAuthorization(token);
+        setAuthorization(response.headers.get('Authorization'));
       }
 
       return response.json();

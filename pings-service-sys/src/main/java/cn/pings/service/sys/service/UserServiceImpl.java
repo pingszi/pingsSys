@@ -1,5 +1,6 @@
 package cn.pings.service.sys.service;
 
+import cn.pings.service.api.common.service.AbstractBaseService;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.entity.User;
 import cn.pings.service.api.sys.service.UserService;
@@ -9,7 +10,6 @@ import cn.pings.service.sys.mapper.UserMapper;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,10 +27,8 @@ import static java.util.stream.Collectors.toList;
  */
 @Service(version = "${sys.service.version}")
 @Component
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends AbstractBaseService<UserMapper, User> implements UserService {
 
-    @Autowired
-    private UserMapper userMapper;
     @Autowired
     private RoleMapper roleMapper;
     @Autowired
@@ -38,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(int id) {
-        return this.userMapper.selectById(id);
+        return this.baseMapper.selectById(id);
     }
 
     @Override
@@ -46,7 +44,7 @@ public class UserServiceImpl implements UserService {
         //**查询用户
         User entity = new User();
         entity.setUserName(userName);
-        entity = this.userMapper.selectOne(new QueryWrapper<>(entity));
+        entity = this.baseMapper.selectOne(new QueryWrapper<>(entity));
         if(entity == null) return null;
 
         //**查询角色
@@ -61,15 +59,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public IPage<User> findPage(IPage<User> page, User entity){
-        return page.setRecords(this.userMapper.selectPage(page, entity));
-    }
-
-    @Override
-    public User save(User user) {
-        if(user.getId() != null)
-            this.userMapper.updateById(user);
-        else
-            this.userMapper.insert(user);
-        return user;
+        return page.setRecords(this.baseMapper.selectPage(page, entity));
     }
 }

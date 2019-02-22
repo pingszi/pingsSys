@@ -38,6 +38,7 @@ module.exports = {
     'react/no-multi-comp': 0,
     'no-unneeded-ternary': 1,
     'no-nested-ternary': 1,
+    'no-param-reassign': 1,
   },
   settings: {
     polyfills: ['fetch', 'promises', 'url'],

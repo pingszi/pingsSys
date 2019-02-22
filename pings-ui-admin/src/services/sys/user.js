@@ -29,6 +29,7 @@ export async function queryCurrent() {
  * @desc ： 验证用户名称是否唯一
  * @author Pings
  * @date   2019/1/18
+ * @param  userName  用户名称
  * @return ApiResponse
  * *******************************************************
  */
@@ -48,5 +49,20 @@ export async function save(params) {
   return request('/api/user/save', {
     method: 'POST',
     body: params,
+  });
+}
+
+/**
+ *********************************************************
+ * @desc ： 根据id删除
+ * @author Pings
+ * @date   2019/2/22
+ * @param  id  编号
+ * @return ApiResponse
+ * *******************************************************
+ */
+export async function deleteById(id) {
+  return request(`/api/user/deleteById/${id}`, {
+    method: 'DELETE',
   });
 }
