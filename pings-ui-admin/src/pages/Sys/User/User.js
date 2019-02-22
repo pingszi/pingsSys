@@ -20,6 +20,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import { validateUserNameUnique } from '@/services/sys/user';
 import { formatParams } from '@/utils/utils';
+import Authorized from '@/utils/Authorized';
 import styles from './User.less';
 
 const FormItem = Form.Item;
@@ -59,9 +60,13 @@ class UserPage extends PureComponent {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
+          <Authorized authority="sys:user:save">
+            <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
+          </Authorized>
           <Divider type="vertical" />
-          <a onClick={() => this.handleDelete(record.id)}>删除</a>
+          <Authorized authority="sys:user:delete">
+            <a onClick={() => this.handleDelete(record.id)}>删除</a>
+          </Authorized>
         </Fragment>
       ),
     },
@@ -224,9 +229,11 @@ class UserPage extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
+              <Authorized authority="sys:user:save">
+                <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
+                  新建
+                </Button>
+              </Authorized>
             </div>
             <StandardTable
               rowKey="id"
@@ -262,7 +269,10 @@ class EditForm extends PureComponent {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
 
-      const params = values && values.id ? { id: values.id, ...fieldsValue } : fieldsValue;
+      const params =
+        values && values.id
+          ? { id: values.id, userName: values.userName, ...fieldsValue }
+          : fieldsValue;
       handleEdit(params);
     });
   };

@@ -6,6 +6,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import { validateCodeUnique } from '@/services/sys/dept';
 import { formatParams } from '@/utils/utils';
+import Authorized from '@/utils/Authorized';
 import styles from './Dept.less';
 
 const FormItem = Form.Item;
@@ -33,9 +34,13 @@ class DeptPage extends PureComponent {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
+          <Authorized authority="sys:dept:save">
+            <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
+          </Authorized>
           <Divider type="vertical" />
-          <a onClick={() => this.handleDelete(record.id)}>删除</a>
+          <Authorized authority="sys:dept:delete">
+            <a onClick={() => this.handleDelete(record.id)}>删除</a>
+          </Authorized>
         </Fragment>
       ),
     },
@@ -164,9 +169,11 @@ class DeptPage extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
+              <Authorized authority="sys:dept:save">
+                <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
+                  新建
+                </Button>
+              </Authorized>
             </div>
             <StandardTable
               rowKey="id"

@@ -47,10 +47,10 @@ public class IUserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        user =  this.userService.save(user);
+        user = this.userService.save(user);
 
         //**更新缓存
-        this.redisTemplate.opsForValue().set("user::" + user.getUserName(), user);
+        this.redisTemplate.opsForValue().set("user::" + user.getUserName(), this.userService.getByUserName(user.getUserName()));
 
         return user;
     }

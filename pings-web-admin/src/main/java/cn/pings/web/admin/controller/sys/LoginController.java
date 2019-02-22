@@ -2,6 +2,7 @@ package cn.pings.web.admin.controller.sys;
 
 import cn.pings.service.api.common.exception.UnauthorizedException;
 import cn.pings.service.api.common.util.ApiResponse;
+import cn.pings.service.api.sys.entity.Right;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.entity.User;
 import cn.pings.service.api.sys.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
@@ -79,9 +81,9 @@ public class LoginController extends AbstractBaseController {
                 response.setHeader("Authorization", JwtUtil.sign(userName, password));
             response.setHeader("Access-Control-Expose-Headers", "Authorization");
 
-            //**用户角色
-            Set<String> roles = user.getRoles().stream().map(Role::getCode).collect(toSet());
-            return new ApiResponse(200, "登录成功", roles);
+            //**用户权限
+            Set<String> rights = user.getRoles().stream().map(Role::getRights).flatMap(List::stream).map(Right::getCode).collect(toSet());
+            return new ApiResponse(200, "登录成功", rights);
         } else
             return new ApiResponse(500, "用户名/密码错误");
     }

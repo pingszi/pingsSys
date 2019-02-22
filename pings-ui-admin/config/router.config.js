@@ -44,18 +44,19 @@ export default [
         path: '/sys',
         name: 'sys',
         icon: 'setting',
-        authority: ['admin', 'user'],
         routes: [
           {
             path: '/sys/user',
             name: 'user',
             icon: 'user',
+            authority: ['sys:user:list'],
             component: './Sys/User/User',
           },
           {
             path: '/sys/dept',
             name: 'dept',
             icon: 'team',
+            authority: ['sys:dept:list'],
             component: './Sys/Dept/Dept',
           },
         ],

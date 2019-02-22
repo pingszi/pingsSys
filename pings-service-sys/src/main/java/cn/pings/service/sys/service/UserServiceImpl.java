@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  *********************************************************
@@ -51,7 +52,13 @@ public class UserServiceImpl extends AbstractBaseService<UserMapper, User> imple
         entity.setRoles(this.roleMapper.findByUserId(entity.getId()));
 
         //**查询权限
-        List<Role> roles = entity.getRoles().stream().peek(role -> role.setRights(this.rightMapper.findByRoleId(role.getId()))).collect(toList());
+        List<Role> roles = entity.getRoles().stream().peek(role -> {
+            //**admin角色包含所有权限
+            if(role.getCode().equals("admin"))
+                role.setRights(this.rightMapper.selectList(new QueryWrapper<>()));
+            else
+                role.setRights(this.rightMapper.findByRoleId(role.getId()));
+        }).collect(toList());
         entity.setRoles(roles);
 
         return entity;
