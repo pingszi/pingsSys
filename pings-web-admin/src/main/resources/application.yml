@@ -34,6 +34,6 @@ sys:
   # Service version
   service:
     version: 0.0.1
-  # token过期时长(分钟)
+  # token过期时长(分钟)，<= 0时，使用默认配置180分钟
   jwt:
     expireTime: 500
