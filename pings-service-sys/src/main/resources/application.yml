@@ -2,7 +2,7 @@
 spring:
   # redis
   redis:
-    host: '192.168.1.233'
+    host: '112.74.169.154'
     password: '123456'
     port: 6379
 
@@ -10,7 +10,7 @@ spring:
   datasource:
     type: 'com.alibaba.druid.pool.DruidDataSource'
     driver-class-name: 'com.mysql.cj.jdbc.Driver'
-    url: 'jdbc:mysql://192.168.1.233:3306/pings_sys?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull'
+    url: 'jdbc:mysql://112.74.169.154:13306/pings_sys?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull'
     username: 'root'
     password: '123456'
     # druid设置
@@ -68,7 +68,7 @@ dubbo:
   # RegistryConfig Bean
   registry:
     id: service-sys
-    address: zookeeper://192.168.1.233:2181
+    address: zookeeper://112.74.169.154:2181
 
 # Service version
 sys:

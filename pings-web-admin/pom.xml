@@ -5,11 +5,10 @@
 	<parent>
 		<groupId>cn.pings</groupId>
 		<artifactId>pings-sys</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>cn.pings.web.admin</groupId>
 	<artifactId>pings-web-admin</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>pings-web-admin</name>
 	<description>后台管理系统</description>
 

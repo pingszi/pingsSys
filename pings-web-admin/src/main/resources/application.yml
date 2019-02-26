@@ -2,7 +2,7 @@
 spring:
   # redis
   redis:
-    host: '192.168.1.233'
+    host: '112.74.169.154'
     password: '123456'
     port: 6379
     timeout: 5000
@@ -27,7 +27,7 @@ dubbo:
   # RegistryConfig Bean
   registry:
     id: client-admin
-    address: zookeeper://192.168.1.233:2181
+    address: zookeeper://112.74.169.154:2181
 
 # sys config
 sys:

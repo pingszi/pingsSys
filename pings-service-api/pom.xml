@@ -5,11 +5,10 @@
 	<parent>
 		<groupId>cn.pings</groupId>
 		<artifactId>pings-sys</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>cn.pings.service.api</groupId>
 	<artifactId>pings-service-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>pings-service-api</name>
 	<description>发布的接口</description>
 
