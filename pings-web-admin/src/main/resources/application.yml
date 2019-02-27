@@ -1,5 +1,18 @@
+# sys config
+sys:
+  # Service version
+  service:
+    version: 0.0.1
+  # token过期时长(分钟)，<= 0时，使用默认配置180分钟
+  jwt:
+    expireTime: 500
+
+---
+
 # spring
 spring:
+  profiles: dev
+
   # redis
   redis:
     host: '112.74.169.154'
@@ -29,11 +42,37 @@ dubbo:
     id: client-admin
     address: zookeeper://112.74.169.154:2181
 
-# sys config
-sys:
-  # Service version
-  service:
-    version: 0.0.1
-  # token过期时长(分钟)，<= 0时，使用默认配置180分钟
-  jwt:
-    expireTime: 500
+---
+
+# spring
+spring:
+  profiles: prod
+
+  # redis
+  redis:
+    host: 'redis_test'
+    password: '123456'
+    port: 6379
+    timeout: 5000
+
+# Dubbo
+dubbo:
+  # Base packages to scan Dubbo Components (e.g @Service , @Reference)
+  scan:
+    basePackages: cn.pings.web.admin
+
+  # ApplicationConfig Bean
+  application:
+   id: pings-web-admin
+   name: pings-web-admin
+
+  # ProtocolConfig Bean
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 20880
+
+  # RegistryConfig Bean
+  registry:
+    id: client-admin
+    address: zookeeper://zk_test:2181
