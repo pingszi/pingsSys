@@ -1,10 +1,8 @@
 FROM nginx
 
-WORKDIR /usr/src/app/
+COPY ./docker/ui-admin.conf /etc/nginx/conf.d/default.conf
 
-COPY ./docker/nginx.conf /etc/nginx/conf.d/default.conf
-
-COPY ./dist  /usr/share/nginx/html/
+COPY ./dist  /usr/share/nginx/html/pings-ui-admin
 
 EXPOSE 80
 
