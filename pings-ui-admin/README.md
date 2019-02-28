@@ -2,7 +2,9 @@
 ## 简介
 - 基于ant design pro脚手架的后台管理系统
 - ant design pro：http://pro.ant.design/index-cn
-
+## 界面
+![登录](https://github.com/pingszi/pingsSys/blob/master/pings-ui-admin/docker/login.png)
+![主页](https://github.com/pingszi/pingsSys/blob/master/pings-ui-admin/docker/index.png)
 ## 权限
 - 权限系统使用shiro进行控制，提供控制到按钮级别的权限；
 - 用户权限保存到localStorage，供前端使用，后台也会进行相应的权限验证；

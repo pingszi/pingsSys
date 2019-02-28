@@ -1,7 +1,11 @@
 # pingsSys
 ## 简介
-- pingsSys是一款基于spring-boot和dubbo的java微服务框架脚手架。采用前后端分离设计，连接无状态，前端页面采用ant design pro脚手架进行开发。本人会利用业务时间，持续更新。 
-- 主页：建设中
+- pingsSys是一款基于spring-boot和dubbo的java微服务框架脚手架。采用前后端分离设计，连接无状态，前端页面采用ant design pro脚手架进行开发。本人会利用业务时间，持续更新。
+- [源码](https://github.com/pingszi/pingsSys)
+- [主页](http://pingssys.pings.fun)
+## 界面
+- ![登录](https://github.com/pingszi/pingsSys/blob/master/pings-ui-admin/docker/login.png)
+- ![主页](https://github.com/pingszi/pingsSys/blob/master/pings-ui-admin/docker/index.png)
 ## 项目说明
 ### pings-service-api
 - dubbo接口和实体类，独立出来，方便Provider和Consumer共用
