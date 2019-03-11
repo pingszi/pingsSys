@@ -2,39 +2,39 @@ import request from '@/utils/request';
 
 /**
  *********************************************************
- * @desc ： 查询所有部门
+ * @desc ： 查询所有权限
  * @author Pings
- * @date   2019/1/20
+ * @date   2019/3/8
  * @return ApiResponse
  * *******************************************************
  */
 export async function queryAll() {
-  return request('/api/dept/findAll');
+  return request('/api/right/findAll');
 }
 
 /**
  *********************************************************
- * @desc ： 验证部门编码是否唯一
+ * @desc ： 验证编码是否唯一
  * @author Pings
- * @date   2019/1/18
- * @param  code  部门编码
+ * @date   2019/3/8
+ * @param  code  编码
  * @return ApiResponse
  * *******************************************************
  */
 export async function validateCodeUnique(code) {
-  return request(`/api/dept/validateCodeUnique/${code}`);
+  return request(`/api/right/validateCodeUnique/${code}`);
 }
 
 /**
  *********************************************************
  * @desc ： 保存
  * @author Pings
- * @date   2019/1/18
+ * @date   2019/3/8
  * @return ApiResponse
  * *******************************************************
  */
 export async function save(params) {
-  return request('/api/dept/save', {
+  return request('/api/right/save', {
     method: 'POST',
     body: params,
   });
@@ -44,13 +44,13 @@ export async function save(params) {
  *********************************************************
  * @desc ： 根据id删除
  * @author Pings
- * @date   2019/2/22
+ * @date   2019/3/8
  * @param  id  编号
  * @return ApiResponse
  * *******************************************************
  */
 export async function deleteById(id) {
-  return request(`/api/dept/deleteById/${id}`, {
+  return request(`/api/right/deleteById/${id}`, {
     method: 'DELETE',
   });
 }

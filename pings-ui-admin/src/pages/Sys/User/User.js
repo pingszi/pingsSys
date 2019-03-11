@@ -64,6 +64,10 @@ class UserPage extends PureComponent {
             <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
           </Authorized>
           <Divider type="vertical" />
+          <Authorized authority="sys:user:allotRole">
+            <a onClick={() => this.handleAllotRole(record.id)}>分配角色</a>
+          </Authorized>
+          <Divider type="vertical" />
           <Authorized authority="sys:user:delete">
             <a onClick={() => this.handleDelete(record.id)}>删除</a>
           </Authorized>
@@ -133,6 +137,26 @@ class UserPage extends PureComponent {
         dispatch({ type: 'user/fetch', payload: formValues });
       },
     });
+  };
+
+  //**分配角色 */
+  handleAllotRole = id => {
+    //const { dispatch } = this.props;
+    alert(id);
+    const modal = Modal.info();
+
+    modal.update({
+      title: '修改的标题',
+      content: (
+        <Select style={{ width: 150 }} placeholder="请选择">
+          <Option value={1}>系统</Option>
+          <Option value={2}>菜单</Option>
+          <Option value={3}>权限</Option>
+        </Select>
+      ),
+    });
+
+    //modal.destroy();
   };
 
   //**删除 */

@@ -1,5 +1,7 @@
 package cn.pings.service.api.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  *********************************************************
  ** @desc  ： 图表预览
@@ -8,6 +10,7 @@ package cn.pings.service.api.common.entity;
  ** @version v1.0
  * *******************************************************
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AbstractReactTreeEntity extends AbstractTreeEntity {
 
     //**获取树实际的值

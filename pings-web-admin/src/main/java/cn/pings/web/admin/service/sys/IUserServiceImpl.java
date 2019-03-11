@@ -49,14 +49,18 @@ public class IUserServiceImpl implements UserService {
     public User save(User user) {
         user = this.userService.save(user);
 
-        //**更新缓存
-        this.redisTemplate.opsForValue().set("user::" + user.getUserName(), this.userService.getByUserName(user.getUserName()));
+        //**删除缓存
+        this.redisTemplate.delete("user::" + user.getUserName());
 
         return user;
     }
 
     @Override
     public int deleteById(int id) {
+        //**删除缓存
+        User user = this.userService.getById(id);
+        this.redisTemplate.delete("user::" + user.getUserName());
+
         return this.userService.deleteById(id);
     }
 }

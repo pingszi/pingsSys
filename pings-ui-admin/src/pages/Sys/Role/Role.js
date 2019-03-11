@@ -1,24 +1,25 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Button, Modal, Divider, TreeSelect } from 'antd';
+import { Row, Col, Card, Form, Input, Button, Modal, Divider } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
-import { validateCodeUnique } from '@/services/sys/dept';
+import { validateCodeUnique } from '@/services/sys/role';
 import { formatParams } from '@/utils/utils';
 import Authorized from '@/utils/Authorized';
-import styles from './Dept.less';
+import styles from './Role.less';
 
 const FormItem = Form.Item;
 
-@connect(({ dept, loading }) => ({
-  dept,
-  loading: loading.models.dept,
+@connect(({ role, loading }) => ({
+  role,
+  loading: loading.models.role,
 }))
 @Form.create()
-class DeptPage extends PureComponent {
+class RolePage extends PureComponent {
   state = {
     selectedRows: [], //**选中的行
+    formValues: {}, //**搜索数据
     modalVisible: false, //**显示编译页面
     editFormValues: {}, //**编辑数据
   };
@@ -33,11 +34,11 @@ class DeptPage extends PureComponent {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <Authorized authority="sys:dept:save">
+          <Authorized authority="sys:role:save">
             <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
           </Authorized>
           <Divider type="vertical" />
-          <Authorized authority="sys:dept:delete">
+          <Authorized authority="sys:role:delete">
             <a onClick={() => this.handleDelete(record.id)}>删除</a>
           </Authorized>
         </Fragment>
@@ -47,12 +48,44 @@ class DeptPage extends PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({ type: 'dept/fetchAll' });
+    dispatch({ type: 'role/fetch' });
   }
+
+  /**搜索 */
+  handleSearch = e => {
+    e.preventDefault();
+
+    const { dispatch, form } = this.props;
+
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+
+      this.setState({ formValues: fieldsValue });
+      dispatch({ type: 'role/fetch', payload: fieldsValue });
+    });
+  };
+
+  /**重置 */
+  handleFormReset = () => {
+    const { form, dispatch } = this.props;
+    form.resetFields();
+    this.setState({ formValues: {} });
+
+    dispatch({ type: 'role/fetch' });
+  };
 
   //**复选框 */
   handleSelectRows = rows => {
     this.setState({ selectedRows: rows });
+  };
+
+  /**改变事件*/
+  handleStandardTableChange = pagination => {
+    const { dispatch } = this.props;
+    const { formValues } = this.state;
+
+    const params = { ...pagination, ...formValues };
+    dispatch({ type: 'user/fetch', payload: params });
   };
 
   //**显示编辑页面*/
@@ -63,13 +96,14 @@ class DeptPage extends PureComponent {
   //**编辑提交到后台 */
   handleEdit = fields => {
     const { dispatch } = this.props;
+    const { formValues } = this.state;
 
     dispatch({
-      type: 'dept/saveObj',
+      type: 'role/saveObj',
       payload: formatParams(fields),
       callback: () => {
         this.handleModalVisible();
-        dispatch({ type: 'dept/fetchAll' });
+        dispatch({ type: 'role/fetch', payload: formValues });
       },
     });
   };
@@ -77,6 +111,7 @@ class DeptPage extends PureComponent {
   //**删除 */
   handleDelete = id => {
     const { dispatch } = this.props;
+    const { formValues } = this.state;
 
     Modal.confirm({
       title: '删除',
@@ -85,27 +120,64 @@ class DeptPage extends PureComponent {
       cancelText: '取消',
       onOk: () =>
         dispatch({
-          type: 'dept/deleteById',
+          type: 'role/deleteById',
           payload: id,
-          callback: () => dispatch({ type: 'dept/fetchAll' }),
+          callback: () => dispatch({ type: 'role/fetch', payload: formValues }),
         }),
     });
   };
 
+  //**搜索表单*/
+  renderSearchForm() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+
+    return (
+      <Form onSubmit={this.handleSearch} layout="inline">
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+          <Col md={12} sm={24}>
+            <FormItem label="编码">
+              {getFieldDecorator('code')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col md={12} sm={24}>
+            <FormItem label="名称">
+              {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+        </Row>
+
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ float: 'right', marginBottom: 24 }}>
+            <Button type="primary" htmlType="submit">
+              {' '}
+              查询{' '}
+            </Button>
+            <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+              {' '}
+              重置{' '}
+            </Button>
+          </div>
+        </div>
+      </Form>
+    );
+  }
+
   render() {
     const {
-      dept: { allDepts },
+      role: { data },
       loading,
     } = this.props;
     const { selectedRows, modalVisible, editFormValues } = this.state;
-    const data = { list: allDepts, pagination: null };
 
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
           <div className={styles.tableList}>
+            <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <Authorized authority="sys:dept:save">
+              <Authorized authority="sys:role:save">
                 <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                   新建
                 </Button>
@@ -117,8 +189,8 @@ class DeptPage extends PureComponent {
               loading={loading}
               data={data}
               columns={this.columns}
-              pagination={false}
               onSelectRow={this.handleSelectRows}
+              onChange={this.handleStandardTableChange}
             />
           </div>
         </Card>
@@ -127,7 +199,6 @@ class DeptPage extends PureComponent {
           handleModalVisible={this.handleModalVisible}
           handleEdit={this.handleEdit}
           values={editFormValues}
-          allDepts={allDepts}
         />
       </PageHeaderWrapper>
     );
@@ -151,7 +222,7 @@ class EditForm extends PureComponent {
   };
 
   render() {
-    const { form, modalVisible, handleModalVisible, values, allDepts } = this.props;
+    const { form, modalVisible, handleModalVisible, values } = this.props;
     const operation = values && Object.keys(values).length ? 'update' : 'add';
 
     return (
@@ -166,7 +237,7 @@ class EditForm extends PureComponent {
           <Col span={12}>
             <FormItem label="名称" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
               {form.getFieldDecorator('name', {
-                rules: [{ required: true, max: 10, message: '请输入部门名称(最大10个字符)' }],
+                rules: [{ required: true, max: 10, message: '请输入角色名称(最大10个字符)' }],
                 initialValue: values.name || '',
               })(<Input placeholder="请输入" />)}
             </FormItem>
@@ -176,13 +247,13 @@ class EditForm extends PureComponent {
               {operation === 'add' &&
                 form.getFieldDecorator('code', {
                   rules: [
-                    { required: true, min: 4, max: 10, message: '请输入部门编码(4-10个字符)' },
+                    { required: true, min: 4, max: 10, message: '请输入角色编码(4-10个字符)' },
                     {
                       validator: (rule, val, callback) => {
                         if (!val || val.length < 4) callback();
                         else {
                           validateCodeUnique(val).then(response => {
-                            if (response.data === false) callback('部门编码已经存在');
+                            if (response.data === false) callback('角色编码已经存在');
 
                             callback();
                           });
@@ -199,24 +270,9 @@ class EditForm extends PureComponent {
         </Row>
         <Row gutter={24}>
           <Col span={12}>
-            <FormItem label="上级部门" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              {form.getFieldDecorator('parentId', {
-                rules: [{ required: true, message: '请选择上级部门' }],
-                initialValue: values.parentId,
-              })(
-                <TreeSelect
-                  style={{ width: 150 }}
-                  width={80}
-                  treeData={allDepts}
-                  placeholder="请选择"
-                />
-              )}
-            </FormItem>
-          </Col>
-          <Col span={12}>
             <FormItem label="描述" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
               {form.getFieldDecorator('description', {
-                rules: [{ max: 50, message: '请输入部门描述(最大50个字符)' }],
+                rules: [{ max: 50, message: '请输入角色描述(最大50个字符)' }],
                 initialValue: values.description,
               })(<Input placeholder="请输入" />)}
             </FormItem>
@@ -227,4 +283,4 @@ class EditForm extends PureComponent {
   }
 }
 
-export default DeptPage;
+export default RolePage;

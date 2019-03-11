@@ -31,7 +31,7 @@ public abstract class AbstractBaseService<M extends BaseMapper<T>, T extends Abs
      */
     @Override
     public IPage<T> findPage(IPage<T> page, T entity){
-        return this.baseMapper.selectPage(page, new QueryWrapper<>(entity));
+        return this.baseMapper.selectPage(page, new QueryWrapper<>(entity).orderByDesc("id"));
     }
 
     /**

@@ -1,8 +1,8 @@
 package cn.pings.web.admin.controller.sys;
 
 import cn.pings.service.api.common.util.ApiResponse;
-import cn.pings.service.api.sys.entity.Dept;
-import cn.pings.service.api.sys.service.DeptService;
+import cn.pings.service.api.sys.entity.Right;
+import cn.pings.service.api.sys.service.RightService;
 import cn.pings.web.admin.controller.AbstractBaseController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import io.swagger.annotations.ApiOperation;
@@ -10,86 +10,82 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  *********************************************************
- ** @desc  ： 部门管理
+ ** @desc  ： 权限管理
  ** @author  Pings
- ** @date    2019/1/30
+ ** @date    2019/3/8
  ** @version v1.0
  * *******************************************************
  */
 @RestController
-@RequestMapping("/api/dept")
-public class DeptController extends AbstractBaseController {
+@RequestMapping("/api/right")
+public class RightController extends AbstractBaseController {
 
     @Reference(version = "${sys.service.version}")
-    private DeptService deptService;
+    private RightService rightService;
 
     /**
      *********************************************************
-     ** @desc ： 查询所有部门
+     ** @desc ： 查询所有权限
      ** @author Pings
-     ** @date   2019/1/30
+     ** @date   2019/3/8
      ** @return ApiResponse
      * *******************************************************
      */
-    @ApiOperation(value="查询所有部门", notes="查询所有部门信息")
+    @ApiOperation(value="查询所有权限", notes="查询所有权限")
     @GetMapping(value = "/findAll")
     @RequiresAuthentication
     public ApiResponse findAll(){
-        List<Dept> depts = this.deptService.findTreeAll();
-
-        return new ApiResponse(200, depts);
+        return new ApiResponse(200, this.rightService.findTreeAll());
     }
 
     /**
      *********************************************************
-     ** @desc ： 验证部门编码是否唯一
+     ** @desc ： 验证编码是否唯一
      ** @author Pings
-     ** @date   2019/2/22
+     ** @date   2019/3/8
      ** @return ApiResponse
      * *******************************************************
      */
-    @ApiOperation(value="验证部门编码是否唯一", notes="验证部门编码是否唯一")
+    @ApiOperation(value="验证编码是否唯一", notes="验证编码是否唯一")
     @GetMapping(value = "/validateCodeUnique/{code}")
     public ApiResponse validateCodeUnique(@PathVariable("code") String code){
-        Dept dept = this.deptService.getByCode(code);
-        return new ApiResponse(200, dept == null);
+        Right right = this.rightService.getByCode(code);
+        return new ApiResponse(200, right == null);
     }
 
     /**
      *********************************************************
-     ** @desc ： 保存用户
+     ** @desc ： 保存
      ** @author Pings
-     ** @date   2019/2/15
+     ** @date   2019/3/8
      ** @return ApiResponse
      * *******************************************************
      */
-    @ApiOperation(value="保存部门", notes="保存部门")
+    @ApiOperation(value="保存权限", notes="保存权限")
     @PostMapping(value = "/save")
-    @RequiresPermissions("sys:dept:save")
-    public ApiResponse save(Dept entity){
+    @RequiresPermissions("sys:right:save")
+    public ApiResponse save(Right entity){
         entity.editAddWhoOrEditWho(this.getCurrentUser());
-        Dept dept = this.deptService.save(entity);
+        Right right = this.rightService.save(entity);
 
-        return new ApiResponse(200,"保存成功", dept);
+        return new ApiResponse(200,"保存成功", right);
     }
 
     /**
      *********************************************************
-     ** @desc ： 删除部门
+     ** @desc ： 删除
      ** @author Pings
-     ** @date   2019/2/20
+     ** @date   2019/3/8
      ** @return ApiResponse
      * *******************************************************
      */
-    @ApiOperation(value="删除部门", notes="删除部门")
+    @ApiOperation(value="删除权限", notes="删除权限")
     @DeleteMapping(value = "/deleteById/{id}")
-    @RequiresPermissions("sys:dept:delete")
+    @RequiresPermissions("sys:right:delete")
     public ApiResponse deleteById(@PathVariable("id") int id){
-        this.deptService.deleteById(id);
+        this.rightService.deleteById(id);
 
         return new ApiResponse(200,"删除成功");
     }

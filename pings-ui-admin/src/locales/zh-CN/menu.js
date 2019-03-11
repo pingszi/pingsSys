@@ -9,7 +9,9 @@ export default {
   'menu.exception.not-find': '404',
   'menu.exception.server-error': '500',
 
-  'menu.sys': '权限管理',
+  'menu.sys': '系统管理',
   'menu.sys.user': '用户管理',
   'menu.sys.dept': '部门管理',
+  'menu.sys.role': '角色管理',
+  'menu.sys.right': '权限管理',
 };

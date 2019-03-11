@@ -1,22 +1,23 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Button, Modal, Divider, TreeSelect } from 'antd';
+import { Row, Col, Card, Form, Input, Button, Modal, Divider, TreeSelect, Select } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
-import { validateCodeUnique } from '@/services/sys/dept';
+import { validateCodeUnique } from '@/services/sys/right';
 import { formatParams } from '@/utils/utils';
 import Authorized from '@/utils/Authorized';
-import styles from './Dept.less';
+import styles from './Right.less';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 
-@connect(({ dept, loading }) => ({
-  dept,
-  loading: loading.models.dept,
+@connect(({ right, loading }) => ({
+  right,
+  loading: loading.models.right,
 }))
 @Form.create()
-class DeptPage extends PureComponent {
+class RightPage extends PureComponent {
   state = {
     selectedRows: [], //**选中的行
     modalVisible: false, //**显示编译页面
@@ -28,16 +29,34 @@ class DeptPage extends PureComponent {
     { title: '编号', dataIndex: 'id', key: 'id' },
     { title: '编码', dataIndex: 'code' },
     { title: '名称', dataIndex: 'name' },
+    {
+      title: '类型',
+      dataIndex: 'type',
+      render: val => {
+        let rst;
+        switch (val) {
+          case 1:
+            rst = '系统';
+            break;
+          case 2:
+            rst = '菜单';
+            break;
+          default:
+            rst = '权限';
+        }
+        return rst;
+      },
+    },
     { title: '描述', dataIndex: 'description' },
     {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <Authorized authority="sys:dept:save">
+          <Authorized authority="sys:right:save">
             <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
           </Authorized>
           <Divider type="vertical" />
-          <Authorized authority="sys:dept:delete">
+          <Authorized authority="sys:right:delete">
             <a onClick={() => this.handleDelete(record.id)}>删除</a>
           </Authorized>
         </Fragment>
@@ -47,7 +66,7 @@ class DeptPage extends PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({ type: 'dept/fetchAll' });
+    dispatch({ type: 'right/fetchAll' });
   }
 
   //**复选框 */
@@ -65,11 +84,11 @@ class DeptPage extends PureComponent {
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'dept/saveObj',
+      type: 'right/saveObj',
       payload: formatParams(fields),
       callback: () => {
         this.handleModalVisible();
-        dispatch({ type: 'dept/fetchAll' });
+        dispatch({ type: 'right/fetchAll' });
       },
     });
   };
@@ -85,27 +104,27 @@ class DeptPage extends PureComponent {
       cancelText: '取消',
       onOk: () =>
         dispatch({
-          type: 'dept/deleteById',
+          type: 'right/deleteById',
           payload: id,
-          callback: () => dispatch({ type: 'dept/fetchAll' }),
+          callback: () => dispatch({ type: 'right/fetchAll' }),
         }),
     });
   };
 
   render() {
     const {
-      dept: { allDepts },
+      right: { allRights },
       loading,
     } = this.props;
     const { selectedRows, modalVisible, editFormValues } = this.state;
-    const data = { list: allDepts, pagination: null };
+    const data = { list: allRights, pagination: null };
 
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListOperator}>
-              <Authorized authority="sys:dept:save">
+              <Authorized authority="sys:right:save">
                 <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                   新建
                 </Button>
@@ -127,7 +146,7 @@ class DeptPage extends PureComponent {
           handleModalVisible={this.handleModalVisible}
           handleEdit={this.handleEdit}
           values={editFormValues}
-          allDepts={allDepts}
+          allRights={allRights}
         />
       </PageHeaderWrapper>
     );
@@ -151,7 +170,7 @@ class EditForm extends PureComponent {
   };
 
   render() {
-    const { form, modalVisible, handleModalVisible, values, allDepts } = this.props;
+    const { form, modalVisible, handleModalVisible, values, allRights } = this.props;
     const operation = values && Object.keys(values).length ? 'update' : 'add';
 
     return (
@@ -166,7 +185,7 @@ class EditForm extends PureComponent {
           <Col span={12}>
             <FormItem label="名称" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
               {form.getFieldDecorator('name', {
-                rules: [{ required: true, max: 10, message: '请输入部门名称(最大10个字符)' }],
+                rules: [{ required: true, max: 10, message: '请输入权限名称(最大10个字符)' }],
                 initialValue: values.name || '',
               })(<Input placeholder="请输入" />)}
             </FormItem>
@@ -176,13 +195,13 @@ class EditForm extends PureComponent {
               {operation === 'add' &&
                 form.getFieldDecorator('code', {
                   rules: [
-                    { required: true, min: 4, max: 10, message: '请输入部门编码(4-10个字符)' },
+                    { required: true, min: 3, max: 20, message: '请输入权限编码(3-20个字符)' },
                     {
                       validator: (rule, val, callback) => {
-                        if (!val || val.length < 4) callback();
+                        if (!val || val.length < 3) callback();
                         else {
                           validateCodeUnique(val).then(response => {
-                            if (response.data === false) callback('部门编码已经存在');
+                            if (response.data === false) callback('权限编码已经存在');
 
                             callback();
                           });
@@ -199,24 +218,40 @@ class EditForm extends PureComponent {
         </Row>
         <Row gutter={24}>
           <Col span={12}>
-            <FormItem label="上级部门" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+            <FormItem label="上级权限" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
               {form.getFieldDecorator('parentId', {
-                rules: [{ required: true, message: '请选择上级部门' }],
+                rules: [{ required: true, message: '请选择上级权限' }],
                 initialValue: values.parentId,
               })(
                 <TreeSelect
                   style={{ width: 150 }}
                   width={80}
-                  treeData={allDepts}
+                  treeData={allRights}
                   placeholder="请选择"
                 />
               )}
             </FormItem>
           </Col>
           <Col span={12}>
+            <FormItem label="类型" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              {form.getFieldDecorator('type', {
+                rules: [{ required: true, message: '请选择类型' }],
+                initialValue: values.type,
+              })(
+                <Select style={{ width: 150 }} placeholder="请选择">
+                  <Option value={1}>系统</Option>
+                  <Option value={2}>菜单</Option>
+                  <Option value={3}>权限</Option>
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={12}>
             <FormItem label="描述" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
               {form.getFieldDecorator('description', {
-                rules: [{ max: 50, message: '请输入部门描述(最大50个字符)' }],
+                rules: [{ max: 50, message: '请输入权限描述(最大50个字符)' }],
                 initialValue: values.description,
               })(<Input placeholder="请输入" />)}
             </FormItem>
@@ -227,4 +262,4 @@ class EditForm extends PureComponent {
   }
 }
 
-export default DeptPage;
+export default RightPage;

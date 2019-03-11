@@ -1,20 +1,20 @@
-import { queryAll, save, deleteById } from '@/services/sys/dept';
+import { queryAll, save, deleteById } from '@/services/sys/right';
 
 import { notification } from 'antd';
 
 export default {
-  namespace: 'dept',
+  namespace: 'right',
 
   state: {
-    allDepts: [],
+    allRights: [],
   },
 
   effects: {
-    /**查找所有部门 */
+    /**查找所有权限 */
     *fetchAll(_, { call, put }) {
       const response = yield call(queryAll);
       yield put({
-        type: 'saveAllDepts',
+        type: 'saveAllRights',
         payload: response.data,
       });
     },
@@ -33,10 +33,10 @@ export default {
   },
 
   reducers: {
-    saveAllDepts(state, action) {
+    saveAllRights(state, action) {
       return {
         ...state,
-        allDepts: action.payload,
+        allRights: action.payload,
       };
     },
   },

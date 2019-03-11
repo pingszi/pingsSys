@@ -40,7 +40,7 @@ public class UserController extends AbstractBaseController {
 
     /**
      *********************************************************
-     ** @desc ： 获取当前用户
+     ** @desc ： 查询用户列表
      ** @author Pings
      ** @date   2019/1/29
      ** @return ApiResponse

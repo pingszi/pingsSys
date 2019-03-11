@@ -1,20 +1,23 @@
-import { queryAll, save, deleteById } from '@/services/sys/dept';
+import { queryList, save, deleteById } from '@/services/sys/role';
 
 import { notification } from 'antd';
 
 export default {
-  namespace: 'dept',
+  namespace: 'role',
 
   state: {
-    allDepts: [],
+    data: {
+      list: [],
+      pagination: {},
+    },
   },
 
   effects: {
-    /**查找所有部门 */
-    *fetchAll(_, { call, put }) {
-      const response = yield call(queryAll);
+    /**查询角色列表 */
+    *fetch({ payload }, { call, put }) {
+      const response = yield call(queryList, payload);
       yield put({
-        type: 'saveAllDepts',
+        type: 'save',
         payload: response.data,
       });
     },
@@ -33,10 +36,10 @@ export default {
   },
 
   reducers: {
-    saveAllDepts(state, action) {
+    save(state, action) {
       return {
         ...state,
-        allDepts: action.payload,
+        data: action.payload,
       };
     },
   },
