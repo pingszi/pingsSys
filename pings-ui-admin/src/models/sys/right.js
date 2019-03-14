@@ -1,4 +1,4 @@
-import { queryAll, save, deleteById } from '@/services/sys/right';
+import { queryAll, save, deleteById, queryByRoleId } from '@/services/sys/right';
 
 import { notification } from 'antd';
 
@@ -7,6 +7,7 @@ export default {
 
   state: {
     allRights: [],
+    roleRights: [], //**指定权限的权限
   },
 
   effects: {
@@ -17,6 +18,11 @@ export default {
         type: 'saveAllRights',
         payload: response.data,
       });
+    },
+    /**根据角色id查询权限*/
+    *fetchByRoleId({ payload }, { call, put }) {
+      const response = yield call(queryByRoleId, payload);
+      yield put({ type: 'saveRoleRights', payload: response.data });
     },
     /**保存 */
     *saveObj({ payload, callback }, { call }) {
@@ -37,6 +43,12 @@ export default {
       return {
         ...state,
         allRights: action.payload,
+      };
+    },
+    saveRoleRights(state, action) {
+      return {
+        ...state,
+        roleRights: action.payload,
       };
     },
   },

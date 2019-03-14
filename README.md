@@ -82,3 +82,4 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-02-22 部门管理
 - 2019-02-22 完善前端pings-ui-admin的权限
 - 2019-03-11 角色管理、权限管理
+- 2019-03-13 完善用户管理、角色管理

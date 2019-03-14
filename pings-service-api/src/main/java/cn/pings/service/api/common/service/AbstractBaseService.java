@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  *********************************************************
  ** @desc  ： 基础服务
@@ -32,6 +34,19 @@ public abstract class AbstractBaseService<M extends BaseMapper<T>, T extends Abs
     @Override
     public IPage<T> findPage(IPage<T> page, T entity){
         return this.baseMapper.selectPage(page, new QueryWrapper<>(entity).orderByDesc("id"));
+    }
+
+    /**
+     *********************************************************
+     ** @desc ： 查询所有数据
+     ** @author Pings
+     ** @date   2019/3/12
+     ** @return List
+     * *******************************************************
+     */
+    @Override
+    public List<T> findAll(){
+        return this.baseMapper.selectList(new QueryWrapper<>());
     }
 
     /**

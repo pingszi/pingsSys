@@ -35,4 +35,17 @@ public interface UserService extends BaseService<User> {
      */
     User getByUserName(String userName);
 
+    /**
+     *********************************************************
+     ** @desc ： 分配角色
+     ** @author Pings
+     ** @date   2019/3/12
+     ** @param  id            用户编号
+     ** @param  roles         角色编号数组
+     ** @param  currentUserId 操作用户编号
+     ** @return int
+     * *******************************************************
+     */
+    int allotRole(int id, int[] roles, int currentUserId);
+
 }

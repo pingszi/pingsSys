@@ -27,6 +27,17 @@ public interface RightService extends BaseService<Right> {
 
     /**
      *********************************************************
+     ** @desc ： 根据角色id查询权限
+     ** @author Pings
+     ** @date   2019/3/13
+     ** @param  roleId  角色编码
+     ** @return List
+     * *******************************************************
+     */
+    List<Right> findByRoleId(int roleId);
+
+    /**
+     *********************************************************
      ** @desc ： 根据编码获取权限
      ** @author Pings
      ** @date   2019/3/8

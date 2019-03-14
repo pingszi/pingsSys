@@ -3,6 +3,8 @@ package cn.pings.service.api.common.service;
 import cn.pings.service.api.common.entity.AbstractBaseEntity;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
+import java.util.List;
+
 /**
  *********************************************************
  ** @desc  ： 基础服务
@@ -24,6 +26,16 @@ public interface BaseService<T extends AbstractBaseEntity> {
      * *******************************************************
      */
     IPage<T> findPage(IPage<T> page, T entity);
+
+    /**
+     *********************************************************
+     ** @desc ： 查询所有数据
+     ** @author Pings
+     ** @date   2019/3/12
+     ** @return List
+     * *******************************************************
+     */
+    List<T> findAll();
 
     /**
      *********************************************************

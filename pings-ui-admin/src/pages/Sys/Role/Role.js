@@ -1,6 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Button, Modal, Divider } from 'antd';
+import { Row, Col, Card, Form, Input, Button, Modal, Divider, Tree } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
@@ -10,9 +10,12 @@ import Authorized from '@/utils/Authorized';
 import styles from './Role.less';
 
 const FormItem = Form.Item;
+const TreeNode = Tree.TreeNode;
 
-@connect(({ role, loading }) => ({
+@connect(({ role, right, loading }) => ({
   role,
+  allRights: right.allRights,
+  roleRights: right.roleRights,
   loading: loading.models.role,
 }))
 @Form.create()
@@ -22,6 +25,10 @@ class RolePage extends PureComponent {
     formValues: {}, //**搜索数据
     modalVisible: false, //**显示编译页面
     editFormValues: {}, //**编辑数据
+
+    allotRightModalVisible: false, //**显示分配权限页面
+    id: null, //**分配权限的角色id
+    checkRoleRights: [], //**选中角色的权限
   };
 
   /**table columns */
@@ -37,8 +44,14 @@ class RolePage extends PureComponent {
           <Authorized authority="sys:role:save">
             <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
           </Authorized>
-          <Divider type="vertical" />
+          {record.code !== 'admin' && (
+            <Authorized authority="sys:role:allotRight">
+              <Divider type="vertical" />
+              <a onClick={() => this.handleAllotRightModalVisible(true, record.id)}>分配权限</a>
+            </Authorized>
+          )}
           <Authorized authority="sys:role:delete">
+            <Divider type="vertical" />
             <a onClick={() => this.handleDelete(record.id)}>删除</a>
           </Authorized>
         </Fragment>
@@ -49,6 +62,7 @@ class RolePage extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({ type: 'role/fetch' });
+    dispatch({ type: 'right/fetchAll' });
   }
 
   /**搜索 */
@@ -108,6 +122,34 @@ class RolePage extends PureComponent {
     });
   };
 
+  //**显示分配权限页面*/
+  handleAllotRightModalVisible = (flag, id) => {
+    const show = !!flag;
+    const { dispatch } = this.props;
+
+    if (show) {
+      dispatch({ type: 'right/fetchByRoleId', payload: id }).then(() => {
+        const { roleRights } = this.props;
+        const roleRightIds = roleRights.map(right => right.value);
+        this.setState({ checkRoleRights: roleRightIds });
+      });
+    }
+
+    this.setState({ allotRightModalVisible: show, id: id || null });
+  };
+
+  //**分配权限*/
+  handleAllotRight = e => {
+    e.preventDefault();
+    const { dispatch } = this.props;
+    const { id, checkRoleRights } = this.state;
+
+    if (!checkRoleRights.length) return;
+    dispatch({ type: 'role/allotRight', payload: { id, rights: checkRoleRights } }).then(() =>
+      this.handleAllotRightModalVisible()
+    );
+  };
+
   //**删除 */
   handleDelete = id => {
     const { dispatch } = this.props;
@@ -125,6 +167,24 @@ class RolePage extends PureComponent {
           callback: () => dispatch({ type: 'role/fetch', payload: formValues }),
         }),
     });
+  };
+
+  //**渲染树节点
+  renderTreeNodes = data =>
+    data.map(item => {
+      if (item.children) {
+        return (
+          <TreeNode title={item.title} key={item.value}>
+            {this.renderTreeNodes(item.children)}
+          </TreeNode>
+        );
+      }
+      return <TreeNode title={item.title} key={item.value} />;
+    });
+
+  //**选中分配权限的复选框
+  handleCheckRoleRight = checkedKeys => {
+    this.setState({ checkRoleRights: checkedKeys });
   };
 
   //**搜索表单*/
@@ -168,8 +228,15 @@ class RolePage extends PureComponent {
     const {
       role: { data },
       loading,
+      allRights,
     } = this.props;
-    const { selectedRows, modalVisible, editFormValues } = this.state;
+    const {
+      selectedRows,
+      modalVisible,
+      editFormValues,
+      allotRightModalVisible,
+      checkRoleRights,
+    } = this.state;
 
     return (
       <PageHeaderWrapper>
@@ -200,6 +267,26 @@ class RolePage extends PureComponent {
           handleEdit={this.handleEdit}
           values={editFormValues}
         />
+        <Modal
+          destroyOnClose
+          title="分配权限"
+          visible={allotRightModalVisible}
+          onCancel={() => this.handleAllotRightModalVisible()}
+          onOk={this.handleAllotRight}
+        >
+          <Row gutter={24}>
+            <Col span={24}>
+              <Tree
+                checkable
+                showLine
+                checkedKeys={checkRoleRights}
+                onCheck={this.handleCheckRoleRight}
+              >
+                {this.renderTreeNodes(allRights)}
+              </Tree>
+            </Col>
+          </Row>
+        </Modal>
       </PageHeaderWrapper>
     );
   }

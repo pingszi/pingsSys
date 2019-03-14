@@ -66,3 +66,33 @@ export async function deleteById(id) {
     method: 'DELETE',
   });
 }
+
+/**
+ *********************************************************
+ * @desc ： 分配角色
+ * @author Pings
+ * @date   2019/3/12
+ * @return ApiResponse
+ * *******************************************************
+ */
+export async function allotRole(params) {
+  return request('/api/user/allotRole', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+/**
+ *********************************************************
+ * @desc ： 修改密码
+ * @author Pings
+ * @date   2019/3/13
+ * @return ApiResponse
+ * *******************************************************
+ */
+export async function updatePassword(params) {
+  return request('/api/user/updatePassword', {
+    method: 'POST',
+    body: params,
+  });
+}

@@ -10,6 +10,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  *********************************************************
  ** @desc  ： 用户管理
@@ -46,6 +48,11 @@ public class IUserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findAll() {
+        return this.userService.findAll();
+    }
+
+    @Override
     public User save(User user) {
         user = this.userService.save(user);
 
@@ -62,5 +69,14 @@ public class IUserServiceImpl implements UserService {
         this.redisTemplate.delete("user::" + user.getUserName());
 
         return this.userService.deleteById(id);
+    }
+
+    @Override
+    public int allotRole(int id, int[] roles, int currentUserId) {
+        //**删除缓存
+        User user = this.userService.getById(id);
+        this.redisTemplate.delete("user::" + user.getUserName());
+
+        return this.userService.allotRole(id, roles, currentUserId);
     }
 }

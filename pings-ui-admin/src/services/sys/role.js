@@ -14,6 +14,30 @@ export async function queryList(params) {
 
 /**
  *********************************************************
+ * @desc ： 查询所有角色
+ * @author Pings
+ * @date   2019/3/12
+ * @return ApiResponse
+ * *******************************************************
+ */
+export async function queryAll() {
+  return request('/api/role/findAll');
+}
+
+/**
+ *********************************************************
+ * @desc ： 根据用户id查询角色
+ * @author Pings
+ * @date   2019/3/12
+ * @return ApiResponse
+ * *******************************************************
+ */
+export async function queryByUserId(userId) {
+  return request(`/api/role/findByUserId/${userId}`);
+}
+
+/**
+ *********************************************************
  * @desc ： 验证编码是否唯一
  * @author Pings
  * @date   2019/3/8
@@ -52,5 +76,20 @@ export async function save(params) {
 export async function deleteById(id) {
   return request(`/api/role/deleteById/${id}`, {
     method: 'DELETE',
+  });
+}
+
+/**
+ *********************************************************
+ * @desc ： 分配权限
+ * @author Pings
+ * @date   2019/3/13
+ * @return ApiResponse
+ * *******************************************************
+ */
+export async function allotRight(params) {
+  return request('/api/role/allotRight', {
+    method: 'POST',
+    body: params,
   });
 }

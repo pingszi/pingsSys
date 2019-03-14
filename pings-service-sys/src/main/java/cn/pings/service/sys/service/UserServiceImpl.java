@@ -3,16 +3,20 @@ package cn.pings.service.sys.service;
 import cn.pings.service.api.common.service.AbstractBaseService;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.entity.User;
+import cn.pings.service.api.sys.entity.UserRole;
 import cn.pings.service.api.sys.service.UserService;
 import cn.pings.service.sys.mapper.RightMapper;
 import cn.pings.service.sys.mapper.RoleMapper;
 import cn.pings.service.sys.mapper.UserMapper;
+import cn.pings.service.sys.mapper.UserRoleMapper;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -33,6 +37,8 @@ public class UserServiceImpl extends AbstractBaseService<UserMapper, User> imple
     private RoleMapper roleMapper;
     @Autowired
     private RightMapper rightMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Override
     public User getById(int id) {
@@ -66,5 +72,21 @@ public class UserServiceImpl extends AbstractBaseService<UserMapper, User> imple
     @Override
     public IPage<User> findPage(IPage<User> page, User entity){
         return page.setRecords(this.baseMapper.selectPage(page, entity));
+    }
+
+    @Override
+    @Transactional
+    public int allotRole(int id, int[] roles, int currentUserId) {
+        //**删除用户角色
+        UserRole entity = new UserRole();
+        entity.setUserId(id);
+        this.userRoleMapper.delete(new QueryWrapper<>(entity));
+
+        //**添加用户角色
+        return Arrays.stream(roles).map(roleId -> {
+            entity.setRoleId(roleId);
+            entity.setAddWho(currentUserId);
+            return this.userRoleMapper.insert(entity);
+        }).sum();
     }
 }

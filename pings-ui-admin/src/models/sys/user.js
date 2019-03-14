@@ -1,4 +1,11 @@
-import { queryList, queryCurrent, save, deleteById } from '@/services/sys/user';
+import {
+  queryList,
+  queryCurrent,
+  save,
+  deleteById,
+  allotRole,
+  updatePassword,
+} from '@/services/sys/user';
 
 import { notification } from 'antd';
 
@@ -11,7 +18,6 @@ export default {
       pagination: {},
     },
     currentUser: {},
-    dept: {},
   },
 
   effects: {
@@ -40,6 +46,18 @@ export default {
     /**根据id删除*/
     *deleteById({ payload, callback }, { call }) {
       const response = yield call(deleteById, payload);
+      if (response.code === 200) callback(response);
+      else notification.error({ message: response.msg });
+    },
+    /**分配角色*/
+    *allotRole({ payload, callback }, { call }) {
+      const response = yield call(allotRole, payload);
+      if (response.code === 200) callback(response);
+      else notification.error({ message: response.msg });
+    },
+    /**修改密码*/
+    *updatePassword({ payload, callback }, { call }) {
+      const response = yield call(updatePassword, payload);
       if (response.code === 200) callback(response);
       else notification.error({ message: response.msg });
     },

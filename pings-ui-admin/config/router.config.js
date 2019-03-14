@@ -46,6 +46,12 @@ export default [
         icon: 'setting',
         routes: [
           {
+            path: '/sys/updatePassword',
+            name: 'updatePassword',
+            hideInMenu: true,
+            component: './Sys/UpdatePassword/UpdatePassword',
+          },
+          {
             path: '/sys/user',
             name: 'user',
             icon: 'user',

@@ -1,7 +1,5 @@
 export default {
   'menu.home': '首页',
-  'menu.account.center': '个人中心',
-  'menu.account.settings': '个人设置',
   'menu.account.logout': '退出登录',
 
   'menu.exception': '异常页',
@@ -11,6 +9,7 @@ export default {
 
   'menu.sys': '系统管理',
   'menu.sys.user': '用户管理',
+  'menu.sys.updatePassword': '修改密码',
   'menu.sys.dept': '部门管理',
   'menu.sys.role': '角色管理',
   'menu.sys.right': '权限管理',

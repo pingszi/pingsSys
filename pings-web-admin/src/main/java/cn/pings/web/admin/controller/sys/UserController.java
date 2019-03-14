@@ -106,4 +106,50 @@ public class UserController extends AbstractBaseController {
 
         return new ApiResponse(200,"删除成功");
     }
+
+    /**
+     *********************************************************
+     ** @desc ： 分配角色
+     ** @author Pings
+     ** @date   2019/3/12
+     ** @return ApiResponse
+     * *******************************************************
+     */
+    @ApiOperation(value="分配角色", notes="分配角色")
+    @PostMapping(value = "/allotRole")
+    @RequiresPermissions("sys:user:allotRole")
+    public ApiResponse allotRole(int id, int[] roles){
+        this.iUserService.allotRole(id, roles, this.getCurrentUser().getId());
+
+        return new ApiResponse(200,"分配成功");
+    }
+
+    /**
+     *********************************************************
+     ** @desc ： 修改密码
+     ** @author Pings
+     ** @date   2019/3/13
+     ** @return ApiResponse
+     * *******************************************************
+     */
+    @ApiOperation(value="修改密码", notes="修改密码")
+    @PostMapping(value = "/updatePassword")
+    @RequiresAuthentication
+    public ApiResponse updatePassword(int id, String oldPassword, String password, String rePassword){
+        if(!password.equals(rePassword)) return new ApiResponse(400,"确认密码和密码不一致");
+
+        //**验证旧密码
+        oldPassword = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
+        User user = this.iUserService.getById(id);
+        if(user == null || !user.getPassword().equals(oldPassword))
+            return new ApiResponse(400,"旧密码错误");
+
+
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        user.setPassword(password);
+        user.editAddWhoOrEditWho(this.getCurrentUser());
+        this.iUserService.save(user);
+
+        return new ApiResponse(200,"修改成功");
+    }
 }

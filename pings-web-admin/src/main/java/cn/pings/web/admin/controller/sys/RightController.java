@@ -42,6 +42,21 @@ public class RightController extends AbstractBaseController {
 
     /**
      *********************************************************
+     ** @desc ： 根据角色id查询权限
+     ** @author Pings
+     ** @date   2019/3/13
+     ** @return ApiResponse
+     * *******************************************************
+     */
+    @ApiOperation(value="根据角色id查询权限", notes="根据角色id查询权限")
+    @GetMapping(value = "/findByRoleId/{roleId}")
+    @RequiresAuthentication
+    public ApiResponse findByRoleId(@PathVariable("roleId") int roleId){
+        return new ApiResponse(200, this.rightService.findByRoleId(roleId));
+    }
+
+    /**
+     *********************************************************
      ** @desc ： 验证编码是否唯一
      ** @author Pings
      ** @date   2019/3/8

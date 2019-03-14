@@ -14,6 +14,18 @@ export async function queryAll() {
 
 /**
  *********************************************************
+ * @desc ： 根据角色id查询权限
+ * @author Pings
+ * @date   2019/3/13
+ * @return ApiResponse
+ * *******************************************************
+ */
+export async function queryByRoleId(roleId) {
+  return request(`/api/right/findByRoleId/${roleId}`);
+}
+
+/**
+ *********************************************************
  * @desc ： 验证编码是否唯一
  * @author Pings
  * @date   2019/3/8

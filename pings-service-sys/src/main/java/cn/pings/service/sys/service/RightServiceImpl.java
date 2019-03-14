@@ -3,10 +3,13 @@ package cn.pings.service.sys.service;
 import cn.pings.service.api.common.entity.AbstractTreeEntity;
 import cn.pings.service.api.common.service.AbstractBaseService;
 import cn.pings.service.api.sys.entity.Right;
+import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.service.RightService;
 import cn.pings.service.sys.mapper.RightMapper;
+import cn.pings.service.sys.mapper.RoleMapper;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,6 +26,9 @@ import java.util.List;
 @Component
 public class RightServiceImpl extends AbstractBaseService<RightMapper, Right> implements RightService {
 
+    @Autowired
+    private RoleMapper roleMapper;
+
     @Override
     public List<Right> findTreeAll() {
         List<Right> list = this.baseMapper.selectList(new QueryWrapper<>());
@@ -35,5 +41,13 @@ public class RightServiceImpl extends AbstractBaseService<RightMapper, Right> im
         right.setCode(code);
 
         return this.baseMapper.selectOne(new QueryWrapper<>(right));
+    }
+
+    @Override
+    public List<Right> findByRoleId(int roleId) {
+        Role role = this.roleMapper.selectById(roleId);
+        //**超级管理员拥有全部权限
+        return role.getCode().equals("admin") ? this.baseMapper.selectList(new QueryWrapper<>())
+                : this.baseMapper.findByRoleId(roleId);
     }
 }

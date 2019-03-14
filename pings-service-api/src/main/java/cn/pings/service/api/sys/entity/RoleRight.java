@@ -1,30 +1,19 @@
 package cn.pings.service.api.sys.entity;
 
 import cn.pings.service.api.common.entity.AbstractBaseEntity;
-import com.baomidou.mybatisplus.annotation.TableField;
-
-import java.util.List;
 
 /**
  *********************************************************
- ** @desc  ： 用户角色
+ ** @desc  ： 角色权限
  ** @author  Pings
  ** @date    2019/3/12
  ** @version v1.0
  * *******************************************************
  */
-public class UserRole extends AbstractBaseEntity {
+public class RoleRight extends AbstractBaseEntity {
 
-    private Integer userId;
     private Integer RoleId;
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+    private Integer RightId;
 
     public Integer getRoleId() {
         return RoleId;
@@ -32,5 +21,13 @@ public class UserRole extends AbstractBaseEntity {
 
     public void setRoleId(Integer roleId) {
         RoleId = roleId;
+    }
+
+    public Integer getRightId() {
+        return RightId;
+    }
+
+    public void setRightId(Integer rightId) {
+        RightId = rightId;
     }
 }

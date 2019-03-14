@@ -1,4 +1,11 @@
-import { queryList, save, deleteById } from '@/services/sys/role';
+import {
+  queryList,
+  queryAll,
+  queryByUserId,
+  save,
+  deleteById,
+  allotRight,
+} from '@/services/sys/role';
 
 import { notification } from 'antd';
 
@@ -10,6 +17,9 @@ export default {
       list: [],
       pagination: {},
     },
+
+    allRoles: [], //**所有角色
+    userRoles: [], //**指定用户的角色
   },
 
   effects: {
@@ -20,6 +30,16 @@ export default {
         type: 'save',
         payload: response.data,
       });
+    },
+    /**查询所有角色*/
+    *fetchAll(_, { call, put }) {
+      const response = yield call(queryAll);
+      yield put({ type: 'saveAllRoles', payload: response.data });
+    },
+    /**根据用户id查询角色*/
+    *fetchByUserId({ payload }, { call, put }) {
+      const response = yield call(queryByUserId, payload);
+      yield put({ type: 'saveUserRoles', payload: response.data });
     },
     /**保存 */
     *saveObj({ payload, callback }, { call }) {
@@ -33,6 +53,10 @@ export default {
       if (response.code === 200) callback(response);
       else notification.error({ message: response.msg });
     },
+    /**分配权限*/
+    *allotRight({ payload }, { call }) {
+      yield call(allotRight, payload);
+    },
   },
 
   reducers: {
@@ -40,6 +64,18 @@ export default {
       return {
         ...state,
         data: action.payload,
+      };
+    },
+    saveAllRoles(state, action) {
+      return {
+        ...state,
+        allRoles: action.payload,
+      };
+    },
+    saveUserRoles(state, action) {
+      return {
+        ...state,
+        userRoles: action.payload,
       };
     },
   },

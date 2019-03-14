@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { formatMessage } from 'umi/locale';
-import { Layout, message } from 'antd';
+import { Layout } from 'antd';
 import Animate from 'rc-animate';
 import { connect } from 'dva';
 import router from 'umi/router';
@@ -43,12 +42,8 @@ class HeaderView extends PureComponent {
 
   handleMenuClick = ({ key }) => {
     const { dispatch } = this.props;
-    if (key === 'userCenter') {
-      router.push('/account/center');
-      return;
-    }
-    if (key === 'userinfo') {
-      router.push('/account/settings/base');
+    if (key === 'updatePassword') {
+      router.push('/sys/updatePassword');
       return;
     }
     if (key === 'logout') {

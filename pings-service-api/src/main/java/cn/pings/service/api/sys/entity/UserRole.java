@@ -7,49 +7,30 @@ import java.util.List;
 
 /**
  *********************************************************
- ** @desc  ： 角色
+ ** @desc  ： 用户角色
  ** @author  Pings
- ** @date    2019/1/8
+ ** @date    2019/3/12
  ** @version v1.0
  * *******************************************************
  */
-public class Role extends AbstractBaseEntity {
+public class UserRole extends AbstractBaseEntity {
 
-    private String code;
-    private String name;
-    private String description;
-    @TableField(exist = false)
-    private List<Right> rights;
+    private Integer userId;
+    private Integer RoleId;
 
-    public String getCode() {
-        return code;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public Integer getRoleId() {
+        return RoleId;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Right> getRights() {
-        return rights;
-    }
-
-    public void setRights(List<Right> rights) {
-        this.rights = rights;
+    public void setRoleId(Integer roleId) {
+        RoleId = roleId;
     }
 }

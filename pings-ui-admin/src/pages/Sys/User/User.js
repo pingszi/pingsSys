@@ -27,9 +27,11 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 
-@connect(({ user, dept, loading }) => ({
+@connect(({ user, dept, role, loading }) => ({
   user,
   allDepts: dept.allDepts,
+  allRoles: role.allRoles,
+  userRoles: role.userRoles,
   loading: loading.models.user,
 }))
 @Form.create()
@@ -37,8 +39,11 @@ class UserPage extends PureComponent {
   state = {
     selectedRows: [], //**选中的行
     formValues: {}, //**搜索数据
-    modalVisible: false, //**显示编译页面
+    modalVisible: false, //**显示编辑页面
     editFormValues: {}, //**编辑数据
+
+    allotRoleModalVisible: false, //**显示分配角色页面
+    id: null, //**分配角色的用户id
   };
 
   /**table columns */
@@ -63,12 +68,12 @@ class UserPage extends PureComponent {
           <Authorized authority="sys:user:save">
             <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
           </Authorized>
-          <Divider type="vertical" />
           <Authorized authority="sys:user:allotRole">
-            <a onClick={() => this.handleAllotRole(record.id)}>分配角色</a>
+            <Divider type="vertical" />
+            <a onClick={() => this.handleAllotRoleModalVisible(true, record.id)}>分配角色</a>
           </Authorized>
-          <Divider type="vertical" />
           <Authorized authority="sys:user:delete">
+            <Divider type="vertical" />
             <a onClick={() => this.handleDelete(record.id)}>删除</a>
           </Authorized>
         </Fragment>
@@ -80,6 +85,7 @@ class UserPage extends PureComponent {
     const { dispatch } = this.props;
     dispatch({ type: 'user/fetch' });
     dispatch({ type: 'dept/fetchAll' });
+    dispatch({ type: 'role/fetchAll' });
   }
 
   /**搜索 */
@@ -139,24 +145,33 @@ class UserPage extends PureComponent {
     });
   };
 
-  //**分配角色 */
-  handleAllotRole = id => {
-    //const { dispatch } = this.props;
-    alert(id);
-    const modal = Modal.info();
+  //**显示分配角色页面*/
+  handleAllotRoleModalVisible = (flag, id) => {
+    const show = !!flag;
+    const { dispatch } = this.props;
 
-    modal.update({
-      title: '修改的标题',
-      content: (
-        <Select style={{ width: 150 }} placeholder="请选择">
-          <Option value={1}>系统</Option>
-          <Option value={2}>菜单</Option>
-          <Option value={3}>权限</Option>
-        </Select>
-      ),
+    this.setState({ allotRoleModalVisible: show, id: id || null });
+    if (show) {
+      dispatch({ type: 'role/fetchByUserId', payload: id });
+    }
+  };
+
+  //**分配角色*/
+  handleAllotRole = e => {
+    e.preventDefault();
+    const { form, dispatch } = this.props;
+    const { id } = this.state;
+
+    const roles = form.getFieldValue('roles');
+    if (!roles.length) return;
+
+    dispatch({
+      type: 'user/allotRole',
+      payload: { id, roles },
+      callback: () => {
+        this.handleAllotRoleModalVisible();
+      },
     });
-
-    //modal.destroy();
   };
 
   //**删除 */
@@ -243,9 +258,13 @@ class UserPage extends PureComponent {
     const {
       user: { data },
       loading,
+      form,
       allDepts,
+      allRoles,
+      userRoles,
     } = this.props;
-    const { selectedRows, modalVisible, editFormValues } = this.state;
+    const { selectedRows, modalVisible, editFormValues, allotRoleModalVisible } = this.state;
+    const userRoleIds = userRoles.map(role => role.id);
 
     return (
       <PageHeaderWrapper>
@@ -277,6 +296,32 @@ class UserPage extends PureComponent {
           values={editFormValues}
           allDepts={allDepts}
         />
+        <Modal
+          destroyOnClose
+          title="分配角色"
+          visible={allotRoleModalVisible}
+          onCancel={() => this.handleAllotRoleModalVisible()}
+          onOk={this.handleAllotRole}
+        >
+          <Row gutter={24}>
+            <Col span={24}>
+              <FormItem wrapperCol={{ span: 24 }}>
+                {form.getFieldDecorator('roles', {
+                  rules: [{ required: true, message: '请选择角色' }],
+                  initialValue: userRoleIds,
+                })(
+                  <Select mode="multiple" style={{ width: 230 }} placeholder="请选择">
+                    {allRoles.map(role => (
+                      <Option key={role.id} value={role.id}>
+                        {role.code}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+        </Modal>
       </PageHeaderWrapper>
     );
   }

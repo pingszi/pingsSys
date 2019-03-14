@@ -1,7 +1,5 @@
 export default {
   'menu.home': 'Home',
-  'menu.account.center': 'Account Center',
-  'menu.account.settings': 'Account Settings',
   'menu.account.logout': 'Logout',
 
   'menu.exception': 'Exception',

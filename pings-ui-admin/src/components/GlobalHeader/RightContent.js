@@ -1,10 +1,6 @@
 import React, { PureComponent } from 'react';
-import { FormattedMessage, formatMessage } from 'umi/locale';
-import { Spin, Tag, Menu, Icon, Avatar, Tooltip } from 'antd';
-import moment from 'moment';
-import groupBy from 'lodash/groupBy';
-import NoticeIcon from '../NoticeIcon';
-import HeaderSearch from '../HeaderSearch';
+import { FormattedMessage } from 'umi/locale';
+import { Spin, Menu, Icon } from 'antd';
 import HeaderDropdown from '../HeaderDropdown';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
@@ -14,13 +10,9 @@ export default class GlobalHeaderRight extends PureComponent {
     const { currentUser, onMenuClick, theme } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-        <Menu.Item key="userCenter">
+        <Menu.Item key="updatePassword">
           <Icon type="user" />
-          <FormattedMessage id="menu.account.center" defaultMessage="account center" />
-        </Menu.Item>
-        <Menu.Item key="userinfo">
-          <Icon type="setting" />
-          <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
+          <FormattedMessage id="menu.sys.updatePassword" defaultMessage="updatePassword" />
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">

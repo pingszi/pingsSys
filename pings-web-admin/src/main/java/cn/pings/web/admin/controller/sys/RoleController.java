@@ -7,6 +7,7 @@ import cn.pings.service.api.sys.service.RoleService;
 import cn.pings.web.admin.controller.AbstractBaseController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,36 @@ public class RoleController extends AbstractBaseController {
     public ApiResponse list(ReactPage<Role> page, Role entity){
         ReactPage<Role> list = (ReactPage<Role>)this.roleService.findPage(page, entity);
         return new ApiResponse(200, list.toReactPageFormat());
+    }
+
+    /**
+     *********************************************************
+     ** @desc ： 查询所有角色
+     ** @author Pings
+     ** @date   2019/3/12
+     ** @return ApiResponse
+     * *******************************************************
+     */
+    @ApiOperation(value="查询所有角色", notes="查询所有角色")
+    @GetMapping(value = "/findAll")
+    @RequiresAuthentication
+    public ApiResponse findAll(){
+        return new ApiResponse(200, this.roleService.findAll());
+    }
+
+    /**
+     *********************************************************
+     ** @desc ： 根据用户id查询角色
+     ** @author Pings
+     ** @date   2019/3/12
+     ** @return ApiResponse
+     * *******************************************************
+     */
+    @ApiOperation(value="根据用户id查询角色", notes="根据用户id查询角色")
+    @GetMapping(value = "/findByUserId/{userId}")
+    @RequiresAuthentication
+    public ApiResponse findByUserId(@PathVariable("userId") int userId){
+        return new ApiResponse(200, this.roleService.findByUserId(userId));
     }
 
     /**
@@ -89,5 +120,22 @@ public class RoleController extends AbstractBaseController {
         this.roleService.deleteById(id);
 
         return new ApiResponse(200,"删除成功");
+    }
+
+    /**
+     *********************************************************
+     ** @desc ： 分配权限
+     ** @author Pings
+     ** @date   2019/3/12
+     ** @return ApiResponse
+     * *******************************************************
+     */
+    @ApiOperation(value="分配权限", notes="分配权限")
+    @PostMapping(value = "/allotRight")
+    @RequiresPermissions("sys:role:allotRight")
+    public ApiResponse allotRight(int id, int[] rights){
+        this.roleService.allotRight(id, rights, this.getCurrentUser().getId());
+
+        return new ApiResponse(200,"分配成功");
     }
 }
