@@ -94,15 +94,16 @@ export default function request(url, option) {
   }
 
   //**添加权限标记token */
-  const token = getAuthorization();
+  let token = getAuthorization();
   if (token) option.headers.Authorization = token;
 
   return fetch(url, option)
     .then(checkStatus)
     .then(response => {
-      if (response.url.endsWith('/api/login/account')) {
+      token = response.headers.get('Authorization');
+      if (token) {
         //**设置token权限标记
-        setAuthorization(response.headers.get('Authorization'));
+        setAuthorization(token);
       }
 
       return response.json();
