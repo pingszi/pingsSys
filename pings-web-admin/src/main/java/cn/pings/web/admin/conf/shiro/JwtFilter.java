@@ -1,8 +1,11 @@
 package cn.pings.web.admin.conf.shiro;
 
 import cn.pings.service.api.common.util.ApiResponse;
+import cn.pings.web.admin.util.JwtUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -23,6 +26,9 @@ import java.io.PrintWriter;
  */
 public class JwtFilter extends BasicHttpAuthenticationFilter {
 
+    @Autowired
+    private JwtComponent jwtComponent;
+
     /**登录认证*/
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
@@ -32,6 +38,22 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
                 //**登录认证
                 return this.executeLogin(request, response);
             } catch (Exception e) {
+                //**访问令牌过期 and 刷新令牌未过期则重新生成访问令牌
+                try {
+                    if (e.getCause() instanceof TokenExpiredException) {
+                        String userName = JwtUtil.getUserName(this.getAuthzHeader(request));
+                        String token = jwtComponent.sign(userName);
+                        this.executeLogin(token, request, response);
+
+                        //**修改响应头的访问令牌
+                        JwtUtil.setHttpServletResponse((HttpServletResponse) response, token);
+                        return true;
+                    }
+                } catch (Exception ex){
+                    ex.printStackTrace();
+                }
+
+                e.printStackTrace();
                 this.response401(request, response, e.getMessage());
                 return false;
             }
@@ -57,28 +79,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     /**调用JwtRealm进行登录认证*/
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
-        //**获取token
-        JwtToken token = new JwtToken(this.getAuthzHeader(request));
-        //**提交给JwtRealm认证
-        this.getSubject(request, response).login(token);
-        //**没有抛出异常则代表登入成功
-        return true;
-    }
-
-    /**401时直接返回Response信息*/
-    private void response401(ServletRequest req, ServletResponse resp, String msg) {
-        HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        httpServletResponse.setContentType("application/json; charset=utf-8");
-
-        ApiResponse response = new ApiResponse(HttpStatus.UNAUTHORIZED.value(), "Unauthorized: " + msg, null);
-        String data = JSONObject.toJSONString(response);
-        try(PrintWriter out = httpServletResponse.getWriter()) {
-            out.append(data);
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return this.executeLogin(this.getAuthzHeader(request), request, response);
     }
 
     /**支持跨域*/
@@ -99,4 +100,31 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
 
         return super.preHandle(request, response);
     }
+
+    /**401时直接返回Response信息*/
+    private void response401(ServletRequest req, ServletResponse resp, String msg) {
+        HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
+        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        httpServletResponse.setContentType("application/json; charset=utf-8");
+
+        ApiResponse response = new ApiResponse(HttpStatus.UNAUTHORIZED.value(), "Unauthorized: " + msg, null);
+        String data = JSONObject.toJSONString(response);
+        try(PrintWriter out = httpServletResponse.getWriter()) {
+            out.append(data);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    /**调用JwtRealm进行登录认证*/
+    private boolean executeLogin(String token, ServletRequest request, ServletResponse response) throws Exception {
+        //**创建JwtToken
+        JwtToken jwtToken = new JwtToken(token);
+        //**提交给JwtRealm认证
+        this.getSubject(request, response).login(jwtToken);
+        //**没有抛出异常则代表登入成功
+        return true;
+    }
+
 }

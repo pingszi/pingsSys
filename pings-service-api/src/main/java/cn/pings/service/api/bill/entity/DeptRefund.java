@@ -8,20 +8,20 @@ import java.util.Date;
 
 /**
  *********************************************************
- ** @desc  ： 欠款单
+ ** @desc  ： 欠款偿还表
  ** @author   Pings
  ** @date     2019/3/20
  ** @version  v1.0
  * *******************************************************
  */
-public class Dept extends AbstractBaseEntity {
+public class DeptRefund extends AbstractBaseEntity {
 
-    private String name;       //**欠款名称
-    private Double value;      //**欠款数目
+    private String name;       //**偿还名称
+    private Double value;      //**偿还数目
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date refundDate;   //**还款日期
-    private Integer statusId;  //**状态
+    private Date refundDate;   //**偿还日期
+    private Integer debtId;    //**欠款
 
     public String getName() {
         return name;
@@ -47,11 +47,11 @@ public class Dept extends AbstractBaseEntity {
         this.refundDate = refundDate;
     }
 
-    public Integer getStatusId() {
-        return statusId;
+    public Integer getDebtId() {
+        return debtId;
     }
 
-    public void setStatusId(Integer statusId) {
-        this.statusId = statusId;
+    public void setDebtId(Integer debtId) {
+        this.debtId = debtId;
     }
 }

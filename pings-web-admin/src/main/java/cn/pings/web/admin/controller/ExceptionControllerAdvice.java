@@ -25,6 +25,7 @@ public class ExceptionControllerAdvice extends AbstractBaseController {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(ShiroException.class)
     public ApiResponse shiroException(ShiroException e) {
+        e.printStackTrace();
         return new ApiResponse(401, e.getMessage(), null);
     }
 

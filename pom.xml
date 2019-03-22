@@ -17,6 +17,7 @@
     <modules>
         <module>pings-service-api</module>
         <module>pings-service-sys</module>
+        <module>pings-service-bill</module>
         <module>pings-web-admin</module>
     </modules>
 

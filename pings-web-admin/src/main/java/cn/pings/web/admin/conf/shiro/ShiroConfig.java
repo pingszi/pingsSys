@@ -10,6 +10,7 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
@@ -31,6 +32,12 @@ public class ShiroConfig {
         return new JwtRealm();
     }
 
+    @Bean
+    @Scope("prototype")
+    public JwtFilter jwtFilter(){
+        return new JwtFilter();
+    }
+
     @Bean("securityManager")
     public DefaultWebSecurityManager securityManager(JwtRealm jwtRealm) {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
@@ -47,12 +54,12 @@ public class ShiroConfig {
     }
 
     @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager, JwtFilter jwtFilter) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
 
         //**添加自定义过滤器jwt
         Map<String, Filter> filterMap = new LinkedHashMap<>();
-        filterMap.put("jwt", new JwtFilter());
+        filterMap.put("jwt", jwtFilter);
         factoryBean.setFilters(filterMap);
 
         factoryBean.setSecurityManager(securityManager);
@@ -68,7 +75,6 @@ public class ShiroConfig {
         return factoryBean;
     }
 
-    @Bean(name = "lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }

@@ -1,14 +1,3 @@
-# sys config
-sys:
-  # Service version
-  service:
-    version: 0.0.1
-  # token过期时长(分钟)，<= 0时，使用默认配置180分钟
-  jwt:
-    expireTime: 500
-
----
-
 # spring
 spring:
   profiles: dev
@@ -52,6 +41,20 @@ dubbo:
   registry:
     id: client-admin
     address: zookeeper://112.74.169.154:2181
+
+# sys config
+sys:
+  # Service version
+  service:
+    version: 0.0.1
+  jwt:
+    secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
+     # 访问令牌过期时长(分钟)，<= 0时，使用默认配置5分钟
+    access-token:
+      expire-time: 10
+    # 刷新令牌过期时长(分钟)，<= 0时，使用默认配置60分钟
+    refresh-token:
+      expire-time: 60
 
 ---
 
@@ -98,3 +101,17 @@ dubbo:
   registry:
     id: client-admin
     address: zookeeper://zk_test:2181
+
+# sys config
+sys:
+  # Service version
+  service:
+    version: 0.0.1
+  jwt:
+    secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
+     # 访问令牌过期时长(分钟)，<= 0时，使用默认配置5分钟
+    access-token:
+      expire-time: 3
+    # 刷新令牌过期时长(分钟)，<= 0时，使用默认配置60分钟
+    refresh-token:
+      expire-time: 5

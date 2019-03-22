@@ -1,23 +1,23 @@
-package cn.pings.service.api.sys.entity;
+package cn.pings.service.api.bill.entity;
 
-import cn.pings.service.api.common.entity.AbstractReactTreeEntity;
-
-import java.util.HashMap;
-import java.util.Map;
+import cn.pings.service.api.common.entity.AbstractBaseEntity;
 
 /**
  *********************************************************
- ** @desc  ： 部门
+ ** @desc  ： 基础数据
  ** @author  Pings
- ** @date    2019/1/30
+ ** @date    2019/3/20
  ** @version v1.0
  * *******************************************************
  */
-public class Dept extends AbstractReactTreeEntity {
+public class BasData extends AbstractBaseEntity {
 
     private String code;
     private String name;
+    private Integer sort;
     private String description;
+    private String type;
+    private String typeDesc;
 
     public String getCode() {
         return code;
@@ -35,6 +35,14 @@ public class Dept extends AbstractReactTreeEntity {
         this.name = name;
     }
 
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -43,13 +51,19 @@ public class Dept extends AbstractReactTreeEntity {
         this.description = description;
     }
 
-    @Override
-    public String getValue() {
-        return this.getId() + "";
+    public String getType() {
+        return type;
     }
 
-    @Override
-    public String getTitle() {
-        return this.getName();
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTypeDesc() {
+        return typeDesc;
+    }
+
+    public void setTypeDesc(String typeDesc) {
+        this.typeDesc = typeDesc;
     }
 }

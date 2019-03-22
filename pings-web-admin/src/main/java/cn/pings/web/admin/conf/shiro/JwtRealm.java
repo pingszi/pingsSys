@@ -15,6 +15,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Set;
@@ -30,8 +31,10 @@ import static java.util.stream.Collectors.toSet;
  */
 public class JwtRealm extends AuthorizingRealm {
 
-    @Reference(version = "${sys.service.version}")
-    private UserService userService;
+    @Autowired
+    private UserService iUserService;
+    @Autowired
+    private JwtComponent jwtComponent;
 
     /**必须重写此方法，不然Shiro会报错*/
     @Override
@@ -46,7 +49,7 @@ public class JwtRealm extends AuthorizingRealm {
         String userName = JwtUtil.getUserName(principals.toString());
 
         //**获取用户
-        User user = this.userService.getByUserName(userName);
+        User user = this.iUserService.getByUserName(userName);
 
         //**用户角色
         Set<String> roles = user.getRoles().stream().map(Role::getCode).collect(toSet());
@@ -71,13 +74,13 @@ public class JwtRealm extends AuthorizingRealm {
         }
 
         //**获取用户
-        User user = this.userService.getByUserName(userName);
+        User user = this.iUserService.getByUserName(userName);
         if (user == null) {
             throw new AuthenticationException("The account does not exist.");
         }
 
         //**登录认证
-        if (JwtUtil.verify(token, userName, user.getPassword())) {
+        if (jwtComponent.verify(token)) {
             return new SimpleAuthenticationInfo(token, token, "jwtRealm");
         }
 

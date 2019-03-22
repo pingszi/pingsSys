@@ -12,6 +12,8 @@
 - dubbo接口和实体类，独立出来，方便Provider和Consumer共用
 ### pings-service-sys
 - 权限管理服务(Provider)
+### pings-service-bill
+- 账单管理服务(Provider)
 ### pings-web-admin
 - 后台管理平台(Consumer)，所有系统的后台管理功能在此项目中
 ### pings-ui-admin
@@ -28,15 +30,26 @@
     - 通过给用户分配"admin"角色，获取所有权限；
 - 权限验证
     - 使用jwt token进行无状态权限认证
+        - 用户登录成功生成token(生成访问令牌和刷新令牌，刷新令牌保存到redis)
+        - 用户提交请求，验证访问令牌是否过期
+            - 如果没有过期，已登录，流程完
+            - 如果过期，判断刷新令牌是否过期
+                - 如果过期，没有登录，流程完
+                - 如果没有过期，重新生成访问token
     - 配置token过期时间
     ```
     # sys config
     sys:
-      # token过期时长(分钟)，<= 0时，使用默认配置180分钟
       jwt:
-        expireTime: 500
+        secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
+         # 访问令牌过期时长(分钟)，<= 0时，使用默认配置5分钟
+        access-token:
+          expire-time: 1
+        # 刷新令牌过期时长(分钟)，<= 0时，使用默认配置60分钟
+        refresh-token:
+          expire-time: 5
     ```
-- dubbo provider提供了分页，保存，根据编号删除的默认实现
+- dubbo provider提供了查询全部，分页，保存，根据编号删除的默认实现
 ```
 //**接口继承BaseService
 public interface DeptService extends BaseService<Dept> {}
@@ -84,3 +97,5 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-02-22 完善前端pings-ui-admin的权限
 - 2019-03-11 角色管理、权限管理
 - 2019-03-13 完善用户管理、角色管理
+- 2019-03-20 添加账单管理系统
+- 2019-03-22 更新token规则，增加安全性

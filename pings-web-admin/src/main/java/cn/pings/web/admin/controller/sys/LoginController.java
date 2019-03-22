@@ -5,17 +5,17 @@ import cn.pings.service.api.common.util.ApiResponse;
 import cn.pings.service.api.sys.entity.Right;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.entity.User;
-import cn.pings.service.api.sys.service.UserService;
+import cn.pings.web.admin.conf.shiro.JwtComponent;
 import cn.pings.web.admin.controller.AbstractBaseController;
 import cn.pings.web.admin.util.JwtUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Set;
 
@@ -34,9 +34,7 @@ import static java.util.stream.Collectors.toSet;
 public class LoginController extends AbstractBaseController {
 
     @Autowired
-    private UserService iUserService;
-    @Value("${sys.jwt.expireTime}")
-    private long expireTime;
+    private JwtComponent jwtComponent;
 
     /**
      *********************************************************
@@ -66,7 +64,7 @@ public class LoginController extends AbstractBaseController {
      */
     @ApiOperation(value="登录", notes="验证用户名和密码")
     @PostMapping(value = "/account")
-    public ApiResponse account(String userName, String password){
+    public ApiResponse account(String userName, String password, HttpServletResponse response){
         if(StringUtils.isBlank(userName) || StringUtils.isBlank(password))
             throw new UnauthorizedException("用户名/密码不能为空");
 
@@ -75,11 +73,7 @@ public class LoginController extends AbstractBaseController {
 
         User user = this.iUserService.getByUserName(userName);
         if(user != null && user.getPassword().equals(password)) {
-            if(expireTime > 0)
-                response.setHeader("Authorization", JwtUtil.sign(userName, password, expireTime * 60 * 1000));
-            else
-                response.setHeader("Authorization", JwtUtil.sign(userName, password));
-            response.setHeader("Access-Control-Expose-Headers", "Authorization");
+            JwtUtil.setHttpServletResponse(response, jwtComponent.sign(userName));
 
             //**用户权限
             Set<String> rights = user.getRoles().stream().map(Role::getRights).flatMap(List::stream).map(Right::getCode).collect(toSet());
