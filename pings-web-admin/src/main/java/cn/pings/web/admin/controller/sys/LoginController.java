@@ -10,8 +10,10 @@ import cn.pings.web.admin.controller.AbstractBaseController;
 import cn.pings.web.admin.util.JwtUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +37,8 @@ public class LoginController extends AbstractBaseController {
 
     @Autowired
     private JwtComponent jwtComponent;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      *********************************************************
@@ -80,5 +84,25 @@ public class LoginController extends AbstractBaseController {
             return new ApiResponse(200, "登录成功", rights);
         } else
             return new ApiResponse(500, "用户名/密码错误");
+    }
+
+    /**
+     *********************************************************
+     ** @desc ： 退出登录
+     ** @author Pings
+     ** @date   2019/3/26
+     ** @return ApiResponse
+     * *******************************************************
+     */
+    @ApiOperation(value="退出登录", notes="退出登录")
+    @GetMapping(value = "/logout")
+    public ApiResponse account(){
+        //**删除refresh token
+        this.redisTemplate.delete(this.jwtComponent.getKey(this.getCurrentUserName()));
+
+        //**退出登录
+        SecurityUtils.getSubject().logout();
+
+        return new ApiResponse(200, "退出登录成功");
     }
 }

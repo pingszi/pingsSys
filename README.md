@@ -15,9 +15,11 @@
 ### pings-service-bill
 - 账单管理服务(Provider)
 ### pings-web-admin
-- 后台管理平台(Consumer)，所有系统的后台管理功能在此项目中
+- 后台管理系统(Consumer)
+### pings-web-bill
+- 账单管理系统(Consumer)
 ### pings-ui-admin
-- 基于ant design pro脚手架的后台管理系统ui，所有系统的后台管理页面在此项目中
+- 基于ant design pro脚手架的后台管理系统ui(前端界面)
 ## 架构
 - 基础框架：spring-boot-2.1.1 + dubbo-2.6.5
 - 数据库：mysql + redis
@@ -97,5 +99,6 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-02-22 完善前端pings-ui-admin的权限
 - 2019-03-11 角色管理、权限管理
 - 2019-03-13 完善用户管理、角色管理
-- 2019-03-20 添加账单管理系统
+- 2019-03-20 添加账单管理提供者
 - 2019-03-22 更新token规则，增加安全性
+- 2019-03-26 添加账单管理消费者；开发基础数据管理菜单；退出登录时，使token无效

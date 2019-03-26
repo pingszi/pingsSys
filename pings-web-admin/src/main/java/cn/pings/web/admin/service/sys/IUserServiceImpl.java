@@ -24,6 +24,8 @@ import java.util.List;
 @CacheConfig(cacheNames="user")
 public class IUserServiceImpl implements UserService {
 
+    public static final String USER_KEY_PREFIX = "user::";
+
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -57,7 +59,7 @@ public class IUserServiceImpl implements UserService {
         user = this.userService.save(user);
 
         //**删除缓存
-        this.redisTemplate.delete("user::" + user.getUserName());
+        this.redisTemplate.delete(USER_KEY_PREFIX + user.getUserName());
 
         return user;
     }
@@ -66,7 +68,7 @@ public class IUserServiceImpl implements UserService {
     public int deleteById(int id) {
         //**删除缓存
         User user = this.userService.getById(id);
-        this.redisTemplate.delete("user::" + user.getUserName());
+        this.redisTemplate.delete(USER_KEY_PREFIX + user.getUserName());
 
         return this.userService.deleteById(id);
     }
@@ -75,7 +77,7 @@ public class IUserServiceImpl implements UserService {
     public int allotRole(int id, int[] roles, int currentUserId) {
         //**删除缓存
         User user = this.userService.getById(id);
-        this.redisTemplate.delete("user::" + user.getUserName());
+        this.redisTemplate.delete(USER_KEY_PREFIX + user.getUserName());
 
         return this.userService.allotRole(id, roles, currentUserId);
     }

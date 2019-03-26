@@ -84,7 +84,7 @@ public class JwtComponent {
     }
 
     //**获取缓存中保存refreshToken的key
-    private String getKey(String userName) {
+    public String getKey(String userName) {
         return REFRESH_TOKEN_PREFIX + userName;
     }
 }
