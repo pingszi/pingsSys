@@ -465,9 +465,7 @@ class EditForm extends PureComponent {
                   {
                     type: 'integer',
                     max: 200,
-                    transform: value => {
-                      if (value) Number(value);
-                    },
+                    transform: value => (value ? Number.parseInt(value, 10) : value),
                     message: '请输入年龄(0-200)',
                   },
                 ],

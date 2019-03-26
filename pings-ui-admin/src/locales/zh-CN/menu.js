@@ -13,4 +13,7 @@ export default {
   'menu.sys.dept': '部门管理',
   'menu.sys.role': '角色管理',
   'menu.sys.right': '权限管理',
+
+  'menu.bill': '账单管理',
+  'menu.bill.basData': '基础数据管理',
 };

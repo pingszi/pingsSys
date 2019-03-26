@@ -81,6 +81,22 @@ export default [
           },
         ],
       },
+
+      //账单管理
+      {
+        path: '/bill',
+        name: 'bill',
+        icon: 'file-done',
+        routes: [
+          {
+            path: '/bill/basData',
+            name: 'basData',
+            icon: 'appstore',
+            authority: ['bill:basData:list'],
+            component: './Bill/BasData/BasData',
+          },
+        ],
+      },
     ],
   },
 ];

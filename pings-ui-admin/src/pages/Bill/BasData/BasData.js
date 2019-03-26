@@ -1,34 +1,27 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Button, Modal, Divider, Tree } from 'antd';
+import { Row, Col, Card, Form, Input, Button, Modal, Divider } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
-import { validateCodeUnique } from '@/services/sys/role';
+import { validateCodeUnique } from '@/services/bill/basData';
 import { formatParams } from '@/utils/utils';
 import Authorized from '@/utils/Authorized';
-import styles from './Role.less';
+import styles from './BasData.less';
 
 const FormItem = Form.Item;
-const TreeNode = Tree.TreeNode;
 
-@connect(({ role, right, loading }) => ({
-  role,
-  allRights: right.allRights,
-  roleRights: right.roleRights,
+@connect(({ basData, loading }) => ({
+  basData,
   loading: loading.models.role,
 }))
 @Form.create()
-class RolePage extends PureComponent {
+class BasDataPage extends PureComponent {
   state = {
     selectedRows: [], //**选中的行
     formValues: {}, //**搜索数据
     modalVisible: false, //**显示编译页面
     editFormValues: {}, //**编辑数据
-
-    allotRightModalVisible: false, //**显示分配权限页面
-    id: null, //**分配权限的角色id
-    checkRoleRights: [], //**选中角色的权限
   };
 
   /**table columns */
@@ -37,20 +30,17 @@ class RolePage extends PureComponent {
     { title: '编码', dataIndex: 'code' },
     { title: '名称', dataIndex: 'name' },
     { title: '描述', dataIndex: 'description' },
+    { title: '类型', dataIndex: 'type' },
+    { title: '类型描述', dataIndex: 'typeDesc' },
+    { title: '排序', dataIndex: 'sort' },
     {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <Authorized authority="sys:role:save">
+          <Authorized authority="bill:basData:save">
             <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
           </Authorized>
-          {record.code !== 'admin' && (
-            <Authorized authority="sys:role:allotRight">
-              <Divider type="vertical" />
-              <a onClick={() => this.handleAllotRightModalVisible(true, record.id)}>分配权限</a>
-            </Authorized>
-          )}
-          <Authorized authority="sys:role:delete">
+          <Authorized authority="bill:basData:delete">
             <Divider type="vertical" />
             <a onClick={() => this.handleDelete(record.id)}>删除</a>
           </Authorized>
@@ -61,8 +51,7 @@ class RolePage extends PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({ type: 'role/fetch' });
-    dispatch({ type: 'right/fetchAll' });
+    dispatch({ type: 'basData/fetch' });
   }
 
   /**搜索 */
@@ -75,7 +64,7 @@ class RolePage extends PureComponent {
       if (err) return;
 
       this.setState({ formValues: fieldsValue });
-      dispatch({ type: 'role/fetch', payload: fieldsValue });
+      dispatch({ type: 'basData/fetch', payload: fieldsValue });
     });
   };
 
@@ -85,7 +74,7 @@ class RolePage extends PureComponent {
     form.resetFields();
     this.setState({ formValues: {} });
 
-    dispatch({ type: 'role/fetch' });
+    dispatch({ type: 'basData/fetch' });
   };
 
   //**复选框 */
@@ -99,7 +88,7 @@ class RolePage extends PureComponent {
     const { formValues } = this.state;
 
     const params = { ...pagination, ...formValues };
-    dispatch({ type: 'role/fetch', payload: params });
+    dispatch({ type: 'basData/fetch', payload: params });
   };
 
   //**显示编辑页面*/
@@ -113,41 +102,13 @@ class RolePage extends PureComponent {
     const { formValues } = this.state;
 
     dispatch({
-      type: 'role/saveObj',
+      type: 'basData/saveObj',
       payload: formatParams(fields),
       callback: () => {
         this.handleModalVisible();
-        dispatch({ type: 'role/fetch', payload: formValues });
+        dispatch({ type: 'basData/fetch', payload: formValues });
       },
     });
-  };
-
-  //**显示分配权限页面*/
-  handleAllotRightModalVisible = (flag, id) => {
-    const show = !!flag;
-    const { dispatch } = this.props;
-
-    if (show) {
-      dispatch({ type: 'right/fetchByRoleId', payload: id }).then(() => {
-        const { roleRights } = this.props;
-        const roleRightIds = roleRights.map(right => right.value);
-        this.setState({ checkRoleRights: roleRightIds });
-      });
-    }
-
-    this.setState({ allotRightModalVisible: show, id: id || null });
-  };
-
-  //**分配权限*/
-  handleAllotRight = e => {
-    e.preventDefault();
-    const { dispatch } = this.props;
-    const { id, checkRoleRights } = this.state;
-
-    if (!checkRoleRights.length) return;
-    dispatch({ type: 'role/allotRight', payload: { id, rights: checkRoleRights } }).then(() =>
-      this.handleAllotRightModalVisible()
-    );
   };
 
   //**删除 */
@@ -162,29 +123,11 @@ class RolePage extends PureComponent {
       cancelText: '取消',
       onOk: () =>
         dispatch({
-          type: 'role/deleteById',
+          type: 'basData/deleteById',
           payload: id,
-          callback: () => dispatch({ type: 'role/fetch', payload: formValues }),
+          callback: () => dispatch({ type: 'basData/fetch', payload: formValues }),
         }),
     });
-  };
-
-  //**渲染树节点
-  renderTreeNodes = data =>
-    data.map(item => {
-      if (item.children) {
-        return (
-          <TreeNode title={item.title} key={item.value}>
-            {this.renderTreeNodes(item.children)}
-          </TreeNode>
-        );
-      }
-      return <TreeNode title={item.title} key={item.value} />;
-    });
-
-  //**选中分配权限的复选框
-  handleCheckRoleRight = checkedKeys => {
-    this.setState({ checkRoleRights: checkedKeys });
   };
 
   //**搜索表单*/
@@ -196,14 +139,19 @@ class RolePage extends PureComponent {
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={12} sm={24}>
+          <Col md={8} sm={24}>
             <FormItem label="编码">
               {getFieldDecorator('code')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col md={12} sm={24}>
+          <Col md={8} sm={24}>
             <FormItem label="名称">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="类型">
+              {getFieldDecorator('type')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
         </Row>
@@ -226,17 +174,10 @@ class RolePage extends PureComponent {
 
   render() {
     const {
-      role: { data },
+      basData: { data },
       loading,
-      allRights,
     } = this.props;
-    const {
-      selectedRows,
-      modalVisible,
-      editFormValues,
-      allotRightModalVisible,
-      checkRoleRights,
-    } = this.state;
+    const { selectedRows, modalVisible, editFormValues } = this.state;
 
     return (
       <PageHeaderWrapper>
@@ -244,7 +185,7 @@ class RolePage extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <Authorized authority="sys:role:save">
+              <Authorized authority="bill:basData:save">
                 <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                   新建
                 </Button>
@@ -267,26 +208,6 @@ class RolePage extends PureComponent {
           handleEdit={this.handleEdit}
           values={editFormValues}
         />
-        <Modal
-          destroyOnClose
-          title="分配权限"
-          visible={allotRightModalVisible}
-          onCancel={() => this.handleAllotRightModalVisible()}
-          onOk={this.handleAllotRight}
-        >
-          <Row gutter={24}>
-            <Col span={24}>
-              <Tree
-                checkable
-                showLine
-                checkedKeys={checkRoleRights}
-                onCheck={this.handleCheckRoleRight}
-              >
-                {this.renderTreeNodes(allRights)}
-              </Tree>
-            </Col>
-          </Row>
-        </Modal>
       </PageHeaderWrapper>
     );
   }
@@ -364,10 +285,43 @@ class EditForm extends PureComponent {
               })(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
+          <Col span={12}>
+            <FormItem label="类型" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              {form.getFieldDecorator('type', {
+                rules: [{ required: true, min: 4, max: 10, message: '请输入类型(4-10个字符)' }],
+                initialValue: values.type,
+              })(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={12}>
+            <FormItem label="类型描述" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              {form.getFieldDecorator('typeDesc', {
+                rules: [{ max: 50, message: '请输入类型描述(最大50个字符)' }],
+                initialValue: values.typeDesc,
+              })(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem label="排序" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              {form.getFieldDecorator('sort', {
+                rules: [
+                  {
+                    type: 'integer',
+                    max: 99,
+                    transform: value => (value ? Number.parseInt(value, 10) : value),
+                    message: '请输入排序(0-99)',
+                  },
+                ],
+                initialValue: values.sort,
+              })(<Input type="number" placeholder="请输入" />)}
+            </FormItem>
+          </Col>
         </Row>
       </Modal>
     );
   }
 }
 
-export default RolePage;
+export default BasDataPage;

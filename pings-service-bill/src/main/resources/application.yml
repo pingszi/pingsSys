@@ -84,7 +84,7 @@ dubbo:
   protocol:
     id: dubbo
     name: dubbo
-    port: 20880
+    port: 20881
 
   # RegistryConfig Bean
   registry:

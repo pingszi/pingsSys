@@ -24,19 +24,19 @@ spring:
 dubbo:
   # Base packages to scan Dubbo Components (e.g @Service , @Reference)
   scan:
-    basePackages: cn.pings.web.admin
+    basePackages: cn.pings.web.bill
 
   # ApplicationConfig Bean
   application:
-   id: pings-web-admin
-   name: pings-web-admin
+   id: pings-web-bill
+   name: pings-web-bill
 
   # RegistryConfig Bean
   registry:
-    id: client-admin
+    id: client-bill
     address: zookeeper://112.74.169.154:2181
 
-# sys config
+# 系统管理 config
 sys:
   # Service version
   service:
@@ -49,6 +49,16 @@ sys:
     # 刷新令牌过期时长(分钟)，<= 0时，使用默认配置60分钟
     refresh-token:
       expire-time: 60
+
+# 账单管理 config
+bill:
+  # Service version
+  service:
+    version: 0.0.1
+
+# 服务器配置
+server:
+  port: 8081
 
 ---
 
@@ -78,19 +88,19 @@ spring:
 dubbo:
   # Base packages to scan Dubbo Components (e.g @Service , @Reference)
   scan:
-    basePackages: cn.pings.web.admin
+    basePackages: cn.pings.web.bill
 
   # ApplicationConfig Bean
   application:
-   id: pings-web-admin
-   name: pings-web-admin
+   id: pings-web-bill
+   name: pings-web-bill
 
   # RegistryConfig Bean
   registry:
-    id: client-admin
+    id: client-bill
     address: zookeeper://zk_test:2181
 
-# sys config
+# 系统管理 config
 sys:
   # Service version
   service:
@@ -103,3 +113,9 @@ sys:
     # 刷新令牌过期时长(分钟)，<= 0时，使用默认配置60分钟
     refresh-token:
       expire-time: 5
+
+# 账单管理 config
+bill:
+  # Service version
+  service:
+    version: 0.0.1
