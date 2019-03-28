@@ -1,22 +1,24 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Button, Modal, Divider } from 'antd';
+import { Row, Col, Card, Form, Input, Button, Modal, Divider, Select, DatePicker } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import moment from 'moment';
 
-import { validateCodeUnique } from '@/services/bill/basData';
 import { formatParams } from '@/utils/utils';
 import Authorized from '@/utils/Authorized';
-import styles from './BasData.less';
+import styles from './DebtRefund.less';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 
-@connect(({ basData, loading }) => ({
-  basData,
-  loading: loading.models.basData,
+@connect(({ debtRefund, debt, loading }) => ({
+  debtRefund,
+  allNotRefundDebt: debt.allNotRefundDebt,
+  loading: loading.models.debtRefund,
 }))
 @Form.create()
-class BasDataPage extends PureComponent {
+class DebtRefundPage extends PureComponent {
   state = {
     selectedRows: [], //**选中的行
     formValues: {}, //**搜索数据
@@ -24,23 +26,37 @@ class BasDataPage extends PureComponent {
     editFormValues: {}, //**编辑数据
   };
 
+  findPageUrl = 'debtRefund/fetch'; //**分页查询
+
+  saveUrl = 'debtRefund/saveObj'; //**编辑
+
+  deleteByIdUrl = 'debtRefund/deleteById'; //**根据编号删除
+
+  findAllNotRefundDebtUrl = 'debt/fetchAllNotRefundDebt'; //**查询未还清欠款单
+
   /**table columns */
   columns = [
     { title: '编号', dataIndex: 'id', key: 'id' },
-    { title: '编码', dataIndex: 'code' },
     { title: '名称', dataIndex: 'name' },
-    { title: '描述', dataIndex: 'description' },
-    { title: '类型', dataIndex: 'type' },
-    { title: '类型描述', dataIndex: 'typeDesc' },
-    { title: '排序', dataIndex: 'sort' },
+    { title: '金额', dataIndex: 'value' },
+    { title: '还款日期', dataIndex: 'refundDate' },
+    {
+      title: '欠款单',
+      dataIndex: 'debtId',
+      render: val => {
+        const { allNotRefundDebt } = this.props;
+        const debt = allNotRefundDebt.find(d => d.id === val);
+        return debt ? debt.name : '';
+      },
+    },
     {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <Authorized authority="bill:basData:save">
+          <Authorized authority="bill:debtRefund:save">
             <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
           </Authorized>
-          <Authorized authority="bill:basData:delete">
+          <Authorized authority="bill:debtRefund:delete">
             <Divider type="vertical" />
             <a onClick={() => this.handleDelete(record.id)}>删除</a>
           </Authorized>
@@ -51,7 +67,8 @@ class BasDataPage extends PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({ type: 'basData/fetch' });
+    dispatch({ type: this.findPageUrl });
+    dispatch({ type: this.findAllNotRefundDebtUrl });
   }
 
   /**搜索 */
@@ -64,7 +81,7 @@ class BasDataPage extends PureComponent {
       if (err) return;
 
       this.setState({ formValues: fieldsValue });
-      dispatch({ type: 'basData/fetch', payload: fieldsValue });
+      dispatch({ type: this.findPageUrl, payload: fieldsValue });
     });
   };
 
@@ -74,7 +91,7 @@ class BasDataPage extends PureComponent {
     form.resetFields();
     this.setState({ formValues: {} });
 
-    dispatch({ type: 'basData/fetch' });
+    dispatch({ type: this.findPageUrl });
   };
 
   //**复选框 */
@@ -88,7 +105,7 @@ class BasDataPage extends PureComponent {
     const { formValues } = this.state;
 
     const params = { ...pagination, ...formValues };
-    dispatch({ type: 'basData/fetch', payload: params });
+    dispatch({ type: this.findPageUrl, payload: params });
   };
 
   //**显示编辑页面*/
@@ -102,11 +119,11 @@ class BasDataPage extends PureComponent {
     const { formValues } = this.state;
 
     dispatch({
-      type: 'basData/saveObj',
+      type: this.saveUrl,
       payload: formatParams(fields),
       callback: () => {
         this.handleModalVisible();
-        dispatch({ type: 'basData/fetch', payload: formValues });
+        dispatch({ type: this.findPageUrl, payload: formValues });
       },
     });
   };
@@ -123,9 +140,9 @@ class BasDataPage extends PureComponent {
       cancelText: '取消',
       onOk: () =>
         dispatch({
-          type: 'basData/deleteById',
+          type: this.deleteByIdUrl,
           payload: id,
-          callback: () => dispatch({ type: 'basData/fetch', payload: formValues }),
+          callback: () => dispatch({ type: this.findPageUrl, payload: formValues }),
         }),
     });
   };
@@ -133,25 +150,26 @@ class BasDataPage extends PureComponent {
   //**搜索表单*/
   renderSearchForm() {
     const {
+      allNotRefundDebt,
       form: { getFieldDecorator },
     } = this.props;
 
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="编码">
-              {getFieldDecorator('code')(<Input placeholder="请输入" />)}
+          <Col md={12} sm={24}>
+            <FormItem label="欠款单">
+              {getFieldDecorator('debtId')(
+                <Select style={{ width: '100%' }} placeholder="请选择">
+                  {allNotRefundDebt &&
+                    allNotRefundDebt.map(debt => <Option key={debt.id}>{debt.name}</Option>)}
+                </Select>
+              )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col md={12} sm={24}>
             <FormItem label="名称">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="类型">
-              {getFieldDecorator('type')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
         </Row>
@@ -174,7 +192,8 @@ class BasDataPage extends PureComponent {
 
   render() {
     const {
-      basData: { data },
+      allNotRefundDebt,
+      debtRefund: { data },
       loading,
     } = this.props;
     const { selectedRows, modalVisible, editFormValues } = this.state;
@@ -185,7 +204,7 @@ class BasDataPage extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <Authorized authority="bill:basData:save">
+              <Authorized authority="bill:debtRefund:save">
                 <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                   新建
                 </Button>
@@ -207,6 +226,7 @@ class BasDataPage extends PureComponent {
           handleModalVisible={this.handleModalVisible}
           handleEdit={this.handleEdit}
           values={editFormValues}
+          allNotRefundDebt={allNotRefundDebt}
         />
       </PageHeaderWrapper>
     );
@@ -230,7 +250,8 @@ class EditForm extends PureComponent {
   };
 
   render() {
-    const { form, modalVisible, handleModalVisible, values } = this.props;
+    const { form, modalVisible, handleModalVisible, values, allNotRefundDebt } = this.props;
+    const refundDate = values.refundDate ? moment(values.refundDate) : null;
     const operation = values && Object.keys(values).length ? 'update' : 'add';
 
     return (
@@ -243,79 +264,54 @@ class EditForm extends PureComponent {
       >
         <Row gutter={24}>
           <Col span={12}>
-            <FormItem label="名称" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+            <FormItem label="欠款单" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              {form.getFieldDecorator('debtId', {
+                rules: [{ required: true, message: '请选择欠款单' }],
+                initialValue: values.debtId,
+              })(
+                <Select style={{ width: '100%' }} placeholder="请选择">
+                  {allNotRefundDebt &&
+                    allNotRefundDebt.map(debt => (
+                      <Option key={debt.id} value={debt.id}>
+                        {debt.name}
+                      </Option>
+                    ))}
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem label="还款项" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
               {form.getFieldDecorator('name', {
-                rules: [{ required: true, max: 10, message: '请输入角色名称(最大10个字符)' }],
+                rules: [{ required: true, max: 20, message: '请输入欠款项(最大20个字符)' }],
                 initialValue: values.name || '',
               })(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col span={12}>
-            <FormItem label="编码" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              {operation === 'add' &&
-                form.getFieldDecorator('code', {
-                  rules: [
-                    { required: true, min: 4, max: 10, message: '请输入角色编码(4-10个字符)' },
-                    {
-                      validator: (rule, val, callback) => {
-                        if (!val || val.length < 4) callback();
-                        else {
-                          validateCodeUnique(val).then(response => {
-                            if (response.data === false) callback('角色编码已经存在');
-
-                            callback();
-                          });
-                        }
-                      },
-                    },
-                  ],
-                  validateTrigger: 'onBlur',
-                  initialValue: values.code || '',
-                })(<Input placeholder="请输入" />)}
-              {operation === 'update' && values.code}
-            </FormItem>
-          </Col>
         </Row>
         <Row gutter={24}>
           <Col span={12}>
-            <FormItem label="描述" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              {form.getFieldDecorator('description', {
-                rules: [{ max: 50, message: '请输入角色描述(最大50个字符)' }],
-                initialValue: values.description,
-              })(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem label="类型" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              {form.getFieldDecorator('type', {
-                rules: [{ required: true, min: 4, max: 10, message: '请输入类型(4-10个字符)' }],
-                initialValue: values.type,
-              })(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row gutter={24}>
-          <Col span={12}>
-            <FormItem label="类型描述" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              {form.getFieldDecorator('typeDesc', {
-                rules: [{ max: 50, message: '请输入类型描述(最大50个字符)' }],
-                initialValue: values.typeDesc,
-              })(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem label="排序" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              {form.getFieldDecorator('sort', {
+            <FormItem label="金额" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              {form.getFieldDecorator('value', {
                 rules: [
                   {
-                    type: 'integer',
-                    max: 99,
-                    transform: value => (value ? Number.parseInt(value, 10) : value),
-                    message: '请输入排序(0-99)',
+                    required: true,
+                    type: 'number',
+                    transform: value => (value ? Number.parseFloat(value) : value),
+                    message: '请输入金额(0-999999.99)',
+                    max: 999999.99,
                   },
                 ],
-                initialValue: values.sort,
+                initialValue: values.value,
               })(<Input type="number" placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem label="还款日期" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              {form.getFieldDecorator('refundDate', {
+                rules: [{ required: true, message: '请输入还款日期' }],
+                initialValue: refundDate,
+              })(<DatePicker format="YYYY-MM-DD" />)}
             </FormItem>
           </Col>
         </Row>
@@ -324,4 +320,4 @@ class EditForm extends PureComponent {
   }
 }
 
-export default BasDataPage;
+export default DebtRefundPage;

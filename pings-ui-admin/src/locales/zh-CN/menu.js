@@ -16,4 +16,7 @@ export default {
 
   'menu.bill': '账单管理',
   'menu.bill.basData': '基础数据管理',
+  'menu.bill.debt': '欠款单管理',
+  'menu.bill.debtRefund': '还款单管理',
+  'menu.bill.expenseDetails': '消费明细管理',
 };

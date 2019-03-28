@@ -1,22 +1,24 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Button, Modal, Divider } from 'antd';
+import { Row, Col, Card, Form, Input, Button, Modal, Divider, Select, DatePicker } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import moment from 'moment';
 
-import { validateCodeUnique } from '@/services/bill/basData';
 import { formatParams } from '@/utils/utils';
 import Authorized from '@/utils/Authorized';
-import styles from './BasData.less';
+import styles from './ExpenseDetails.less';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 
-@connect(({ basData, loading }) => ({
-  basData,
-  loading: loading.models.basData,
+@connect(({ expenseDetails, basData, loading }) => ({
+  expenseDetails,
+  typeBasDatas: basData.typeBasDatas,
+  loading: loading.models.debt,
 }))
 @Form.create()
-class BasDataPage extends PureComponent {
+class ExpenseDetailsPage extends PureComponent {
   state = {
     selectedRows: [], //**选中的行
     formValues: {}, //**搜索数据
@@ -24,23 +26,38 @@ class BasDataPage extends PureComponent {
     editFormValues: {}, //**编辑数据
   };
 
+  findPageUrl = 'expenseDetails/fetch'; //**分页查询
+
+  saveUrl = 'expenseDetails/saveObj'; //**编辑
+
+  deleteByIdUrl = 'expenseDetails/deleteById'; //**根据编号删除
+
+  findStatusUrl = 'basData/fetchByType'; //**查询消费类型
+
   /**table columns */
   columns = [
     { title: '编号', dataIndex: 'id', key: 'id' },
-    { title: '编码', dataIndex: 'code' },
     { title: '名称', dataIndex: 'name' },
+    { title: '金额', dataIndex: 'value' },
+    { title: '消费日期', dataIndex: 'expenseDate' },
+    {
+      title: '类型',
+      dataIndex: 'typeId',
+      render: val => {
+        const { typeBasDatas } = this.props;
+        const basData = typeBasDatas.find(b => b.id === val);
+        return basData ? basData.name : '';
+      },
+    },
     { title: '描述', dataIndex: 'description' },
-    { title: '类型', dataIndex: 'type' },
-    { title: '类型描述', dataIndex: 'typeDesc' },
-    { title: '排序', dataIndex: 'sort' },
     {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <Authorized authority="bill:basData:save">
+          <Authorized authority="bill:expenseDetails:save">
             <a onClick={() => this.handleModalVisible(true, record)}>修改</a>
           </Authorized>
-          <Authorized authority="bill:basData:delete">
+          <Authorized authority="bill:expenseDetails:delete">
             <Divider type="vertical" />
             <a onClick={() => this.handleDelete(record.id)}>删除</a>
           </Authorized>
@@ -51,7 +68,8 @@ class BasDataPage extends PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({ type: 'basData/fetch' });
+    dispatch({ type: this.findPageUrl });
+    dispatch({ type: this.findStatusUrl, payload: 'EXPENSE' });
   }
 
   /**搜索 */
@@ -64,7 +82,7 @@ class BasDataPage extends PureComponent {
       if (err) return;
 
       this.setState({ formValues: fieldsValue });
-      dispatch({ type: 'basData/fetch', payload: fieldsValue });
+      dispatch({ type: this.findPageUrl, payload: fieldsValue });
     });
   };
 
@@ -74,7 +92,7 @@ class BasDataPage extends PureComponent {
     form.resetFields();
     this.setState({ formValues: {} });
 
-    dispatch({ type: 'basData/fetch' });
+    dispatch({ type: this.findPageUrl });
   };
 
   //**复选框 */
@@ -88,7 +106,7 @@ class BasDataPage extends PureComponent {
     const { formValues } = this.state;
 
     const params = { ...pagination, ...formValues };
-    dispatch({ type: 'basData/fetch', payload: params });
+    dispatch({ type: this.findPageUrl, payload: params });
   };
 
   //**显示编辑页面*/
@@ -102,11 +120,11 @@ class BasDataPage extends PureComponent {
     const { formValues } = this.state;
 
     dispatch({
-      type: 'basData/saveObj',
+      type: this.saveUrl,
       payload: formatParams(fields),
       callback: () => {
         this.handleModalVisible();
-        dispatch({ type: 'basData/fetch', payload: formValues });
+        dispatch({ type: this.findPageUrl, payload: formValues });
       },
     });
   };
@@ -123,9 +141,9 @@ class BasDataPage extends PureComponent {
       cancelText: '取消',
       onOk: () =>
         dispatch({
-          type: 'basData/deleteById',
+          type: this.deleteByIdUrl,
           payload: id,
-          callback: () => dispatch({ type: 'basData/fetch', payload: formValues }),
+          callback: () => dispatch({ type: this.findPageUrl, payload: formValues }),
         }),
     });
   };
@@ -133,25 +151,26 @@ class BasDataPage extends PureComponent {
   //**搜索表单*/
   renderSearchForm() {
     const {
+      typeBasDatas,
       form: { getFieldDecorator },
     } = this.props;
 
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="编码">
-              {getFieldDecorator('code')(<Input placeholder="请输入" />)}
+          <Col md={12} sm={24}>
+            <FormItem label="类型">
+              {getFieldDecorator('typeId')(
+                <Select style={{ width: '100%' }} placeholder="请选择">
+                  {typeBasDatas &&
+                    typeBasDatas.map(basData => <Option key={basData.id}>{basData.name}</Option>)}
+                </Select>
+              )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col md={12} sm={24}>
             <FormItem label="名称">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="类型">
-              {getFieldDecorator('type')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
         </Row>
@@ -174,7 +193,8 @@ class BasDataPage extends PureComponent {
 
   render() {
     const {
-      basData: { data },
+      typeBasDatas,
+      expenseDetails: { data },
       loading,
     } = this.props;
     const { selectedRows, modalVisible, editFormValues } = this.state;
@@ -185,7 +205,7 @@ class BasDataPage extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <Authorized authority="bill:basData:save">
+              <Authorized authority="bill:expenseDetails:save">
                 <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                   新建
                 </Button>
@@ -207,6 +227,7 @@ class BasDataPage extends PureComponent {
           handleModalVisible={this.handleModalVisible}
           handleEdit={this.handleEdit}
           values={editFormValues}
+          typeBasDatas={typeBasDatas}
         />
       </PageHeaderWrapper>
     );
@@ -230,7 +251,8 @@ class EditForm extends PureComponent {
   };
 
   render() {
-    const { form, modalVisible, handleModalVisible, values } = this.props;
+    const { form, modalVisible, handleModalVisible, values, typeBasDatas } = this.props;
+    const expenseDate = values.expenseDate ? moment(values.expenseDate) : null;
     const operation = values && Object.keys(values).length ? 'update' : 'add';
 
     return (
@@ -245,77 +267,61 @@ class EditForm extends PureComponent {
           <Col span={12}>
             <FormItem label="名称" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
               {form.getFieldDecorator('name', {
-                rules: [{ required: true, max: 10, message: '请输入角色名称(最大10个字符)' }],
+                rules: [{ required: true, max: 20, message: '请输入名称(最大20个字符)' }],
                 initialValue: values.name || '',
               })(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col span={12}>
-            <FormItem label="编码" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              {operation === 'add' &&
-                form.getFieldDecorator('code', {
-                  rules: [
-                    { required: true, min: 4, max: 10, message: '请输入角色编码(4-10个字符)' },
-                    {
-                      validator: (rule, val, callback) => {
-                        if (!val || val.length < 4) callback();
-                        else {
-                          validateCodeUnique(val).then(response => {
-                            if (response.data === false) callback('角色编码已经存在');
-
-                            callback();
-                          });
-                        }
-                      },
-                    },
-                  ],
-                  validateTrigger: 'onBlur',
-                  initialValue: values.code || '',
-                })(<Input placeholder="请输入" />)}
-              {operation === 'update' && values.code}
+            <FormItem label="金额" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              {form.getFieldDecorator('value', {
+                rules: [
+                  {
+                    required: true,
+                    type: 'number',
+                    transform: value => (value ? Number.parseFloat(value) : value),
+                    message: '请输入金额(0-999999.99)',
+                    max: 999999.99,
+                  },
+                ],
+                initialValue: values.value,
+              })(<Input type="number" placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={12}>
+            <FormItem label="类型" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              {form.getFieldDecorator('typeId', {
+                rules: [{ required: true, message: '请选择类型' }],
+                initialValue: values.typeId,
+              })(
+                <Select style={{ width: '100%' }} placeholder="请选择">
+                  {typeBasDatas &&
+                    typeBasDatas.map(basData => (
+                      <Option key={basData.id} value={basData.id}>
+                        {basData.name}
+                      </Option>
+                    ))}
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem label="消费日期" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+              {form.getFieldDecorator('expenseDate', {
+                rules: [{ required: true, message: '请选择类型' }],
+                initialValue: expenseDate,
+              })(<DatePicker format="YYYY-MM-DD" />)}
             </FormItem>
           </Col>
         </Row>
         <Row gutter={24}>
           <Col span={12}>
             <FormItem label="描述" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              {form.getFieldDecorator('description', {
-                rules: [{ max: 50, message: '请输入角色描述(最大50个字符)' }],
-                initialValue: values.description,
-              })(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem label="类型" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              {form.getFieldDecorator('type', {
-                rules: [{ required: true, min: 4, max: 10, message: '请输入类型(4-10个字符)' }],
-                initialValue: values.type,
-              })(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-        </Row>
-        <Row gutter={24}>
-          <Col span={12}>
-            <FormItem label="类型描述" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              {form.getFieldDecorator('typeDesc', {
-                rules: [{ max: 50, message: '请输入类型描述(最大50个字符)' }],
-                initialValue: values.typeDesc,
-              })(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem label="排序" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-              {form.getFieldDecorator('sort', {
-                rules: [
-                  {
-                    type: 'integer',
-                    max: 99,
-                    transform: value => (value ? Number.parseInt(value, 10) : value),
-                    message: '请输入排序(0-99)',
-                  },
-                ],
-                initialValue: values.sort,
-              })(<Input type="number" placeholder="请输入" />)}
+              {form.getFieldDecorator('description', { initialValue: values.description || '' })(
+                <Input placeholder="请输入" />
+              )}
             </FormItem>
           </Col>
         </Row>
@@ -324,4 +330,4 @@ class EditForm extends PureComponent {
   }
 }
 
-export default BasDataPage;
+export default ExpenseDetailsPage;

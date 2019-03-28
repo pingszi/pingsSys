@@ -1,9 +1,9 @@
-import { queryList, queryByType, save, deleteById } from '@/services/bill/basData';
+import { queryList, save, deleteById, queryAllNotRefundDebt } from '@/services/bill/debt';
 
 import { notification } from 'antd';
 
 export default {
-  namespace: 'basData',
+  namespace: 'debt',
 
   state: {
     data: {
@@ -11,7 +11,7 @@ export default {
       pagination: {},
     },
 
-    typeBasDatas: [], //**指定类型的基础数据
+    allNotRefundDebt: [], //**没有还清的欠款单
   },
 
   effects: {
@@ -23,10 +23,10 @@ export default {
         payload: response.data,
       });
     },
-    /**根据类型查询基础数据*/
-    *fetchByType({ payload }, { call, put }) {
-      const response = yield call(queryByType, payload);
-      yield put({ type: 'saveTypeBasData', payload: response.data });
+    /**查询没有还清的欠款单*/
+    *fetchAllNotRefundDebt(_, { call, put }) {
+      const response = yield call(queryAllNotRefundDebt);
+      yield put({ type: 'saveAllNotRefundDebt', payload: response.data });
     },
     /**保存 */
     *saveObj({ payload, callback }, { call }) {
@@ -49,10 +49,10 @@ export default {
         data: action.payload,
       };
     },
-    saveTypeBasData(state, action) {
+    saveAllNotRefundDebt(state, action) {
       return {
         ...state,
-        typeBasDatas: action.payload,
+        allNotRefundDebt: action.payload,
       };
     },
   },

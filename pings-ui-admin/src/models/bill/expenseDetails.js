@@ -1,17 +1,15 @@
-import { queryList, queryByType, save, deleteById } from '@/services/bill/basData';
+import { queryList, save, deleteById } from '@/services/bill/expenseDetails';
 
 import { notification } from 'antd';
 
 export default {
-  namespace: 'basData',
+  namespace: 'expenseDetails',
 
   state: {
     data: {
       list: [],
       pagination: {},
     },
-
-    typeBasDatas: [], //**指定类型的基础数据
   },
 
   effects: {
@@ -22,11 +20,6 @@ export default {
         type: 'save',
         payload: response.data,
       });
-    },
-    /**根据类型查询基础数据*/
-    *fetchByType({ payload }, { call, put }) {
-      const response = yield call(queryByType, payload);
-      yield put({ type: 'saveTypeBasData', payload: response.data });
     },
     /**保存 */
     *saveObj({ payload, callback }, { call }) {
@@ -47,12 +40,6 @@ export default {
       return {
         ...state,
         data: action.payload,
-      };
-    },
-    saveTypeBasData(state, action) {
-      return {
-        ...state,
-        typeBasDatas: action.payload,
       };
     },
   },
