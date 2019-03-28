@@ -1,7 +1,9 @@
 package cn.pings.service.api.bill.service;
 
-import cn.pings.service.api.bill.entity.Dept;
+import cn.pings.service.api.bill.entity.Debt;
 import cn.pings.service.api.common.service.BaseService;
+
+import java.util.List;
 
 /**
  *********************************************************
@@ -11,6 +13,16 @@ import cn.pings.service.api.common.service.BaseService;
  ** @version v1.0
  * *******************************************************
  */
-public interface DeptService extends BaseService<Dept> {
+public interface DebtService extends BaseService<Debt> {
+
+    /**
+     *********************************************************
+     ** @desc ： 查询没有还清的欠款单
+     ** @author Pings
+     ** @date   2019/3/28
+     ** @return List
+     * *******************************************************
+     */
+    List<Debt> findAllNotRefundDebt();
 
 }

@@ -55,7 +55,7 @@ public abstract class AbstractBaseService<M extends BaseMapper<T>, T extends Abs
      ** @author Pings
      ** @date   2019/2/20
      ** @param  entity
-     ** @return Dept
+     ** @return Debt
      * *******************************************************
      */
     @Override

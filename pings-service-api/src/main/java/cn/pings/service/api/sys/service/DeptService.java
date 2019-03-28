@@ -31,7 +31,7 @@ public interface DeptService extends BaseService<Dept> {
      ** @author Pings
      ** @date   2019/1/30
      ** @param  code  部门编码
-     ** @return Dept
+     ** @return Debt
      * *******************************************************
      */
     Dept getByCode(String code);

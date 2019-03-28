@@ -22,6 +22,7 @@ public class ExpenseDetails extends AbstractBaseEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date expenseDate;  //**消费日期
     private Integer typeId;   //**消费类型
+    private String description; //**描述
 
     public String getName() {
         return name;
@@ -53,5 +54,13 @@ public class ExpenseDetails extends AbstractBaseEntity {
 
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

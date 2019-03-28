@@ -1,6 +1,6 @@
 package cn.pings.service.bill.mapper;
 
-import cn.pings.service.api.bill.entity.Dept;
+import cn.pings.service.api.bill.entity.Debt;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * *******************************************************
  */
 @Repository
-public interface DeptMapper extends BaseMapper<Dept> {
+public interface DebtMapper extends BaseMapper<Debt> {
 
 }

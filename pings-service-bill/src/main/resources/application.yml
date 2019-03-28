@@ -17,7 +17,7 @@ mybatis-plus:
     map-underscore-to-camel-case: true
 
 # Service version
-sys:
+bill:
   service:
     version: 0.0.1
 

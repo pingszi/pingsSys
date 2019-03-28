@@ -43,7 +43,7 @@ public interface BaseService<T extends AbstractBaseEntity> {
      ** @author Pings
      ** @date   2019/2/20
      ** @param  entity
-     ** @return Dept
+     ** @return Debt
      * *******************************************************
      */
     T save(T entity);

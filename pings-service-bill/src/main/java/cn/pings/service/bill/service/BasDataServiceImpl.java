@@ -17,7 +17,7 @@ import java.util.List;
  ** @version v1.0
  * *******************************************************
  */
-@Service(version = "${sys.service.version}")
+@Service(version = "${bill.service.version}")
 @Component
 public class BasDataServiceImpl extends AbstractBaseService<BasDataMapper, BasData> implements BasDataService {
 

@@ -1,9 +1,9 @@
 package cn.pings.service.bill.service;
 
-import cn.pings.service.api.bill.entity.DeptRefund;
-import cn.pings.service.api.bill.service.DeptRefundService;
+import cn.pings.service.api.bill.entity.DebtRefund;
+import cn.pings.service.api.bill.service.DebtRefundService;
 import cn.pings.service.api.common.service.AbstractBaseService;
-import cn.pings.service.bill.mapper.DeptRefundMapper;
+import cn.pings.service.bill.mapper.DebtRefundMapper;
 import com.alibaba.dubbo.config.annotation.Service;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +17,6 @@ import org.springframework.stereotype.Component;
  */
 @Service(version = "${bill.service.version}")
 @Component
-public class DeptRefundServiceImpl extends AbstractBaseService<DeptRefundMapper, DeptRefund> implements DeptRefundService {
+public class DebtRefundServiceImpl extends AbstractBaseService<DebtRefundMapper, DebtRefund> implements DebtRefundService {
 
 }

@@ -1,6 +1,6 @@
 package cn.pings.service.api.bill.service;
 
-import cn.pings.service.api.bill.entity.DeptRefund;
+import cn.pings.service.api.bill.entity.DebtRefund;
 import cn.pings.service.api.common.service.BaseService;
 
 /**
@@ -11,6 +11,6 @@ import cn.pings.service.api.common.service.BaseService;
  ** @version v1.0
  * *******************************************************
  */
-public interface DeptRefundService extends BaseService<DeptRefund> {
+public interface DebtRefundService extends BaseService<DebtRefund> {
 
 }

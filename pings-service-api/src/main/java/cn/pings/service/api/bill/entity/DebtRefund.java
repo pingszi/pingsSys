@@ -14,7 +14,7 @@ import java.util.Date;
  ** @version  v1.0
  * *******************************************************
  */
-public class DeptRefund extends AbstractBaseEntity {
+public class DebtRefund extends AbstractBaseEntity {
 
     private String name;       //**偿还名称
     private Double value;      //**偿还数目
