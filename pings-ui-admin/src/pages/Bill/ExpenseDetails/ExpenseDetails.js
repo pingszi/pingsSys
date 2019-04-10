@@ -15,7 +15,7 @@ const Option = Select.Option;
 @connect(({ expenseDetails, basData, loading }) => ({
   expenseDetails,
   typeBasDatas: basData.typeBasDatas,
-  loading: loading.models.debt,
+  loading: loading.models.expenseDetails,
 }))
 @Form.create()
 class ExpenseDetailsPage extends PureComponent {
