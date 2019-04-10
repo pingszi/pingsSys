@@ -103,3 +103,5 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-03-22 更新token规则，增加安全性
 - 2019-03-26 添加账单管理消费者；开发基础数据管理菜单；退出登录时，使token无效
 - 2019-03-28 欠款单管理、还款单管理和消费明细管理
+- 2019-04-04 开发UserServiceStub，调用redis缓存，避免每个项目定义访问redis缓存逻辑
+- 2019-04-10 在UserServiceStub中使用Guava Cache堆缓存缓存用户信息

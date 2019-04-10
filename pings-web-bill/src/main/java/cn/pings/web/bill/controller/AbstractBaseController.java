@@ -3,10 +3,10 @@ package cn.pings.web.bill.controller;
 import cn.pings.service.api.sys.entity.User;
 import cn.pings.service.api.sys.service.UserService;
 import cn.pings.web.bill.util.JwtUtil;
+import com.alibaba.dubbo.config.annotation.Reference;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *********************************************************
@@ -20,8 +20,8 @@ public abstract class AbstractBaseController {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    protected UserService iUserService;
+    @Reference(version = "${sys.service.version}")
+    protected UserService userService;
 
     /**获取当前用户名称*/
     protected String getCurrentUserName(){
@@ -31,6 +31,6 @@ public abstract class AbstractBaseController {
 
     /**获取当前用户*/
     protected User getCurrentUser() {
-        return this.iUserService.getByUserName(this.getCurrentUserName());
+        return this.userService.getByUserName(this.getCurrentUserName());
     }
 }

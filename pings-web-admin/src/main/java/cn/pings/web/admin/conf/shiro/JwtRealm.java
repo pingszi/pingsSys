@@ -31,8 +31,8 @@ import static java.util.stream.Collectors.toSet;
  */
 public class JwtRealm extends AuthorizingRealm {
 
-    @Autowired
-    private UserService iUserService;
+    @Reference(version = "${sys.service.version}")
+    private UserService userService;
     @Autowired
     private JwtComponent jwtComponent;
 
@@ -49,7 +49,7 @@ public class JwtRealm extends AuthorizingRealm {
         String userName = JwtUtil.getUserName(principals.toString());
 
         //**获取用户
-        User user = this.iUserService.getByUserName(userName);
+        User user = this.userService.getByUserName(userName);
 
         //**用户角色
         Set<String> roles = user.getRoles().stream().map(Role::getCode).collect(toSet());
@@ -74,7 +74,7 @@ public class JwtRealm extends AuthorizingRealm {
         }
 
         //**获取用户
-        User user = this.iUserService.getByUserName(userName);
+        User user = this.userService.getByUserName(userName);
         if (user == null) {
             throw new AuthenticationException("The account does not exist.");
         }

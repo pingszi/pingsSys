@@ -29,7 +29,7 @@ import static java.util.stream.Collectors.toList;
  ** @version v1.0
  * *******************************************************
  */
-@Service(version = "${sys.service.version}")
+@Service(version = "${sys.service.version}", stub = "cn.pings.service.api.sys.service.UserServiceStub")
 @Component
 public class UserServiceImpl extends AbstractBaseService<UserMapper, User> implements UserService {
 

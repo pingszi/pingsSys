@@ -5,6 +5,7 @@ import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.entity.User;
 import cn.pings.service.api.sys.service.UserService;
 import cn.pings.web.bill.util.JwtUtil;
+import com.alibaba.dubbo.config.annotation.Reference;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -30,8 +31,8 @@ import static java.util.stream.Collectors.toSet;
  */
 public class JwtRealm extends AuthorizingRealm {
 
-    @Autowired
-    private UserService iUserService;
+    @Reference(version = "${sys.service.version}")
+    private UserService userService;
     @Autowired
     private JwtComponent jwtComponent;
 
@@ -48,7 +49,7 @@ public class JwtRealm extends AuthorizingRealm {
         String userName = JwtUtil.getUserName(principals.toString());
 
         //**获取用户
-        User user = this.iUserService.getByUserName(userName);
+        User user = this.userService.getByUserName(userName);
 
         //**用户角色
         Set<String> roles = user.getRoles().stream().map(Role::getCode).collect(toSet());
@@ -73,7 +74,7 @@ public class JwtRealm extends AuthorizingRealm {
         }
 
         //**获取用户
-        User user = this.iUserService.getByUserName(userName);
+        User user = this.userService.getByUserName(userName);
         if (user == null) {
             throw new AuthenticationException("The account does not exist.");
         }

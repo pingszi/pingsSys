@@ -35,7 +35,7 @@ public class UserController extends AbstractBaseController {
     @GetMapping(value = "/currentUser")
     @RequiresAuthentication
     public ApiResponse currentUser(){
-        return new ApiResponse(200, this.iUserService.getByUserName(this.getCurrentUserName()));
+        return new ApiResponse(200, this.userService.getByUserName(this.getCurrentUserName()));
     }
 
     /**
@@ -50,7 +50,7 @@ public class UserController extends AbstractBaseController {
     @GetMapping(value = "/list")
     @RequiresPermissions("sys:user:list")
     public ApiResponse list(ReactPage<User> page, User entity){
-        ReactPage<User> list = (ReactPage<User>)this.iUserService.findPage(page, entity);
+        ReactPage<User> list = (ReactPage<User>)this.userService.findPage(page, entity);
         return new ApiResponse(200, list.toReactPageFormat());
     }
 
@@ -65,7 +65,7 @@ public class UserController extends AbstractBaseController {
     @ApiOperation(value="验证用户名称是否唯一", notes="验证用户名称是否唯一")
     @GetMapping(value = "/validateUserNameUnique/{userName}")
     public ApiResponse validateUserNameUnique(@PathVariable("userName") String userName){
-        User user = this.iUserService.getByUserName(userName);
+        User user = this.userService.getByUserName(userName);
         return new ApiResponse(200, user == null);
     }
 
@@ -85,7 +85,7 @@ public class UserController extends AbstractBaseController {
         if(StringUtils.isNotBlank(entity.getPassword()))
             entity.setPassword(DigestUtils.md5DigestAsHex(entity.getPassword().getBytes()));
 
-        User user = this.iUserService.save(entity);
+        User user = this.userService.save(entity);
 
         return new ApiResponse(200,"保存成功", user);
     }
@@ -102,7 +102,7 @@ public class UserController extends AbstractBaseController {
     @DeleteMapping(value = "/deleteById/{id}")
     @RequiresPermissions("sys:user:delete")
     public ApiResponse deleteById(@PathVariable("id") int id){
-        this.iUserService.deleteById(id);
+        this.userService.deleteById(id);
 
         return new ApiResponse(200,"删除成功");
     }
@@ -119,7 +119,7 @@ public class UserController extends AbstractBaseController {
     @PostMapping(value = "/allotRole")
     @RequiresPermissions("sys:user:allotRole")
     public ApiResponse allotRole(int id, int[] roles){
-        this.iUserService.allotRole(id, roles, this.getCurrentUser().getId());
+        this.userService.allotRole(id, roles, this.getCurrentUser().getId());
 
         return new ApiResponse(200,"分配成功");
     }
@@ -140,7 +140,7 @@ public class UserController extends AbstractBaseController {
 
         //**验证旧密码
         oldPassword = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
-        User user = this.iUserService.getById(id);
+        User user = this.userService.getById(id);
         if(user == null || !user.getPassword().equals(oldPassword))
             return new ApiResponse(400,"旧密码错误");
 
@@ -148,7 +148,7 @@ public class UserController extends AbstractBaseController {
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         user.setPassword(password);
         user.editAddWhoOrEditWho(this.getCurrentUser());
-        this.iUserService.save(user);
+        this.userService.save(user);
 
         return new ApiResponse(200,"修改成功");
     }

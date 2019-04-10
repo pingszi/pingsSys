@@ -53,7 +53,7 @@ public class LoginController extends AbstractBaseController {
     @GetMapping(value = "/test/{id}")
     @RequiresAuthentication
     public ApiResponse test(@PathVariable("id") int id){
-        return new ApiResponse(200, this.iUserService.getById(id));
+        return new ApiResponse(200, this.userService.getById(id));
     }
 
     /**
@@ -75,7 +75,7 @@ public class LoginController extends AbstractBaseController {
         //**md5加密
         password = DigestUtils.md5DigestAsHex(password.getBytes());
 
-        User user = this.iUserService.getByUserName(userName);
+        User user = this.userService.getByUserName(userName);
         if(user != null && user.getPassword().equals(password)) {
             JwtUtil.setHttpServletResponse(response, jwtComponent.sign(userName));
 

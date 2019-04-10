@@ -12,9 +12,6 @@ import java.io.Serializable;
  */
 public class ApiResponse implements Serializable {
 
-    public static final Integer ERROR = 1;
-    public static final Integer SUCCESS = 0;
-
     //**返回的状态码
     private int code;
 
