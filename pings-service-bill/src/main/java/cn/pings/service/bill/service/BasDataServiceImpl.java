@@ -4,7 +4,7 @@ import cn.pings.service.api.bill.entity.BasData;
 import cn.pings.service.api.bill.service.BasDataService;
 import cn.pings.service.api.common.service.AbstractBaseService;
 import cn.pings.service.bill.mapper.BasDataMapper;
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Component;
 import java.util.List;

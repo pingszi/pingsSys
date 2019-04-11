@@ -34,11 +34,8 @@
         <mybatis-plus-boot-starter.version>3.0.7.1</mybatis-plus-boot-starter.version>
 
         <!-- dubbo相关 -->
-        <dubbo-spring-boot-starter.version>0.2.1-SNAPSHOT</dubbo-spring-boot-starter.version>
-        <dubbo.version>2.6.5</dubbo.version>
-        <curator-framework.version>4.1.0</curator-framework.version>
+        <dubbo.version>2.7.1</dubbo.version>
         <zookeeper.version>3.4.13</zookeeper.version>
-        <spring-context-support.version>1.0.2</spring-context-support.version>
 
         <!-- 其它 -->
         <commons-lang3.version>3.8.1</commons-lang3.version>

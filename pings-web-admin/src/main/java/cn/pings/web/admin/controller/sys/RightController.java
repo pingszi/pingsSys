@@ -4,7 +4,7 @@ import cn.pings.service.api.common.util.ApiResponse;
 import cn.pings.service.api.sys.entity.Right;
 import cn.pings.service.api.sys.service.RightService;
 import cn.pings.web.admin.controller.AbstractBaseController;
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Reference;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

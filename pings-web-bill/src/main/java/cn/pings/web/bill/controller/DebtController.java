@@ -4,7 +4,7 @@ import cn.pings.service.api.bill.entity.Debt;
 import cn.pings.service.api.bill.service.DebtService;
 import cn.pings.service.api.common.util.ApiResponse;
 import cn.pings.service.api.common.util.ReactPage;
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Reference;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

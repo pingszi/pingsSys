@@ -4,7 +4,7 @@ import cn.pings.service.api.bill.entity.ExpenseDetails;
 import cn.pings.service.api.bill.service.ExpenseDetailsService;
 import cn.pings.service.api.common.service.AbstractBaseService;
 import cn.pings.service.bill.mapper.ExpenseDetailsMapper;
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.stereotype.Component;
 
 /**

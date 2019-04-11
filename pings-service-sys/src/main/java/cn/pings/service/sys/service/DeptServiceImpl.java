@@ -5,7 +5,7 @@ import cn.pings.service.api.common.service.AbstractBaseService;
 import cn.pings.service.api.sys.entity.Dept;
 import cn.pings.service.api.sys.service.DeptService;
 import cn.pings.service.sys.mapper.DeptMapper;
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Component;
 

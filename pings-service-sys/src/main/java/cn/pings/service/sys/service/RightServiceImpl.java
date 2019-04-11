@@ -7,7 +7,7 @@ import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.service.RightService;
 import cn.pings.service.sys.mapper.RightMapper;
 import cn.pings.service.sys.mapper.RoleMapper;
-import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

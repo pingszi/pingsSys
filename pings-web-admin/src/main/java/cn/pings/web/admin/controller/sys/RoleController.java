@@ -5,7 +5,7 @@ import cn.pings.service.api.common.util.ReactPage;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.service.RoleService;
 import cn.pings.web.admin.controller.AbstractBaseController;
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Reference;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

@@ -4,7 +4,7 @@ import cn.pings.service.api.bill.entity.DebtRefund;
 import cn.pings.service.api.bill.service.DebtRefundService;
 import cn.pings.service.api.common.util.ApiResponse;
 import cn.pings.service.api.common.util.ReactPage;
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Reference;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;

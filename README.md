@@ -105,3 +105,4 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-03-28 欠款单管理、还款单管理和消费明细管理
 - 2019-04-04 开发UserServiceStub，调用redis缓存，避免每个项目定义访问redis缓存逻辑
 - 2019-04-10 在UserServiceStub中使用Guava Cache堆缓存缓存用户信息
+- 2019-04-11 dubbo从2.6.5升级为2.7.1
