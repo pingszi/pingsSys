@@ -63,6 +63,7 @@
 		<dependency>
 			<groupId>org.apache.dubbo</groupId>
 			<artifactId>dubbo-dependencies-zookeeper</artifactId>
+			<type>pom</type>
 			<version>${dubbo.version}</version>
 			<exclusions>
 				<exclusion>
