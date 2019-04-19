@@ -20,12 +20,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<!-- commons -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>${commons-lang3.version}</version>
+			<optional>true</optional>
 		</dependency>
 
 		<!-- guava -->
@@ -40,6 +35,7 @@
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-boot-starter</artifactId>
 			<version>${mybatis-plus-boot-starter.version}</version>
+			<optional>true</optional>
 			<exclusions>
 				<exclusion>
 					<artifactId>spring-boot-starter-jdbc</artifactId>
@@ -52,13 +48,17 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
+			<optional>true</optional>
 		</dependency>
 
+		<!-- pings-sys-commons -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<groupId>cn.pings.sys.commons</groupId>
+			<artifactId>pings-sys-commons</artifactId>
+			<version>${pings-sys-commons.version}</version>
+			<optional>true</optional>
 		</dependency>
+
 	</dependencies>
 
 </project>

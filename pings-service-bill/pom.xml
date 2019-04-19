@@ -9,7 +9,6 @@
 	</parent>
 	<groupId>cn.pings.service.bill</groupId>
 	<artifactId>pings-service-bill</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>pings-service-bill</name>
 	<description>账单管理系统</description>
 
@@ -143,7 +142,13 @@
 		<dependency>
 			<groupId>cn.pings.service.api</groupId>
 			<artifactId>pings-service-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${pings-service-api.version}</version>
+		</dependency>
+		<!-- pings-sys-commons -->
+		<dependency>
+			<groupId>cn.pings.sys.commons</groupId>
+			<artifactId>pings-sys-commons</artifactId>
+			<version>${pings-sys-commons.version}</version>
 		</dependency>
 
 		<!-- test and devtools  -->
@@ -163,7 +168,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

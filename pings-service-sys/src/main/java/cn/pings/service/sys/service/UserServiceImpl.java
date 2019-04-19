@@ -1,6 +1,5 @@
 package cn.pings.service.sys.service;
 
-import cn.pings.service.api.common.service.AbstractBaseService;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.entity.User;
 import cn.pings.service.api.sys.entity.UserRole;
@@ -9,6 +8,7 @@ import cn.pings.service.sys.mapper.RightMapper;
 import cn.pings.service.sys.mapper.RoleMapper;
 import cn.pings.service.sys.mapper.UserMapper;
 import cn.pings.service.sys.mapper.UserRoleMapper;
+import cn.pings.sys.commons.service.AbstractBaseService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.dubbo.config.annotation.Service;

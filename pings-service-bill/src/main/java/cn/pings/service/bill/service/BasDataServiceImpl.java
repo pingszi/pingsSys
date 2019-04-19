@@ -2,8 +2,8 @@ package cn.pings.service.bill.service;
 
 import cn.pings.service.api.bill.entity.BasData;
 import cn.pings.service.api.bill.service.BasDataService;
-import cn.pings.service.api.common.service.AbstractBaseService;
 import cn.pings.service.bill.mapper.BasDataMapper;
+import cn.pings.sys.commons.service.AbstractBaseService;
 import org.apache.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Component;

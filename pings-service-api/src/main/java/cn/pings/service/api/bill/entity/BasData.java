@@ -1,6 +1,7 @@
 package cn.pings.service.api.bill.entity;
 
-import cn.pings.service.api.common.entity.AbstractBaseEntity;
+
+import cn.pings.sys.commons.entity.AbstractBaseEntity;
 
 /**
  *********************************************************

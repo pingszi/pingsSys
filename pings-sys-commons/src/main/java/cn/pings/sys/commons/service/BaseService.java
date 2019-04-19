@@ -1,10 +1,7 @@
-package cn.pings.service.api.common.service;
+package cn.pings.sys.commons.service;
 
-import cn.pings.service.api.common.entity.AbstractBaseEntity;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import cn.pings.sys.commons.entity.AbstractBaseEntity;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -16,10 +13,7 @@ import java.util.List;
  ** @version v1.0
  * *******************************************************
  */
-public abstract class AbstractBaseService<M extends BaseMapper<T>, T extends AbstractBaseEntity> implements BaseService<T> {
-
-    @Autowired
-    protected M baseMapper;
+public interface BaseService<T extends AbstractBaseEntity> {
 
     /**
      *********************************************************
@@ -31,10 +25,7 @@ public abstract class AbstractBaseService<M extends BaseMapper<T>, T extends Abs
      ** @return IPage
      * *******************************************************
      */
-    @Override
-    public IPage<T> findPage(IPage<T> page, T entity){
-        return this.baseMapper.selectPage(page, new QueryWrapper<>(entity).orderByDesc("id"));
-    }
+    IPage<T> findPage(IPage<T> page, T entity);
 
     /**
      *********************************************************
@@ -44,10 +35,7 @@ public abstract class AbstractBaseService<M extends BaseMapper<T>, T extends Abs
      ** @return List
      * *******************************************************
      */
-    @Override
-    public List<T> findAll(){
-        return this.baseMapper.selectList(new QueryWrapper<>());
-    }
+    List<T> findAll();
 
     /**
      *********************************************************
@@ -58,14 +46,7 @@ public abstract class AbstractBaseService<M extends BaseMapper<T>, T extends Abs
      ** @return Debt
      * *******************************************************
      */
-    @Override
-    public T save(T entity){
-        if(entity.getId() != null)
-            this.baseMapper.updateById(entity);
-        else
-            this.baseMapper.insert(entity);
-        return entity;
-    }
+    T save(T entity);
 
     /**
      *********************************************************
@@ -76,8 +57,5 @@ public abstract class AbstractBaseService<M extends BaseMapper<T>, T extends Abs
      ** @return int
      * *******************************************************
      */
-    @Override
-    public int deleteById(int id){
-        return this.baseMapper.deleteById(id);
-    }
+    int deleteById(int id);
 }

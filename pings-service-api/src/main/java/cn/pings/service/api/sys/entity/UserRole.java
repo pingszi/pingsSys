@@ -1,9 +1,7 @@
 package cn.pings.service.api.sys.entity;
 
-import cn.pings.service.api.common.entity.AbstractBaseEntity;
-import com.baomidou.mybatisplus.annotation.TableField;
 
-import java.util.List;
+import cn.pings.sys.commons.entity.AbstractBaseEntity;
 
 /**
  *********************************************************

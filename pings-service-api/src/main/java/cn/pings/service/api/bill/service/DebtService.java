@@ -1,8 +1,7 @@
 package cn.pings.service.api.bill.service;
 
 import cn.pings.service.api.bill.entity.Debt;
-import cn.pings.service.api.common.service.BaseService;
-
+import cn.pings.sys.commons.service.BaseService;
 import java.util.List;
 
 /**

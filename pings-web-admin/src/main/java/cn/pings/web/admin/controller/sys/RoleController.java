@@ -1,9 +1,9 @@
 package cn.pings.web.admin.controller.sys;
 
-import cn.pings.service.api.common.util.ApiResponse;
-import cn.pings.service.api.common.util.ReactPage;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.service.RoleService;
+import cn.pings.sys.commons.util.ApiResponse;
+import cn.pings.sys.commons.util.ReactPage;
 import cn.pings.web.admin.controller.AbstractBaseController;
 import org.apache.dubbo.config.annotation.Reference;
 import io.swagger.annotations.ApiOperation;

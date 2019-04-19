@@ -1,12 +1,12 @@
 package cn.pings.service.sys.service;
 
-import cn.pings.service.api.common.entity.AbstractTreeEntity;
-import cn.pings.service.api.common.service.AbstractBaseService;
 import cn.pings.service.api.sys.entity.Right;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.service.RightService;
 import cn.pings.service.sys.mapper.RightMapper;
 import cn.pings.service.sys.mapper.RoleMapper;
+import cn.pings.sys.commons.entity.AbstractTreeEntity;
+import cn.pings.sys.commons.service.AbstractBaseService;
 import org.apache.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;

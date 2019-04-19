@@ -15,6 +15,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>pings-sys-commons</module>
         <module>pings-service-api</module>
         <module>pings-service-sys</module>
         <module>pings-service-bill</module>
@@ -45,6 +46,11 @@
         <java-jwt.version>3.5.0</java-jwt.version>
         <guava.version>27.1-jre</guava.version>
         <junit.version>4.12</junit.version>
+
+        <!-- pings-sys -->
+        <pings-sys.version>0.0.1-SNAPSHOT</pings-sys.version>
+        <pings-service-api.version>0.0.1-SNAPSHOT</pings-service-api.version>
+        <pings-sys-commons.version>0.0.1-SNAPSHOT</pings-sys-commons.version>
     </properties>
 
     <repositories>

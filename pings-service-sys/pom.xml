@@ -145,7 +145,13 @@
 		<dependency>
 			<groupId>cn.pings.service.api</groupId>
 			<artifactId>pings-service-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${pings-service-api.version}</version>
+		</dependency>
+		<!-- pings-sys-commons -->
+		<dependency>
+			<groupId>cn.pings.sys.commons</groupId>
+			<artifactId>pings-sys-commons</artifactId>
+			<version>${pings-sys-commons.version}</version>
 		</dependency>
 
 		<!-- test and devtools  -->

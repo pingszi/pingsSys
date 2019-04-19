@@ -1,8 +1,8 @@
 package cn.pings.web.admin.controller.sys;
 
-import cn.pings.service.api.common.util.ApiResponse;
 import cn.pings.service.api.sys.entity.Right;
 import cn.pings.service.api.sys.service.RightService;
+import cn.pings.sys.commons.util.ApiResponse;
 import cn.pings.web.admin.controller.AbstractBaseController;
 import org.apache.dubbo.config.annotation.Reference;
 import io.swagger.annotations.ApiOperation;

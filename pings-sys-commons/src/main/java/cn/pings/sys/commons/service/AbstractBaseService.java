@@ -1,7 +1,10 @@
-package cn.pings.service.api.common.service;
+package cn.pings.sys.commons.service;
 
-import cn.pings.service.api.common.entity.AbstractBaseEntity;
+import cn.pings.sys.commons.entity.AbstractBaseEntity;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -13,7 +16,10 @@ import java.util.List;
  ** @version v1.0
  * *******************************************************
  */
-public interface BaseService<T extends AbstractBaseEntity> {
+public abstract class AbstractBaseService<M extends BaseMapper<T>, T extends AbstractBaseEntity> implements BaseService<T> {
+
+    @Autowired
+    protected M baseMapper;
 
     /**
      *********************************************************
@@ -25,7 +31,10 @@ public interface BaseService<T extends AbstractBaseEntity> {
      ** @return IPage
      * *******************************************************
      */
-    IPage<T> findPage(IPage<T> page, T entity);
+    @Override
+    public IPage<T> findPage(IPage<T> page, T entity){
+        return this.baseMapper.selectPage(page, new QueryWrapper<>(entity).orderByDesc("id"));
+    }
 
     /**
      *********************************************************
@@ -35,7 +44,10 @@ public interface BaseService<T extends AbstractBaseEntity> {
      ** @return List
      * *******************************************************
      */
-    List<T> findAll();
+    @Override
+    public List<T> findAll(){
+        return this.baseMapper.selectList(new QueryWrapper<>());
+    }
 
     /**
      *********************************************************
@@ -46,7 +58,14 @@ public interface BaseService<T extends AbstractBaseEntity> {
      ** @return Debt
      * *******************************************************
      */
-    T save(T entity);
+    @Override
+    public T save(T entity){
+        if(entity.getId() != null)
+            this.baseMapper.updateById(entity);
+        else
+            this.baseMapper.insert(entity);
+        return entity;
+    }
 
     /**
      *********************************************************
@@ -57,5 +76,8 @@ public interface BaseService<T extends AbstractBaseEntity> {
      ** @return int
      * *******************************************************
      */
-    int deleteById(int id);
+    @Override
+    public int deleteById(int id){
+        return this.baseMapper.deleteById(id);
+    }
 }

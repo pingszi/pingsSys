@@ -1,4 +1,4 @@
-package cn.pings.service.api.common.entity;
+package cn.pings.sys.commons.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

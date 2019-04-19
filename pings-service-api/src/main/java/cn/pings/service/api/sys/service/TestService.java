@@ -2,7 +2,6 @@ package cn.pings.service.api.sys.service;
 
 import cn.pings.service.api.sys.entity.User;
 
-import java.util.List;
 
 /**
  *********************************************************

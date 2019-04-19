@@ -2,8 +2,8 @@ package cn.pings.service.bill.service;
 
 import cn.pings.service.api.bill.entity.DebtRefund;
 import cn.pings.service.api.bill.service.DebtRefundService;
-import cn.pings.service.api.common.service.AbstractBaseService;
 import cn.pings.service.bill.mapper.DebtRefundMapper;
+import cn.pings.sys.commons.service.AbstractBaseService;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.stereotype.Component;
 

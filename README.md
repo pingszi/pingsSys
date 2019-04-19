@@ -8,6 +8,8 @@
 - ![登录](https://github.com/pingszi/pingsSys/blob/master/pings-ui-admin/docker/login.png)
 - ![主页](https://github.com/pingszi/pingsSys/blob/master/pings-ui-admin/docker/index.png)
 ## 项目说明
+### pings-sys-commons
+- 公共的工具类
 ### pings-service-api
 - dubbo接口和实体类，独立出来，方便Provider和Consumer共用
 ### pings-service-sys
@@ -106,3 +108,4 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-04-04 开发UserServiceStub，调用redis缓存，避免每个项目定义访问redis缓存逻辑
 - 2019-04-10 在UserServiceStub中使用Guava Cache堆缓存缓存用户信息
 - 2019-04-11 dubbo从2.6.5升级为2.7.1
+- 2019-04-20 把公共类提取到pings-sys-commons

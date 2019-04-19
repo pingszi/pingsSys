@@ -1,6 +1,6 @@
 package cn.pings.service.api.sys.entity;
 
-import cn.pings.service.api.common.entity.AbstractReactTreeEntity;
+import cn.pings.sys.commons.entity.AbstractReactTreeEntity;
 
 /**
  *********************************************************

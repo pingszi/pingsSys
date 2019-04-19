@@ -1,4 +1,4 @@
-package cn.pings.service.api.common.exception;
+package cn.pings.sys.commons.exception;
 
 /**
  *********************************************************

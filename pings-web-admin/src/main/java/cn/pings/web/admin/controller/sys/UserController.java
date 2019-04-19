@@ -1,8 +1,8 @@
 package cn.pings.web.admin.controller.sys;
 
-import cn.pings.service.api.common.util.ApiResponse;
-import cn.pings.service.api.common.util.ReactPage;
 import cn.pings.service.api.sys.entity.User;
+import cn.pings.sys.commons.util.ApiResponse;
+import cn.pings.sys.commons.util.ReactPage;
 import cn.pings.web.admin.controller.AbstractBaseController;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;

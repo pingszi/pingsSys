@@ -1,6 +1,6 @@
 package cn.pings.web.admin.conf.shiro;
 
-import cn.pings.service.api.common.util.ApiResponse;
+import cn.pings.sys.commons.util.ApiResponse;
 import cn.pings.web.admin.util.JwtUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.exceptions.TokenExpiredException;

@@ -1,10 +1,10 @@
 package cn.pings.web.admin.controller.sys;
 
-import cn.pings.service.api.common.exception.UnauthorizedException;
-import cn.pings.service.api.common.util.ApiResponse;
 import cn.pings.service.api.sys.entity.Right;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.entity.User;
+import cn.pings.sys.commons.exception.UnauthorizedException;
+import cn.pings.sys.commons.util.ApiResponse;
 import cn.pings.web.admin.conf.shiro.JwtComponent;
 import cn.pings.web.admin.controller.AbstractBaseController;
 import cn.pings.web.admin.util.JwtUtil;

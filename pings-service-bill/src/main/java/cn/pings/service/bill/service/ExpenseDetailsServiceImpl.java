@@ -2,8 +2,8 @@ package cn.pings.service.bill.service;
 
 import cn.pings.service.api.bill.entity.ExpenseDetails;
 import cn.pings.service.api.bill.service.ExpenseDetailsService;
-import cn.pings.service.api.common.service.AbstractBaseService;
 import cn.pings.service.bill.mapper.ExpenseDetailsMapper;
+import cn.pings.sys.commons.service.AbstractBaseService;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.stereotype.Component;
 

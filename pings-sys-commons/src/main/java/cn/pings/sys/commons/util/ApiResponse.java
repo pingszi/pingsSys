@@ -1,4 +1,4 @@
-package cn.pings.service.api.common.util;
+package cn.pings.sys.commons.util;
 
 import java.io.Serializable;
 

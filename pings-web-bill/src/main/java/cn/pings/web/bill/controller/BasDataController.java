@@ -2,8 +2,8 @@ package cn.pings.web.bill.controller;
 
 import cn.pings.service.api.bill.entity.BasData;
 import cn.pings.service.api.bill.service.BasDataService;
-import cn.pings.service.api.common.util.ApiResponse;
-import cn.pings.service.api.common.util.ReactPage;
+import cn.pings.sys.commons.util.ApiResponse;
+import cn.pings.sys.commons.util.ReactPage;
 import org.apache.dubbo.config.annotation.Reference;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;

@@ -1,6 +1,6 @@
 package cn.pings.web.bill.controller;
 
-import cn.pings.service.api.common.util.ApiResponse;
+import cn.pings.sys.commons.util.ApiResponse;
 import cn.pings.web.bill.util.HttpUtil;
 import org.apache.shiro.ShiroException;
 import org.springframework.http.HttpStatus;
