@@ -7,6 +7,27 @@
 ## 界面
 - ![登录](https://github.com/pingszi/pingsSys/blob/master/pings-ui-admin/docker/login.png)
 - ![主页](https://github.com/pingszi/pingsSys/blob/master/pings-ui-admin/docker/index.png)
+## 运行项目
+### 后端
+- 说明：
+    - 先启动Provider，然后启动Consumer
+    - 开发模式依赖的运行环境(mysql,redis,zookeeper)均可以直接连接，你可以先在本地运行起来，然后在自己搭建运行环境
+    - [运行环境搭建过程](https://blog.csdn.net/zhouping118/article/details/88032298)
+- 步骤：
+    - 开发模式启动springboot项目pings-service-sys
+    - 开发模式启动springboot项目pings-service-bill
+    - 开发模式启动springboot项目pings-web-admin
+    - 开发模式启动springboot项目pings-web-bill
+    - 开发模式启动的方法，添加vm启动参数：-Dspring.profiles.active=dev
+### 前端
+- 说明：前端为项目pings-ui-admin，基于ant design pro脚手架
+- 步骤：
+    - 安装nodejs
+    - 进入pings-ui-admin目录
+    - 安装依赖：npm install(需要比较长的时间)
+    - 启动：npm run start:no-mock
+    - 访问：http://localhost:8000
+    - 账号：pings/123456
 ## 项目说明
 ### pings-sys-commons
 - 公共的工具类
