@@ -13,7 +13,6 @@ import org.apache.shiro.realm.AuthorizingRealm;
  */
 public abstract class AbstractJwtRealm extends AuthorizingRealm {
 
-    /**必须重写此方法，不然Shiro会报错*/
     @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof JwtToken;

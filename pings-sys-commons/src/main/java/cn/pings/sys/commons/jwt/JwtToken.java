@@ -1,4 +1,4 @@
-package cn.pings.web.admin.conf.shiro;
+package cn.pings.sys.commons.jwt;
 
 import org.apache.shiro.authc.AuthenticationToken;
 

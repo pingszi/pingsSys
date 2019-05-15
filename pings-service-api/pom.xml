@@ -35,7 +35,6 @@
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-boot-starter</artifactId>
 			<version>${mybatis-plus-boot-starter.version}</version>
-			<optional>true</optional>
 			<exclusions>
 				<exclusion>
 					<artifactId>spring-boot-starter-jdbc</artifactId>
@@ -44,10 +43,11 @@
 			</exclusions>
 		</dependency>
 
-		<!-- jackson-annotations -->
+		<!-- shiro -->
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro-spring.version}</version>
 			<optional>true</optional>
 		</dependency>
 
@@ -56,7 +56,6 @@
 			<groupId>cn.pings.sys.commons</groupId>
 			<artifactId>pings-sys-commons</artifactId>
 			<version>${pings-sys-commons.version}</version>
-			<optional>true</optional>
 		</dependency>
 
 	</dependencies>

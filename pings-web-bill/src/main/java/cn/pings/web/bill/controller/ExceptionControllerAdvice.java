@@ -1,7 +1,7 @@
 package cn.pings.web.bill.controller;
 
 import cn.pings.sys.commons.util.ApiResponse;
-import cn.pings.web.bill.util.HttpUtil;
+import cn.pings.sys.commons.util.HttpStatusUtil;
 import org.apache.shiro.ShiroException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +34,6 @@ public class ExceptionControllerAdvice extends AbstractBaseController {
     @ExceptionHandler(Exception.class)
     public ApiResponse globalException(HttpServletRequest request, Throwable ex) {
         ex.printStackTrace();
-        return new ApiResponse(HttpUtil.getStatus(request).value(), ex.getMessage(), null);
+        return new ApiResponse(HttpStatusUtil.getStatus(request).value(), ex.getMessage(), null);
     }
 }

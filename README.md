@@ -130,3 +130,4 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-04-10 在UserServiceStub中使用Guava Cache堆缓存缓存用户信息
 - 2019-04-11 dubbo从2.6.5升级为2.7.1
 - 2019-04-20 把公共类提取到pings-sys-commons
+- 2019-05-15 把shiro+jwt认证类提取到pings-sys-commons

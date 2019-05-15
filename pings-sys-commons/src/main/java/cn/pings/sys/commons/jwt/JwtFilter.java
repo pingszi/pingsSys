@@ -1,11 +1,8 @@
-package cn.pings.web.admin.conf.shiro;
+package cn.pings.sys.commons.jwt;
 
-import cn.pings.sys.commons.util.ApiResponse;
 import cn.pings.sys.commons.util.JwtUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,8 +23,11 @@ import java.io.PrintWriter;
  */
 public class JwtFilter extends BasicHttpAuthenticationFilter {
 
-    @Autowired
-    private JwtComponent jwtComponent;
+    protected JwtComponent jwtComponent;
+
+    public JwtFilter(JwtComponent jwtComponent){
+        this.jwtComponent = jwtComponent;
+    }
 
     /**登录认证*/
     @Override
@@ -108,8 +108,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json; charset=utf-8");
 
-        ApiResponse response = new ApiResponse(HttpStatus.UNAUTHORIZED.value(), "Unauthorized: " + msg, null);
-        String data = JSONObject.toJSONString(response);
+        String data = "{'code': "+ HttpStatus.UNAUTHORIZED.value() +", 'msg': '"+ msg +"'}";
         try(PrintWriter out = httpServletResponse.getWriter()) {
             out.append(data);
         } catch (IOException e) {

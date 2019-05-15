@@ -1,4 +1,4 @@
-package cn.pings.commons.util.spring;
+package cn.pings.sys.commons.util;
 
 import org.springframework.http.HttpStatus;
 

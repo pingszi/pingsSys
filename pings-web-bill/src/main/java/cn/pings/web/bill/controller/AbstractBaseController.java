@@ -2,7 +2,7 @@ package cn.pings.web.bill.controller;
 
 import cn.pings.service.api.sys.entity.User;
 import cn.pings.service.api.sys.service.UserService;
-import cn.pings.web.bill.util.JwtUtil;
+import cn.pings.sys.commons.util.JwtUtil;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;

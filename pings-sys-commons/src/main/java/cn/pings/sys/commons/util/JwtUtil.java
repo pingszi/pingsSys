@@ -1,4 +1,4 @@
-package cn.pings.web.admin.util;
+package cn.pings.sys.commons.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

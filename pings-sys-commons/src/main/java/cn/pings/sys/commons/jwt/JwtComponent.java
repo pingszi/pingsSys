@@ -1,11 +1,8 @@
-package cn.pings.web.admin.conf.shiro;
+package cn.pings.sys.commons.jwt;
 
 import cn.pings.sys.commons.util.JwtUtil;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,29 +14,42 @@ import java.util.concurrent.TimeUnit;
  ** @version  v1.0
  * *******************************************************
  */
-@Component
 public class JwtComponent {
 
-    @Value("${sys.jwt.access-token.expire-time}")
+    //**访问令牌过期时间(分钟)
     private long accessTokenExpireTime;
-    @Value("${sys.jwt.refresh-token.expire-time}")
+    //**刷新信息过期时间(分钟)
     private long refreshTokenExpireTime;
-    @Value("${sys.jwt.secret}")
+    //**密钥
     private String secret;
-    @Autowired
+
     private RedisTemplate<String, Object> redisTemplate;
     //**默认的刷新令牌过期时间60分钟
     private static final long DEFAULT_REFRESH_EXPIRE_TIME = 60;
     //**缓存中保存refreshToken key的前缀
     private static final String REFRESH_TOKEN_PREFIX = "refresh_token_";
 
+    public JwtComponent(RedisTemplate<String, Object> redisTemplate) {
+        this(redisTemplate, -1, -1, null);
+    }
+
+    public JwtComponent(RedisTemplate<String, Object> redisTemplate, long accessTokenExpireTime, long refreshTokenExpireTime, String secret) {
+        if(redisTemplate == null)
+            throw new IllegalArgumentException("redisTemplate catnot be null");
+
+        this.redisTemplate = redisTemplate;
+        this.accessTokenExpireTime = accessTokenExpireTime;
+        this.refreshTokenExpireTime = refreshTokenExpireTime;
+        this.secret = secret;
+    }
+
     /**
-     *********************************************************
-     ** @desc ：生成token
-     ** @author Pings
-     ** @date   2019/3/21
-     ** @param  userName   用户名
-     ** @return String
+     * ********************************************************
+     * * @desc ：生成token
+     * * @author Pings
+     * * @date   2019/3/21
+     * * @param  userName   用户名
+     * * @return String
      * *******************************************************
      */
     public String sign(String userName) {
@@ -57,12 +67,12 @@ public class JwtComponent {
     }
 
     /**
-     *********************************************************
-     ** @desc ： 校验token
-     ** @author Pings
-     ** @date   2019/3/21
-     ** @param  token    令牌
-     ** @return boolean
+     * ********************************************************
+     * * @desc ： 校验token
+     * * @author Pings
+     * * @date   2019/3/21
+     * * @param  token    令牌
+     * * @return boolean
      * *******************************************************
      */
     public boolean verify(String token) {
@@ -70,12 +80,12 @@ public class JwtComponent {
 
         //**刷新令牌不存在/过期
         Boolean hasKey = this.redisTemplate.hasKey(key);
-        if(hasKey == null || !hasKey)
+        if (hasKey == null || !hasKey)
             throw new TokenExpiredException("The Token not existed or expired.");
 
         //**刷新令牌和访问令牌的时间戳不一致
-        long refreshToken = (long)this.redisTemplate.opsForValue().get(key);
-        if(refreshToken != JwtUtil.getSignTimeMillis(token)){
+        long refreshToken = (long) this.redisTemplate.opsForValue().get(key);
+        if (refreshToken != JwtUtil.getSignTimeMillis(token)) {
             throw new TokenExpiredException("The Token has expired.");
         }
 
@@ -86,5 +96,38 @@ public class JwtComponent {
     //**获取缓存中保存refreshToken的key
     public String getKey(String userName) {
         return REFRESH_TOKEN_PREFIX + userName;
+    }
+
+    public static class Builder {
+
+        private JwtComponent jwtComponent;
+
+        private Builder() {
+        }
+
+        public static Builder newBuilder(RedisTemplate<String, Object> redisTemplate) {
+            Builder builder = new Builder();
+            builder.jwtComponent = new JwtComponent(redisTemplate);
+            return builder;
+        }
+
+        public Builder accessTokenExpireTime(long accessTokenExpireTime) {
+            jwtComponent.accessTokenExpireTime = accessTokenExpireTime;
+            return this;
+        }
+
+        public Builder refreshTokenExpireTime(long refreshTokenExpireTime) {
+            jwtComponent.refreshTokenExpireTime = refreshTokenExpireTime;
+            return this;
+        }
+
+        public Builder secret(String secret) {
+            jwtComponent.secret = secret;
+            return this;
+        }
+
+        public JwtComponent build() {
+            return jwtComponent;
+        }
     }
 }

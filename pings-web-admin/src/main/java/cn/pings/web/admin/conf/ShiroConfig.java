@@ -1,5 +1,10 @@
-package cn.pings.web.admin.conf.shiro;
+package cn.pings.web.admin.conf;
 
+import cn.pings.service.api.sys.service.UserService;
+import cn.pings.sys.commons.jwt.JwtComponent;
+import cn.pings.sys.commons.jwt.JwtFilter;
+import cn.pings.service.api.sys.jwt.JwtRealm;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
@@ -8,9 +13,11 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
@@ -27,15 +34,37 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+    //**访问令牌过期时间(分钟)
+    @Value("${sys.jwt.access-token.expire-time}")
+    private long accessTokenExpireTime;
+    //**刷新信息过期时间(分钟)
+    @Value("${sys.jwt.refresh-token.expire-time}")
+    private long refreshTokenExpireTime;
+    //**密钥
+    @Value("${sys.jwt.secret}")
+    private String secret;
+
+    @Reference(version = "${sys.service.version}")
+    private UserService userService;
+
     @Bean
-    public JwtRealm jwtRealm(){
-        return new JwtRealm();
+    public JwtComponent jwtComponent(RedisTemplate<String, Object> redisTemplate){
+        return JwtComponent.Builder.newBuilder(redisTemplate)
+                .accessTokenExpireTime(accessTokenExpireTime)
+                .refreshTokenExpireTime(refreshTokenExpireTime)
+                .secret(secret)
+                .build();
+    }
+
+    @Bean
+    public JwtRealm jwtRealm(JwtComponent jwtComponent){
+        return new JwtRealm(this.userService, jwtComponent);
     }
 
     @Bean
     @Scope("prototype")
-    public JwtFilter jwtFilter(){
-        return new JwtFilter();
+    public JwtFilter jwtFilter(JwtComponent jwtComponent){
+        return new JwtFilter(jwtComponent);
     }
 
     @Bean("securityManager")
