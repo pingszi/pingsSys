@@ -1,6 +1,6 @@
 package cn.pings.web.admin.conf.shiro;
 
-import cn.pings.web.admin.util.JwtUtil;
+import cn.pings.sys.commons.util.JwtUtil;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

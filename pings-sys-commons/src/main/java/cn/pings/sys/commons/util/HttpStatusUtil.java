@@ -1,4 +1,4 @@
-package cn.pings.web.bill.util;
+package cn.pings.commons.util.spring;
 
 import org.springframework.http.HttpStatus;
 
@@ -6,13 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  *********************************************************
- ** @desc  ： HttpUtil
+ ** @desc  ： HttpStatusUtil
  ** @author  Pings
  ** @date    2019/1/23
  ** @version v1.0
  * *******************************************************
  */
-public class HttpUtil {
+public class HttpStatusUtil {
 
     /**
      *********************************************************

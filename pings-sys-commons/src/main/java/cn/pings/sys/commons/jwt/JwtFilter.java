@@ -1,7 +1,7 @@
-package cn.pings.web.bill.conf.shiro;
+package cn.pings.web.admin.conf.shiro;
 
 import cn.pings.sys.commons.util.ApiResponse;
-import cn.pings.web.bill.util.JwtUtil;
+import cn.pings.sys.commons.util.JwtUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
