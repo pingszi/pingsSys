@@ -43,10 +43,10 @@ sys:
     version: 0.0.1
   jwt:
     secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
-     # 访问令牌过期时长(分钟)，<= 0时，使用默认配置5分钟
+     # 访问令牌过期时长(分钟)，默认配置5分钟
     access-token:
       expire-time: 10
-    # 刷新令牌过期时长(分钟)，<= 0时，使用默认配置60分钟
+    # 刷新令牌过期时长(分钟)，默认配置60分钟
     refresh-token:
       expire-time: 60
 
@@ -107,10 +107,10 @@ sys:
     version: 0.0.1
   jwt:
     secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
-     # 访问令牌过期时长(分钟)，<= 0时，使用默认配置5分钟
+     # 访问令牌过期时长(分钟)，默认配置5分钟
     access-token:
       expire-time: 3
-    # 刷新令牌过期时长(分钟)，<= 0时，使用默认配置60分钟
+    # 刷新令牌过期时长(分钟)，默认配置60分钟
     refresh-token:
       expire-time: 5
 

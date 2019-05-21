@@ -3,7 +3,7 @@ package cn.pings.web.admin.controller.sys;
 import cn.pings.service.api.sys.entity.Right;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.entity.User;
-import cn.pings.sys.commons.jwt.JwtComponent;
+import cn.pings.sys.commons.jwt.JwtVerifier;
 import cn.pings.sys.commons.util.ApiResponse;
 import cn.pings.web.admin.controller.AbstractBaseController;
 import cn.pings.sys.commons.util.JwtUtil;
@@ -13,7 +13,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +35,7 @@ import static java.util.stream.Collectors.toSet;
 public class LoginController extends AbstractBaseController {
 
     @Autowired
-    private JwtComponent jwtComponent;
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private JwtVerifier verifier;
 
     /**
      *********************************************************
@@ -77,7 +74,7 @@ public class LoginController extends AbstractBaseController {
 
         User user = this.userService.getByUserName(userName);
         if(user != null && user.getPassword().equals(password)) {
-            JwtUtil.setHttpServletResponse(response, jwtComponent.sign(userName));
+            JwtUtil.setHttpServletResponse(response, verifier.sign(userName));
 
             //**用户权限
             Set<String> rights = user.getRoles().stream().map(Role::getRights).flatMap(List::stream).map(Right::getCode).collect(toSet());
@@ -96,9 +93,8 @@ public class LoginController extends AbstractBaseController {
      */
     @ApiOperation(value="退出登录", notes="退出登录")
     @GetMapping(value = "/logout")
-    public ApiResponse account(){
-        //**删除refresh token
-        this.redisTemplate.delete(this.jwtComponent.getKey(this.getCurrentUserName()));
+    public ApiResponse logout(){
+        this.verifier.invalidateSign(this.getCurrentUserName());
 
         //**退出登录
         SecurityUtils.getSubject().logout();

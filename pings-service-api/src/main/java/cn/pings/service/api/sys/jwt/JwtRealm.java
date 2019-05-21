@@ -5,13 +5,9 @@ import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.entity.User;
 import cn.pings.service.api.sys.service.UserService;
 import cn.pings.sys.commons.jwt.AbstractJwtRealm;
-import cn.pings.sys.commons.jwt.JwtComponent;
-import cn.pings.sys.commons.util.JwtUtil;
+import cn.pings.sys.commons.jwt.JwtVerifier;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -30,18 +26,18 @@ import static java.util.stream.Collectors.toSet;
 public class JwtRealm extends AbstractJwtRealm {
 
     protected UserService userService;
-    protected JwtComponent jwtComponent;
+    protected JwtVerifier verifier;
 
-    public JwtRealm(UserService userService, JwtComponent jwtComponent){
+    public JwtRealm(UserService userService, JwtVerifier verifier){
         this.userService = userService;
-        this.jwtComponent = jwtComponent;
+        this.verifier = verifier;
     }
 
     /**权限验证*/
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        String userName = JwtUtil.getUserName(principals.toString());
+        String userName = verifier.getUserName(principals.toString());
 
         //**获取用户
         User user = this.userService.getByUserName(userName);
@@ -62,20 +58,20 @@ public class JwtRealm extends AbstractJwtRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
         String token = (String) auth.getCredentials();
         //**获取用户名称
-        String userName = JwtUtil.getUserName(token);
+        String userName = verifier.getUserName(token);
         //**用户名称为空
         if (StringUtils.isBlank(userName)) {
-            throw new AuthenticationException("The account in Token is empty.");
+            throw new UnknownAccountException("The account in Token is empty.");
         }
 
         //**获取用户
         User user = this.userService.getByUserName(userName);
         if (user == null) {
-            throw new AuthenticationException("The account does not exist.");
+            throw new UnknownAccountException("The account does not exist.");
         }
 
         //**登录认证
-        if (jwtComponent.verify(token)) {
+        if (verifier.verify(token)) {
             return new SimpleAuthenticationInfo(token, token, "jwtRealm");
         }
 

@@ -2,6 +2,7 @@ package cn.pings.web.admin.controller;
 
 import cn.pings.service.api.sys.entity.User;
 import cn.pings.service.api.sys.service.UserService;
+import cn.pings.sys.commons.jwt.JwtVerifier;
 import cn.pings.sys.commons.util.JwtUtil;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.SecurityUtils;
@@ -26,7 +27,7 @@ public abstract class AbstractBaseController {
     /**获取当前用户名称*/
     protected String getCurrentUserName(){
         String token = SecurityUtils.getSubject().getPrincipal().toString();
-        return JwtUtil.getUserName(token);
+        return JwtUtil.getValue(token, JwtVerifier.USER_NAME).asString();
     }
 
     /**获取当前用户*/

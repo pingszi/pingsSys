@@ -1,7 +1,6 @@
 package cn.pings.sys.commons.jwt;
 
 import cn.pings.sys.commons.util.JwtUtil;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,10 +22,10 @@ import java.io.PrintWriter;
  */
 public class JwtFilter extends BasicHttpAuthenticationFilter {
 
-    protected JwtComponent jwtComponent;
+    protected JwtVerifier verifier;
 
-    public JwtFilter(JwtComponent jwtComponent){
-        this.jwtComponent = jwtComponent;
+    public JwtFilter(JwtVerifier verifier){
+        this.verifier = verifier;
     }
 
     /**登录认证*/
@@ -40,9 +39,9 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
             } catch (Exception e) {
                 //**访问令牌过期 and 刷新令牌未过期则重新生成访问令牌
                 try {
-                    if (e.getCause() instanceof TokenExpiredException) {
-                        String userName = JwtUtil.getUserName(this.getAuthzHeader(request));
-                        String token = jwtComponent.sign(userName);
+                    if (e.getCause() instanceof AccessTokenExpiredException) {
+                        String userName = verifier.getUserName(this.getAuthzHeader(request));
+                        String token = verifier.sign(userName);
                         this.executeLogin(token, request, response);
 
                         //**修改响应头的访问令牌

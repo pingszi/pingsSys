@@ -131,3 +131,4 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-04-11 dubbo从2.6.5升级为2.7.1
 - 2019-04-20 把公共类提取到pings-sys-commons
 - 2019-05-15 把shiro+jwt认证类提取到pings-sys-commons
+- 2019-05-18 重构shiro+jwt认证类，可实现通过配置在access token和结合refresh token/access token的方式之间进行切换

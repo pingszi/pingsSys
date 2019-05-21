@@ -1,9 +1,10 @@
 package cn.pings.web.bill.conf;
 
 import cn.pings.service.api.sys.service.UserService;
-import cn.pings.sys.commons.jwt.JwtComponent;
 import cn.pings.sys.commons.jwt.JwtFilter;
 import cn.pings.service.api.sys.jwt.JwtRealm;
+import cn.pings.sys.commons.jwt.JwtVerifier;
+import cn.pings.sys.commons.jwt.RefreshTokenJwtVerifier;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
@@ -48,8 +49,8 @@ public class ShiroConfig {
     private UserService userService;
 
     @Bean
-    public JwtComponent jwtComponent(RedisTemplate<String, Object> redisTemplate){
-        return JwtComponent.Builder.newBuilder(redisTemplate)
+    public JwtVerifier verifier(RedisTemplate<String, Object> redisTemplate){
+        return RefreshTokenJwtVerifier.Builder.newBuilder(redisTemplate)
                 .accessTokenExpireTime(accessTokenExpireTime)
                 .refreshTokenExpireTime(refreshTokenExpireTime)
                 .secret(secret)
@@ -57,14 +58,14 @@ public class ShiroConfig {
     }
 
     @Bean
-    public JwtRealm jwtRealm(JwtComponent jwtComponent){
-        return new JwtRealm(this.userService, jwtComponent);
+    public JwtRealm jwtRealm(JwtVerifier verifier){
+        return new JwtRealm(this.userService, verifier);
     }
 
     @Bean
     @Scope("prototype")
-    public JwtFilter jwtFilter(JwtComponent jwtComponent){
-        return new JwtFilter(jwtComponent);
+    public JwtFilter jwtFilter(JwtVerifier verifier){
+        return new JwtFilter(verifier);
     }
 
     @Bean("securityManager")
