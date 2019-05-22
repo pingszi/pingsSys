@@ -1,11 +1,11 @@
 package cn.pings.service.api.sys.jwt;
 
+import cn.pings.jwt.realm.AbstractJwtRealm;
+import cn.pings.jwt.verifier.JwtVerifier;
 import cn.pings.service.api.sys.entity.Right;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.entity.User;
 import cn.pings.service.api.sys.service.UserService;
-import cn.pings.sys.commons.jwt.AbstractJwtRealm;
-import cn.pings.sys.commons.jwt.JwtVerifier;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -26,11 +26,10 @@ import static java.util.stream.Collectors.toSet;
 public class JwtRealm extends AbstractJwtRealm {
 
     protected UserService userService;
-    protected JwtVerifier verifier;
 
     public JwtRealm(UserService userService, JwtVerifier verifier){
+        super(verifier);
         this.userService = userService;
-        this.verifier = verifier;
     }
 
     /**权限验证*/

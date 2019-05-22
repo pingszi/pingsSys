@@ -10,6 +10,8 @@
 ## 运行项目
 ### 后端
 - 说明：
+    - 使用ide打开maven项目，自动导入依赖
+    - pings-shiro-jwt包需要手动导入([pings-shiro-jwt地址](https://github.com/pingszi/pingsCommons/tree/master/pings-shiro-jwt))
     - 先启动Provider，然后启动Consumer
     - 开发模式依赖的运行环境(mysql,redis,zookeeper)均可以直接连接，你可以先在本地运行起来，然后在自己搭建运行环境
     - [运行环境搭建过程](https://blog.csdn.net/zhouping118/article/details/88032298)
@@ -132,3 +134,4 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-04-20 把公共类提取到pings-sys-commons
 - 2019-05-15 把shiro+jwt认证类提取到pings-sys-commons
 - 2019-05-18 重构shiro+jwt认证类，可实现通过配置在access token和结合refresh token/access token的方式之间进行切换
+- 2019-05-22 把shiro+jwt认证类提取到pings-shiro-jwt，并打成jar包([pings-shiro-jwt地址](https://github.com/pingszi/pingsCommons/tree/master/pings-shiro-jwt))

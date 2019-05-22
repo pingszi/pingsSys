@@ -57,6 +57,13 @@
 			<artifactId>pings-sys-commons</artifactId>
 			<version>${pings-sys-commons.version}</version>
 		</dependency>
+		<!-- pings-shiro-jwt -->
+		<dependency>
+			<groupId>cn.pings.jwt</groupId>
+			<artifactId>pings-shiro-jwt</artifactId>
+			<version>${pings-shiro-jwt.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
 	</dependencies>
 

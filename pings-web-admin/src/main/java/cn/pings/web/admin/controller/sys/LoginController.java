@@ -1,12 +1,12 @@
 package cn.pings.web.admin.controller.sys;
 
+import cn.pings.commons.util.jwt.JwtUtil;
+import cn.pings.jwt.verifier.JwtVerifier;
 import cn.pings.service.api.sys.entity.Right;
 import cn.pings.service.api.sys.entity.Role;
 import cn.pings.service.api.sys.entity.User;
-import cn.pings.sys.commons.jwt.JwtVerifier;
 import cn.pings.sys.commons.util.ApiResponse;
 import cn.pings.web.admin.controller.AbstractBaseController;
-import cn.pings.sys.commons.util.JwtUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
