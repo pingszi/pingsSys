@@ -28,19 +28,23 @@ dubbo:
 
   # ApplicationConfig Bean
   application:
-   id: pings-web-admin
-   name: pings-web-admin
+   id: pings-web-admin-dev
+   name: pings-web-admin-dev
 
   # RegistryConfig Bean
   registry:
     id: client-admin
+    address: zookeeper://112.74.169.154:2181
+  metadata-report:
+    address: zookeeper://112.74.169.154:2181
+  config-center:
     address: zookeeper://112.74.169.154:2181
 
 # sys config
 sys:
   # Service version
   service:
-    version: 0.0.1
+    version: 0.0.2
   jwt:
     secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
      # 访问令牌过期时长(分钟)，默认配置5分钟
@@ -95,12 +99,16 @@ dubbo:
   registry:
     id: client-admin
     address: zookeeper://zk_test:2181
+  metadata-report:
+    address: zookeeper://zk_test:2181
+  config-center:
+    address: zookeeper://zk_test:2181
 
 # sys config
 sys:
   # Service version
   service:
-    version: 0.0.1
+    version: 1.0.0
   jwt:
     secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
      # 访问令牌过期时长(分钟)，默认配置5分钟

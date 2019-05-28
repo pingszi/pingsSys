@@ -16,11 +16,6 @@ mybatis-plus:
     # 驼峰命名规则（camel case）映射
     map-underscore-to-camel-case: true
 
-# Service version
-sys:
-  service:
-    version: 0.0.1
-
 ---
 
 # spring
@@ -77,8 +72,8 @@ dubbo:
 
   # ApplicationConfig Bean
   application:
-   id: pings-service-sys
-   name: pings-service-sys
+   id: pings-service-sys-dev
+   name: pings-service-sys-dev
 
   # ProtocolConfig Bean
   protocol:
@@ -90,6 +85,15 @@ dubbo:
   registry:
     id: service-sys
     address: zookeeper://112.74.169.154:2181
+  metadata-report:
+    address: zookeeper://112.74.169.154:2181
+  config-center:
+    address: zookeeper://112.74.169.154:2181
+
+# Service version
+sys:
+  service:
+    version: 0.0.2
 
 ---
 
@@ -160,3 +164,12 @@ dubbo:
   registry:
     id: service-sys
     address: zookeeper://zk_test:2181
+  metadata-report:
+    address: zookeeper://zk_test:2181
+  config-center:
+    address: zookeeper://zk_test:2181
+
+# Service version
+sys:
+  service:
+    version: 1.0.0
