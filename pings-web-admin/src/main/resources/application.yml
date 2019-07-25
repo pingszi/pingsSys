@@ -54,6 +54,10 @@ sys:
     refresh-token:
       expire-time: 60
 
+# 服务器配置
+#server:
+#  port: 8088
+
 management:
   endpoints:
     web:

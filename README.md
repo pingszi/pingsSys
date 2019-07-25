@@ -136,3 +136,4 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-05-18 重构shiro+jwt认证类，可实现通过配置在access token和结合refresh token/access token的方式之间进行切换
 - 2019-05-22 把shiro+jwt认证类提取到pings-shiro-jwt，并打成jar包([pings-shiro-jwt地址](https://github.com/pingszi/pingsCommons/tree/master/pings-shiro-jwt))
 - 2019-05-28 把dubbo配置修改为2.7.x动态配置和元数据中心
+- 2019-07-25 pings-service-sys和pings-web-admin项目添加测试

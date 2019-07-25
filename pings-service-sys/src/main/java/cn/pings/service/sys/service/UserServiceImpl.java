@@ -41,11 +41,6 @@ public class UserServiceImpl extends AbstractBaseService<UserMapper, User> imple
     private UserRoleMapper userRoleMapper;
 
     @Override
-    public User getById(int id) {
-        return this.baseMapper.selectById(id);
-    }
-
-    @Override
     public User getByUserName(String userName) {
         //**查询用户
         User entity = new User();

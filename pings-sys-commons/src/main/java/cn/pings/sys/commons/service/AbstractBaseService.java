@@ -23,6 +23,19 @@ public abstract class AbstractBaseService<M extends BaseMapper<T>, T extends Abs
 
     /**
      *********************************************************
+     ** @desc ： 根据id获取数据
+     ** @author Pings
+     ** @date   2019/6/2
+     ** @param  id
+     ** @return T
+     * *******************************************************
+     */
+    public T getById(int id){
+        return this.baseMapper.selectById(id);
+    }
+
+    /**
+     *********************************************************
      ** @desc ： 分页查询
      ** @author Pings
      ** @date   2019/2/20

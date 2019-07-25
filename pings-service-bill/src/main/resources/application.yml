@@ -44,7 +44,7 @@ spring:
   datasource:
     type: 'com.alibaba.druid.pool.DruidDataSource'
     driver-class-name: 'com.mysql.cj.jdbc.Driver'
-    url: 'jdbc:mysql://112.74.169.154:13306/pings_bill?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull'
+    url: 'jdbc:mysql://127.0.0.1:4000/pings_bill?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull'
     username: 'root'
     password: '123456'
     # druid设置

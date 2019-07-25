@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthorizedException;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -36,22 +35,6 @@ public class LoginController extends AbstractBaseController {
 
     @Autowired
     private JwtVerifier verifier;
-
-    /**
-     *********************************************************
-     ** @desc ： 测试
-     ** @author Pings
-     ** @date   2019/1/22
-     ** @param  id  用户编号
-     ** @return ApiResponse
-     * *******************************************************
-     */
-    @ApiOperation(value="测试", notes="根据用户编号获取用户")
-    @GetMapping(value = "/test/{id}")
-    @RequiresAuthentication
-    public ApiResponse test(@PathVariable("id") int id){
-        return new ApiResponse(200, this.userService.getById(id));
-    }
 
     /**
      *********************************************************

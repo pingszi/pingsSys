@@ -45,6 +45,10 @@ public class ApiResponse implements Serializable {
         this.data = data;
     }
 
+    public ApiResponse() {
+        this(-1, null, null);
+    }
+
     public ApiResponse(int code) {
         this(code, null, null);
     }

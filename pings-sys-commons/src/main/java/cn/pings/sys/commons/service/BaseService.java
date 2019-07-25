@@ -17,6 +17,17 @@ public interface BaseService<T extends AbstractBaseEntity> {
 
     /**
      *********************************************************
+     ** @desc ： 根据id获取数据
+     ** @author Pings
+     ** @date   2019/6/2
+     ** @param  id
+     ** @return T
+     * *******************************************************
+     */
+    T getById(int id);
+
+    /**
+     *********************************************************
      ** @desc ： 分页查询
      ** @author Pings
      ** @date   2019/2/20

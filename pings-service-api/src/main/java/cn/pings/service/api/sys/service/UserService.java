@@ -15,17 +15,6 @@ public interface UserService extends BaseService<User> {
 
     /**
      *********************************************************
-     ** @desc ： 根据id查询
-     ** @author Pings
-     ** @date   2019/1/8
-     ** @param  id   编号
-     ** @return User
-     * *******************************************************
-     */
-    User getById(int id);
-
-    /**
-     *********************************************************
      ** @desc ： 根据用户名称查询用户
      ** @author Pings
      ** @date   2019/1/14
