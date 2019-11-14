@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1          #apiserver的版本
+kind: Deployment                        #副本控制器deployment，管理pod和RS
+metadata:
+  name: redis                           #deployment的名称，全局唯一
+spec:
+  replicas: 1                           #Pod副本期待数量
+  selector:
+    matchLabels:                        #定义RS的标签
+      app: redis                        #符合目标的Pod拥有此标签
+  strategy:                             #定义升级的策略
+    type: RollingUpdate                 #滚动升级，逐步替换的策略
+  template:                             #根据此模板创建Pod的副本（实例）
+    metadata:
+      labels:
+        app: redis                      #Pod副本的标签，对应RS的Selector
+    spec:
+      containers:                       #Pod里容器的定义部分
+        - name: redis                   #容器的名称
+          image: pings/redis            #容器对应的docker镜像
+          imagePullPolicy: Never        #不从外网摘取镜像
+          ports:
+            - containerPort: 6379       #容器暴露的端口号

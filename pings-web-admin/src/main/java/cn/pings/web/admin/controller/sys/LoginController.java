@@ -10,7 +10,7 @@ import cn.pings.web.admin.controller.AbstractBaseController;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +50,7 @@ public class LoginController extends AbstractBaseController {
     @PostMapping(value = "/account")
     public ApiResponse account(String userName, String password, HttpServletResponse response){
         if(StringUtils.isBlank(userName) || StringUtils.isBlank(password))
-            throw new UnauthorizedException("用户名/密码不能为空");
+            throw new UnknownAccountException("用户名/密码不能为空");
 
         //**md5加密
         password = DigestUtils.md5DigestAsHex(password.getBytes());
@@ -61,9 +61,9 @@ public class LoginController extends AbstractBaseController {
 
             //**用户权限
             Set<String> rights = user.getRoles().stream().map(Role::getRights).flatMap(List::stream).map(Right::getCode).collect(toSet());
-            return new ApiResponse(200, "登录成功", rights);
+            return ApiResponse.success("登录成功", rights);
         } else
-            return new ApiResponse(500, "用户名/密码错误");
+            return ApiResponse.failure("用户名/密码错误");
     }
 
     /**
@@ -77,11 +77,16 @@ public class LoginController extends AbstractBaseController {
     @ApiOperation(value="退出登录", notes="退出登录")
     @GetMapping(value = "/logout")
     public ApiResponse logout(){
-        this.verifier.invalidateSign(this.getCurrentUserName());
+        try{
+            String userName = this.getCurrentUserName();
+            this.verifier.invalidateSign(userName);
+        } catch (Exception e){
+            logger.warn("没有登录的用户访问退出登录");
+        }
 
         //**退出登录
         SecurityUtils.getSubject().logout();
 
-        return new ApiResponse(200, "退出登录成功");
+        return ApiResponse.success("退出登录成功");
     }
 }

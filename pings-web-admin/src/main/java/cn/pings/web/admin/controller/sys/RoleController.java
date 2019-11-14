@@ -39,7 +39,7 @@ public class RoleController extends AbstractBaseController {
     @RequiresPermissions("sys:role:list")
     public ApiResponse list(ReactPage<Role> page, Role entity){
         ReactPage<Role> list = (ReactPage<Role>)this.roleService.findPage(page, entity);
-        return new ApiResponse(200, list.toReactPageFormat());
+        return ApiResponse.success(list.toReactPageFormat());
     }
 
     /**
@@ -54,7 +54,7 @@ public class RoleController extends AbstractBaseController {
     @GetMapping(value = "/findAll")
     @RequiresAuthentication
     public ApiResponse findAll(){
-        return new ApiResponse(200, this.roleService.findAll());
+        return ApiResponse.success(this.roleService.findAll());
     }
 
     /**
@@ -69,7 +69,7 @@ public class RoleController extends AbstractBaseController {
     @GetMapping(value = "/findByUserId/{userId}")
     @RequiresAuthentication
     public ApiResponse findByUserId(@PathVariable("userId") int userId){
-        return new ApiResponse(200, this.roleService.findByUserId(userId));
+        return ApiResponse.success(this.roleService.findByUserId(userId));
     }
 
     /**
@@ -84,7 +84,7 @@ public class RoleController extends AbstractBaseController {
     @GetMapping(value = "/validateCodeUnique/{code}")
     public ApiResponse validateCodeUnique(@PathVariable("code") String code){
         Role role = this.roleService.getByCode(code);
-        return new ApiResponse(200, role == null);
+        return ApiResponse.success(role == null);
     }
 
     /**
@@ -102,7 +102,7 @@ public class RoleController extends AbstractBaseController {
         entity.editAddWhoOrEditWho(this.getCurrentUser());
         Role role = this.roleService.save(entity);
 
-        return new ApiResponse(200,"保存成功", role);
+        return ApiResponse.success("保存成功", role);
     }
 
     /**
@@ -119,7 +119,7 @@ public class RoleController extends AbstractBaseController {
     public ApiResponse deleteById(@PathVariable("id") int id){
         this.roleService.deleteById(id);
 
-        return new ApiResponse(200,"删除成功");
+        return ApiResponse.success("删除成功");
     }
 
     /**
@@ -136,6 +136,6 @@ public class RoleController extends AbstractBaseController {
     public ApiResponse allotRight(int id, int[] rights){
         this.roleService.allotRight(id, rights, this.getCurrentUser().getId());
 
-        return new ApiResponse(200,"分配成功");
+        return ApiResponse.success("分配成功");
     }
 }

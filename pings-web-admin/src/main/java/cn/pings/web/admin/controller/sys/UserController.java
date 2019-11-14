@@ -35,7 +35,7 @@ public class UserController extends AbstractBaseController {
     @GetMapping(value = "/currentUser")
     @RequiresAuthentication
     public ApiResponse currentUser(){
-        return new ApiResponse(200, this.userService.getByUserName(this.getCurrentUserName()));
+        return ApiResponse.success(this.userService.getByUserName(this.getCurrentUserName()));
     }
 
     /**
@@ -51,7 +51,7 @@ public class UserController extends AbstractBaseController {
     @RequiresPermissions("sys:user:list")
     public ApiResponse list(ReactPage<User> page, User entity){
         ReactPage<User> list = (ReactPage<User>)this.userService.findPage(page, entity);
-        return new ApiResponse(200, list.toReactPageFormat());
+        return ApiResponse.success(list.toReactPageFormat());
     }
 
     /**
@@ -66,7 +66,7 @@ public class UserController extends AbstractBaseController {
     @GetMapping(value = "/validateUserNameUnique/{userName}")
     public ApiResponse validateUserNameUnique(@PathVariable("userName") String userName){
         User user = this.userService.getByUserName(userName);
-        return new ApiResponse(200, user == null);
+        return ApiResponse.success(user == null);
     }
 
     /**
@@ -87,7 +87,7 @@ public class UserController extends AbstractBaseController {
 
         User user = this.userService.save(entity);
 
-        return new ApiResponse(200,"保存成功", user);
+        return ApiResponse.success("保存成功", user);
     }
 
     /**
@@ -104,7 +104,7 @@ public class UserController extends AbstractBaseController {
     public ApiResponse deleteById(@PathVariable("id") int id){
         this.userService.deleteById(id);
 
-        return new ApiResponse(200,"删除成功");
+        return ApiResponse.success("删除成功");
     }
 
     /**
@@ -121,7 +121,7 @@ public class UserController extends AbstractBaseController {
     public ApiResponse allotRole(int id, int[] roles){
         this.userService.allotRole(id, roles, this.getCurrentUser().getId());
 
-        return new ApiResponse(200,"分配成功");
+        return ApiResponse.success("分配成功");
     }
 
     /**
@@ -136,20 +136,19 @@ public class UserController extends AbstractBaseController {
     @PostMapping(value = "/updatePassword")
     @RequiresAuthentication
     public ApiResponse updatePassword(int id, String oldPassword, String password, String rePassword){
-        if(!password.equals(rePassword)) return new ApiResponse(400,"确认密码和密码不一致");
+        if(!password.equals(rePassword)) return ApiResponse.failure("确认密码和密码不一致");
 
         //**验证旧密码
         oldPassword = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
         User user = this.userService.getById(id);
         if(user == null || !user.getPassword().equals(oldPassword))
-            return new ApiResponse(400,"旧密码错误");
-
+            return ApiResponse.failure("旧密码错误");
 
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         user.setPassword(password);
         user.editAddWhoOrEditWho(this.getCurrentUser());
         this.userService.save(user);
 
-        return new ApiResponse(200,"修改成功");
+        return ApiResponse.success("修改成功");
     }
 }

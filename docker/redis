@@ -1,0 +1,23 @@
+# 系统镜像redis
+FROM redis:latest
+
+# 维护者
+MAINTAINER Pings 275598139@qq.com
+
+# 环境变量
+ENV LANG en_US.UTF-8
+# 设置时区
+RUN ln -s -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+# 复制配置文件
+COPY conf/redis/redis.conf /usr/local/etc/redis/redis.conf
+
+# 配置
+RUN sed -i "s/# requirepass foobared/requirepass 123456/" /usr/local/etc/redis/redis.conf
+RUN sed -i "s/bind 127.0.0.1/bind 0.0.0.0/" /usr/local/etc/redis/redis.conf
+
+CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+
+# 运行命令
+# docker build -t pings/redis -f redis .
+# docker run -p 36379:6379 --name redis pings/redis

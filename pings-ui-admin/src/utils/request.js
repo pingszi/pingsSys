@@ -95,7 +95,9 @@ export default function request(url, option) {
 
   //**添加权限标记token */
   let token = getAuthorization();
-  if (token) option.headers.Authorization = token;
+  //**是否是登出系统
+  const isLogout = url.search('login/logout') !== -1;
+  if (token && !isLogout) option.headers.Authorization = token;
 
   return fetch(url, option)
     .then(checkStatus)

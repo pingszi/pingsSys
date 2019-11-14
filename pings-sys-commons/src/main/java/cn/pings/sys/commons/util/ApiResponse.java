@@ -67,18 +67,28 @@ public class ApiResponse implements Serializable {
         this.data = data;
     }
 
-    public ApiResponse setAndGet(int code) {
-        return setAndGet(code, null, null);
+    public static ApiResponse success(String msg){
+        return new ApiResponse(200, msg);
     }
 
-    public ApiResponse setAndGet(int code, String msg) {
-        return setAndGet(code, msg, null);
+    public static ApiResponse success(Object data){
+        return new ApiResponse(200, data);
     }
 
-    public ApiResponse setAndGet(int code, String msg, Object data) {
-        this.code = code;
-        this.msg = msg;
-        this.data = data;
-        return this;
+    public static ApiResponse success(String msg, Object data){
+        return new ApiResponse(200, msg, data);
     }
+
+    public static ApiResponse failure(String msg){
+        return new ApiResponse(400, msg);
+    }
+
+    public static ApiResponse failure(Object data){
+        return new ApiResponse(400, data);
+    }
+
+    public static ApiResponse failure(String msg, Object data){
+        return new ApiResponse(400, msg, data);
+    }
+
 }

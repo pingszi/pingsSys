@@ -37,7 +37,7 @@ public class RightController extends AbstractBaseController {
     @GetMapping(value = "/findAll")
     @RequiresAuthentication
     public ApiResponse findAll(){
-        return new ApiResponse(200, this.rightService.findTreeAll());
+        return ApiResponse.success(this.rightService.findTreeAll());
     }
 
     /**
@@ -52,7 +52,7 @@ public class RightController extends AbstractBaseController {
     @GetMapping(value = "/findByRoleId/{roleId}")
     @RequiresAuthentication
     public ApiResponse findByRoleId(@PathVariable("roleId") int roleId){
-        return new ApiResponse(200, this.rightService.findByRoleId(roleId));
+        return ApiResponse.success(this.rightService.findByRoleId(roleId));
     }
 
     /**
@@ -67,7 +67,7 @@ public class RightController extends AbstractBaseController {
     @GetMapping(value = "/validateCodeUnique/{code}")
     public ApiResponse validateCodeUnique(@PathVariable("code") String code){
         Right right = this.rightService.getByCode(code);
-        return new ApiResponse(200, right == null);
+        return ApiResponse.success(right == null);
     }
 
     /**
@@ -85,7 +85,7 @@ public class RightController extends AbstractBaseController {
         entity.editAddWhoOrEditWho(this.getCurrentUser());
         Right right = this.rightService.save(entity);
 
-        return new ApiResponse(200,"保存成功", right);
+        return ApiResponse.success("保存成功", right);
     }
 
     /**
@@ -102,6 +102,6 @@ public class RightController extends AbstractBaseController {
     public ApiResponse deleteById(@PathVariable("id") int id){
         this.rightService.deleteById(id);
 
-        return new ApiResponse(200,"删除成功");
+        return ApiResponse.success("删除成功");
     }
 }

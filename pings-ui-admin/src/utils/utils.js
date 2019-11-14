@@ -132,7 +132,12 @@ export function getRoutes(path, routerData) {
 }
 
 export function getPageQuery() {
-  return parse(window.location.href.split('?')[1]);
+  let str = window.location.href.split('?')[1];
+  if (str.search('redirect') !== -1) {
+    str = str.substring(str.lastIndexOf('redirect'));
+  }
+
+  return parse(str);
 }
 
 export function getQueryPath(path = '', query = {}) {

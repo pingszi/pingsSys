@@ -38,7 +38,7 @@ public class BasDataController extends AbstractBaseController {
     @RequiresPermissions("bill:basData:list")
     public ApiResponse list(ReactPage<BasData> page, BasData entity){
         ReactPage<BasData> list = (ReactPage<BasData>)this.basDataService.findPage(page, entity);
-        return new ApiResponse(200, list.toReactPageFormat());
+        return ApiResponse.success(list.toReactPageFormat());
     }
 
     /**
@@ -53,7 +53,7 @@ public class BasDataController extends AbstractBaseController {
     @GetMapping(value = "/findByType/{type}")
     @RequiresAuthentication
     public ApiResponse findByType(@PathVariable("type") String type){
-        return new ApiResponse(200, this.basDataService.findByType(type));
+        return ApiResponse.success(this.basDataService.findByType(type));
     }
 
     /**
@@ -68,7 +68,7 @@ public class BasDataController extends AbstractBaseController {
     @GetMapping(value = "/validateCodeUnique/{code}")
     public ApiResponse validateCodeUnique(@PathVariable("code") String code){
         BasData entity = this.basDataService.getByCode(code);
-        return new ApiResponse(200, entity == null);
+        return ApiResponse.success(entity == null);
     }
 
     /**
@@ -86,7 +86,7 @@ public class BasDataController extends AbstractBaseController {
         entity.editAddWhoOrEditWho(this.getCurrentUser());
         entity = this.basDataService.save(entity);
 
-        return new ApiResponse(200,"保存成功", entity);
+        return ApiResponse.success("保存成功", entity);
     }
 
     /**
@@ -103,6 +103,6 @@ public class BasDataController extends AbstractBaseController {
     public ApiResponse deleteById(@PathVariable("id") int id){
         this.basDataService.deleteById(id);
 
-        return new ApiResponse(200,"删除成功");
+        return ApiResponse.success("删除成功");
     }
 }

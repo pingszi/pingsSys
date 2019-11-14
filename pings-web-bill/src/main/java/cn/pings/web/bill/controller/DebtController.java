@@ -38,7 +38,7 @@ public class DebtController extends AbstractBaseController {
     @RequiresPermissions("bill:debt:list")
     public ApiResponse list(ReactPage<Debt> page, Debt entity){
         ReactPage<Debt> list = (ReactPage<Debt>)this.debtService.findPage(page, entity);
-        return new ApiResponse(200, list.toReactPageFormat());
+        return ApiResponse.success(list.toReactPageFormat());
     }
 
     /**
@@ -53,7 +53,7 @@ public class DebtController extends AbstractBaseController {
     @GetMapping(value = "/findAllNotRefundDebt")
     @RequiresAuthentication
     public ApiResponse findAllNotRefundDebt(){
-        return new ApiResponse(200, this.debtService.findAllNotRefundDebt());
+        return ApiResponse.success(this.debtService.findAllNotRefundDebt());
     }
 
     /**
@@ -71,7 +71,7 @@ public class DebtController extends AbstractBaseController {
         entity.editAddWhoOrEditWho(this.getCurrentUser());
         entity = this.debtService.save(entity);
 
-        return new ApiResponse(200,"保存成功", entity);
+        return ApiResponse.success("保存成功", entity);
     }
 
     /**
@@ -88,6 +88,6 @@ public class DebtController extends AbstractBaseController {
     public ApiResponse deleteById(@PathVariable("id") int id){
         this.debtService.deleteById(id);
 
-        return new ApiResponse(200,"删除成功");
+        return ApiResponse.success("删除成功");
     }
 }

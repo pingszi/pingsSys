@@ -4,9 +4,9 @@ spring:
 
   # redis
   redis:
-    host: '112.74.169.154'
-    password: '123456'
-    port: 6379
+    host: 'www.pingssys.com'
+    password: 'Zhou1182969'
+    port: 32000
     # 连接超时时间
     timeout: 5s
     lettuce:
@@ -34,25 +34,25 @@ dubbo:
   # RegistryConfig Bean
   registry:
     id: client-admin
-    address: zookeeper://112.74.169.154:2181
+    address: zookeeper://www.pingssys.com:32568
   metadata-report:
-    address: zookeeper://112.74.169.154:2181
+    address: zookeeper://www.pingssys.com:32568
   config-center:
-    address: zookeeper://112.74.169.154:2181
+    address: zookeeper://www.pingssys.com:32568
 
 # sys config
 sys:
   # Service version
   service:
-    version: 0.0.2
+    version: 0.0.1
   jwt:
     secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
      # 访问令牌过期时长(分钟)，默认配置5分钟
     access-token:
-      expire-time: 10
+      expire-time: 1
     # 刷新令牌过期时长(分钟)，默认配置60分钟
     refresh-token:
-      expire-time: 60
+      expire-time: 1
 
 # 服务器配置
 #server:

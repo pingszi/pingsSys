@@ -37,7 +37,7 @@ public class ExpenseDetailsController extends AbstractBaseController {
     @RequiresPermissions("bill:expenseDetails:list")
     public ApiResponse list(ReactPage<ExpenseDetails> page, ExpenseDetails entity){
         ReactPage<ExpenseDetails> list = (ReactPage<ExpenseDetails>)this.expenseDetailsService.findPage(page, entity);
-        return new ApiResponse(200, list.toReactPageFormat());
+        return ApiResponse.success(list.toReactPageFormat());
     }
 
     /**
@@ -55,7 +55,7 @@ public class ExpenseDetailsController extends AbstractBaseController {
         entity.editAddWhoOrEditWho(this.getCurrentUser());
         entity = this.expenseDetailsService.save(entity);
 
-        return new ApiResponse(200,"保存成功", entity);
+        return ApiResponse.success("保存成功", entity);
     }
 
     /**
@@ -72,6 +72,6 @@ public class ExpenseDetailsController extends AbstractBaseController {
     public ApiResponse deleteById(@PathVariable("id") int id){
         this.expenseDetailsService.deleteById(id);
 
-        return new ApiResponse(200,"删除成功");
+        return ApiResponse.success("删除成功");
     }
 }

@@ -17,7 +17,6 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.servlet.Filter;
@@ -62,12 +61,6 @@ public class ShiroConfig {
         return new JwtRealm(this.userService, verifier);
     }
 
-    @Bean
-    @Scope("prototype")
-    public JwtFilter jwtFilter(JwtVerifier verifier){
-        return new JwtFilter(verifier);
-    }
-
     @Bean("securityManager")
     public DefaultWebSecurityManager securityManager(JwtRealm jwtRealm) {
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
@@ -84,12 +77,12 @@ public class ShiroConfig {
     }
 
     @Bean("shiroFilter")
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager, JwtFilter jwtFilter) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager, JwtVerifier verifier) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
 
         //**添加自定义过滤器jwt
         Map<String, Filter> filterMap = new LinkedHashMap<>();
-        filterMap.put("jwt", jwtFilter);
+        filterMap.put("jwt", new JwtFilter(verifier));
         factoryBean.setFilters(filterMap);
 
         factoryBean.setSecurityManager(securityManager);

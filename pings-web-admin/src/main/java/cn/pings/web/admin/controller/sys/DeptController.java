@@ -41,7 +41,7 @@ public class DeptController extends AbstractBaseController {
     public ApiResponse findAll(){
         List<Dept> depts = this.deptService.findTreeAll();
 
-        return new ApiResponse(200, depts);
+        return ApiResponse.success(depts);
     }
 
     /**
@@ -56,7 +56,7 @@ public class DeptController extends AbstractBaseController {
     @GetMapping(value = "/validateCodeUnique/{code}")
     public ApiResponse validateCodeUnique(@PathVariable("code") String code){
         Dept dept = this.deptService.getByCode(code);
-        return new ApiResponse(200, dept == null);
+        return ApiResponse.success(dept == null);
     }
 
     /**
@@ -74,7 +74,7 @@ public class DeptController extends AbstractBaseController {
         entity.editAddWhoOrEditWho(this.getCurrentUser());
         Dept dept = this.deptService.save(entity);
 
-        return new ApiResponse(200,"保存成功", dept);
+        return ApiResponse.success("保存成功", dept);
     }
 
     /**
@@ -91,6 +91,6 @@ public class DeptController extends AbstractBaseController {
     public ApiResponse deleteById(@PathVariable("id") int id){
         this.deptService.deleteById(id);
 
-        return new ApiResponse(200,"删除成功");
+        return ApiResponse.success("删除成功");
     }
 }

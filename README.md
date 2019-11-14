@@ -13,7 +13,8 @@
     - 使用ide打开maven项目，自动导入依赖
     - pings-shiro-jwt包需要手动导入([pings-shiro-jwt地址](https://github.com/pingszi/pingsCommons/tree/master/pings-shiro-jwt))
     - 先启动Provider，然后启动Consumer
-    - 开发模式依赖的运行环境(mysql,redis,zookeeper)均可以直接连接，你可以先在本地运行起来，然后在自己搭建运行环境
+    - 开发模式依赖的运行环境(mysql,redis,zookeeper)
+    - sql脚本，在pings-service-api项目每个模块对应的script目录
     - [运行环境搭建过程](https://blog.csdn.net/zhouping118/article/details/88032298)
 - 步骤：
     - 开发模式启动springboot项目pings-service-sys
@@ -90,7 +91,7 @@ public class DeptServiceImpl extends AbstractBaseService<DeptMapper, Dept> imple
 public ApiResponse list(ReactPage<User> page, User entity){
     ReactPage<User> list = (ReactPage<User>)this.iUserService.findPage(page, entity);
     //**ReactPage的toReactPageFormat方法转换为Ant table分页数据
-    return new ApiResponse(200, list.toReactPageFormat());
+    return ApiResponse.success("保存成功", list.toReactPageFormat());
 }
 ```
 - Ant tree树形结构
@@ -137,3 +138,4 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-05-22 把shiro+jwt认证类提取到pings-shiro-jwt，并打成jar包([pings-shiro-jwt地址](https://github.com/pingszi/pingsCommons/tree/master/pings-shiro-jwt))
 - 2019-05-28 把dubbo配置修改为2.7.x动态配置和元数据中心
 - 2019-07-25 pings-service-sys和pings-web-admin项目添加测试
+- 2019-11-14 修复了登录的部分bug
