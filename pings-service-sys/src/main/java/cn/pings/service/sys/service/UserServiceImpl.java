@@ -66,7 +66,7 @@ public class UserServiceImpl extends AbstractBaseService<UserMapper, User> imple
 
     @Override
     public IPage<User> findPage(IPage<User> page, User entity){
-        return page.setRecords(this.baseMapper.selectPage(page, entity));
+        return page.setRecords(this.baseMapper.findPage(page, entity));
     }
 
     @Override

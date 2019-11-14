@@ -139,3 +139,4 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-05-28 把dubbo配置修改为2.7.x动态配置和元数据中心
 - 2019-07-25 pings-service-sys和pings-web-admin项目添加测试
 - 2019-11-14 修复了登录的部分bug
+- 2019-11-14 springboot升级到2.2.1，dubbo升级到2.7.4.1

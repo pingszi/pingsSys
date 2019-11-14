@@ -29,6 +29,6 @@ public interface UserMapper extends BaseMapper<User> {
      ** @return List
      * *******************************************************
      */
-    List<User> selectPage(IPage<User> page, @Param("entity")User entity);
+    List<User> findPage(IPage<User> page, @Param("entity")User entity);
 
 }

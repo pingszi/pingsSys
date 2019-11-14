@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.pings.service.sys.mapper.UserMapper">
 
-    <select id="selectPage" resultType="cn.pings.service.api.sys.entity.User">
+    <select id="findPage" resultType="cn.pings.service.api.sys.entity.User">
         select u.*,d.name dept_name
           from sys_user u
           left join sys_dept d on d.id = u.dept_id
