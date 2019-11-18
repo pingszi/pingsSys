@@ -124,7 +124,7 @@ spring:
   datasource:
     type: 'com.alibaba.druid.pool.DruidDataSource'
     driver-class-name: 'com.mysql.cj.jdbc.Driver'
-    url: 'jdbc:mysql://10.254.235.117:3306/pings_bill?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull'
+    url: 'jdbc:mysql://10.254.235.130:3306/pings_bill?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull'
     username: 'root'
     password: 'Zhou1182969'
     # druid设置
@@ -164,11 +164,11 @@ dubbo:
   # RegistryConfig Bean
   registry:
     id: service-bill
-    address: zookeeper://10.254.235.117:2181
+    address: zookeeper://10.254.245.118:2181
   metadata-report:
-    address: zookeeper://10.254.235.117:2181
+    address: zookeeper://10.254.245.118:2181
   config-center:
-    address: zookeeper://10.254.235.117:2181
+    address: zookeeper://10.254.245.118:2181
 
 # Service version
 bill:
