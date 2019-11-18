@@ -103,8 +103,8 @@ spring:
 
   # redis
   redis:
-    host: 'redis_test'
-    password: '123456'
+    host: '10.254.235.117'
+    password: 'Zhou1182969'
     port: 6379
     # 连接超时时间
     timeout: 5s
@@ -123,9 +123,9 @@ spring:
   datasource:
     type: 'com.alibaba.druid.pool.DruidDataSource'
     driver-class-name: 'com.mysql.cj.jdbc.Driver'
-    url: 'jdbc:mysql://pings_sys_test:3306/pings_sys?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull'
+    url: 'jdbc:mysql://10.254.242.130:3306/pings_sys?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull'
     username: 'root'
-    password: '123456'
+    password: 'Zhou1182969'
     # druid设置
     druid:
       # 初始化大小，最小，最大
@@ -163,11 +163,11 @@ dubbo:
   # RegistryConfig Bean
   registry:
     id: service-sys
-    address: zookeeper://zk_test:2181
+    address: zookeeper://10.254.245.118:2181
   metadata-report:
-    address: zookeeper://zk_test:2181
+    address: zookeeper://10.254.245.118:2181
   config-center:
-    address: zookeeper://zk_test:2181
+    address: zookeeper://10.254.245.118:2181
 
 # Service version
 sys:

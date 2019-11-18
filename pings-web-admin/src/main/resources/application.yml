@@ -49,10 +49,10 @@ sys:
     secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
      # 访问令牌过期时长(分钟)，默认配置5分钟
     access-token:
-      expire-time: 1
+      expire-time: 10
     # 刷新令牌过期时长(分钟)，默认配置60分钟
     refresh-token:
-      expire-time: 1
+      expire-time: 60
 
 # 服务器配置
 #server:
@@ -72,8 +72,8 @@ spring:
 
   # redis
   redis:
-    host: 'redis_test'
-    password: '123456'
+    host: '10.254.235.117'
+    password: 'Zhou1182969'
     port: 6379
     # 连接超时时间
     timeout: 5s
@@ -102,11 +102,11 @@ dubbo:
   # RegistryConfig Bean
   registry:
     id: client-admin
-    address: zookeeper://zk_test:2181
+    address: zookeeper://10.254.235.117:2181
   metadata-report:
-    address: zookeeper://zk_test:2181
+    address: zookeeper://10.254.235.117:2181
   config-center:
-    address: zookeeper://zk_test:2181
+    address: zookeeper://10.254.235.117:2181
 
 # sys config
 sys:
@@ -117,7 +117,7 @@ sys:
     secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
      # 访问令牌过期时长(分钟)，默认配置5分钟
     access-token:
-      expire-time: 3
+      expire-time: 5
     # 刷新令牌过期时长(分钟)，默认配置60分钟
     refresh-token:
-      expire-time: 5
+      expire-time: 20

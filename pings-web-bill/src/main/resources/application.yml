@@ -30,8 +30,7 @@ dubbo:
   application:
    id: pings-web-bill-dev
    name: pings-web-bill-dev
-   qos:
-    port: 33333
+   qos-host: 33333
 
   # RegistryConfig Bean
   registry:
@@ -80,8 +79,8 @@ spring:
 
   # redis
   redis:
-    host: 'redis_test'
-    password: '123456'
+    host: '10.254.235.117'
+    password: 'Zhou1182969'
     port: 6379
     # 连接超时时间
     timeout: 5s
@@ -110,11 +109,11 @@ dubbo:
   # RegistryConfig Bean
   registry:
     id: client-bill
-    address: zookeeper://zk_test:2181
+    address: zookeeper://10.254.242.130:2181
   metadata-report:
-    address: zookeeper://zk_test:2181
+    address: zookeeper://10.254.242.130:2181
   config-center:
-    address: zookeeper://zk_test:2181
+    address: zookeeper://10.254.242.130:2181
 
 # 系统管理 config
 sys:
@@ -125,10 +124,10 @@ sys:
     secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
      # 访问令牌过期时长(分钟)，默认配置5分钟
     access-token:
-      expire-time: 3
+      expire-time: 5
     # 刷新令牌过期时长(分钟)，默认配置60分钟
     refresh-token:
-      expire-time: 5
+      expire-time: 20
 
 # 账单管理 config
 bill:
