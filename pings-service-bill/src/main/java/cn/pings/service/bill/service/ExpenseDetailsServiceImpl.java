@@ -4,6 +4,8 @@ import cn.pings.service.api.bill.entity.ExpenseDetails;
 import cn.pings.service.api.bill.service.ExpenseDetailsService;
 import cn.pings.service.bill.mapper.ExpenseDetailsMapper;
 import cn.pings.sys.commons.service.AbstractBaseService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.stereotype.Component;
 
@@ -19,4 +21,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExpenseDetailsServiceImpl extends AbstractBaseService<ExpenseDetailsMapper, ExpenseDetails> implements ExpenseDetailsService {
 
+    @Override
+    public IPage<ExpenseDetails> findPage(IPage<ExpenseDetails> page, ExpenseDetails entity){
+        return this.baseMapper.selectPage(page, new QueryWrapper<>(entity).orderByDesc("expense_date"));
+    }
 }

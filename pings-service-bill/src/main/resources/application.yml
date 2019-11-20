@@ -44,7 +44,7 @@ spring:
   datasource:
     type: 'com.alibaba.druid.pool.DruidDataSource'
     driver-class-name: 'com.mysql.cj.jdbc.Driver'
-    url: 'jdbc:mysql://www.pingssys.com:31001/pings_bill?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull'
+    url: 'jdbc:mysql://www.pingssys.com:31001/pings_bill?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai'
     username: 'root'
     password: 'Zhou1182969'
     # druid设置
@@ -124,7 +124,7 @@ spring:
   datasource:
     type: 'com.alibaba.druid.pool.DruidDataSource'
     driver-class-name: 'com.mysql.cj.jdbc.Driver'
-    url: 'jdbc:mysql://10.254.242.130:3306/pings_bill?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull'
+    url: 'jdbc:mysql://10.254.242.130:3306/pings_bill?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai'
     username: 'root'
     password: 'Zhou1182969'
     # druid设置
