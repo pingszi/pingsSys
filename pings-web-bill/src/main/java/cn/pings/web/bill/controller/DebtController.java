@@ -90,4 +90,19 @@ public class DebtController extends AbstractBaseController {
 
         return ApiResponse.success("删除成功");
     }
+
+    /**
+     *********************************************************
+     ** @desc ： 查询所有的欠款单
+     ** @author Pings
+     ** @date   2019/11/22
+     ** @return ApiResponse
+     * *******************************************************
+     */
+    @ApiOperation(value="查询所有的欠款单", notes="查询所有的欠款单")
+    @GetMapping(value = "/findAll")
+    @RequiresAuthentication
+    public ApiResponse findAll(){
+        return ApiResponse.success(this.debtService.findAll());
+    }
 }

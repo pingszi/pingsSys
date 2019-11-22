@@ -373,7 +373,7 @@ class EditForm extends PureComponent {
               {operation === 'add' &&
                 form.getFieldDecorator('userName', {
                   rules: [
-                    { required: true, min: 4, max: 10, message: '请输入用户名称(4-10个字符)' },
+                    { required: true, min: 4, max: 16, message: '请输入用户名称(4-16个字符)' },
                     {
                       validator: (rule, val, callback) => {
                         if (!val || val.length < 4) callback();
@@ -424,7 +424,7 @@ class EditForm extends PureComponent {
             <Col span={12}>
               <FormItem label="密码" labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
                 {form.getFieldDecorator('password', {
-                  rules: [{ required: true, min: 4, max: 10, message: '请输入密码(4-10个字符)' }],
+                  rules: [{ required: true, min: 4, max: 16, message: '请输入密码(4-16个字符)' }],
                 })(<Input type="password" placeholder="请输入" />)}
               </FormItem>
             </Col>

@@ -37,7 +37,7 @@ class UpdatePasswordPage extends PureComponent {
             <Col span={24}>
               <FormItem label="旧密码" labelCol={{ span: 8 }} wrapperCol={{ span: 8 }}>
                 {form.getFieldDecorator('oldPassword', {
-                  rules: [{ required: true, min: 4, max: 10, message: '请输入旧密码(4-10个字符)' }],
+                  rules: [{ required: true, min: 4, max: 16, message: '请输入旧密码(4-16个字符)' }],
                 })(<Input.Password placeholder="请输入旧密码" />)}
               </FormItem>
             </Col>
@@ -46,7 +46,7 @@ class UpdatePasswordPage extends PureComponent {
             <Col span={24}>
               <FormItem label="新密码" labelCol={{ span: 8 }} wrapperCol={{ span: 8 }}>
                 {form.getFieldDecorator('password', {
-                  rules: [{ required: true, min: 4, max: 10, message: '请输入新密码(4-10个字符)' }],
+                  rules: [{ required: true, min: 4, max: 16, message: '请输入新密码(4-16个字符)' }],
                 })(<Input.Password placeholder="请输入新密码" />)}
               </FormItem>
             </Col>

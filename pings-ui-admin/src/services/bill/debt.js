@@ -26,6 +26,18 @@ export async function queryAllNotRefundDebt() {
 
 /**
  *********************************************************
+ * @desc ： 查询所有的欠款单
+ * @author Pings
+ * @date   2019/11/22
+ * @return ApiResponse
+ * *******************************************************
+ */
+export async function queryAllRefundDebt() {
+  return request('/bill/debt/findAll');
+}
+
+/**
+ *********************************************************
  * @desc ： 保存
  * @author Pings
  * @date   2019/3/28

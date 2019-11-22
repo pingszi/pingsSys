@@ -176,7 +176,7 @@ class EditForm extends PureComponent {
               {operation === 'add' &&
                 form.getFieldDecorator('code', {
                   rules: [
-                    { required: true, min: 4, max: 10, message: '请输入部门编码(4-10个字符)' },
+                    { required: true, min: 4, max: 16, message: '请输入部门编码(4-16个字符)' },
                     {
                       validator: (rule, val, callback) => {
                         if (!val || val.length < 4) callback();

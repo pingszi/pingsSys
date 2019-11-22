@@ -1,6 +1,12 @@
-import { queryList, save, deleteById, queryAllNotRefundDebt } from '@/services/bill/debt';
-
 import { notification } from 'antd';
+
+import {
+  queryList,
+  save,
+  deleteById,
+  queryAllNotRefundDebt,
+  queryAllRefundDebt,
+} from '@/services/bill/debt';
 
 export default {
   namespace: 'debt',
@@ -12,6 +18,7 @@ export default {
     },
 
     allNotRefundDebt: [], //**没有还清的欠款单
+    allRefundDebt: [], //**所有的欠款单
   },
 
   effects: {
@@ -27,6 +34,11 @@ export default {
     *fetchAllNotRefundDebt(_, { call, put }) {
       const response = yield call(queryAllNotRefundDebt);
       yield put({ type: 'saveAllNotRefundDebt', payload: response.data });
+    },
+    /**查询所有的欠款单*/
+    *fetchAllRefundDebt(_, { call, put }) {
+      const response = yield call(queryAllRefundDebt);
+      yield put({ type: 'saveAllRefundDebt', payload: response.data });
     },
     /**保存 */
     *saveObj({ payload, callback }, { call }) {
@@ -53,6 +65,12 @@ export default {
       return {
         ...state,
         allNotRefundDebt: action.payload,
+      };
+    },
+    saveAllRefundDebt(state, action) {
+      return {
+        ...state,
+        allRefundDebt: action.payload,
       };
     },
   },

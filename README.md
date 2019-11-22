@@ -15,6 +15,7 @@
     - 先启动Provider，然后启动Consumer
     - 开发模式依赖的运行环境(mysql,redis,zookeeper)
     - sql脚本，在pings-service-api项目每个模块对应的script目录
+    - 项目依赖[pings-shiro-jwt](https://github.com/pingszi/pingsCommons/tree/master/pings-shiro-jwt)，请自己下载后打包
     - [运行环境搭建过程](https://blog.csdn.net/zhouping118/article/details/88032298)
 - 步骤：
     - 开发模式启动springboot项目pings-service-sys
@@ -140,3 +141,4 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-07-25 pings-service-sys和pings-web-admin项目添加测试
 - 2019-11-14 修复了登录的部分bug
 - 2019-11-14 springboot升级到2.2.1，dubbo升级到2.7.4.1
+- 2019-11-22 pings-shiro-jwt包修复在accessToken过期时同一个用户的并发请求，同时请求签名，只有最后一个签名生效，其它的签名会失效的问题

@@ -18,7 +18,7 @@ spring:
         # 连接池中的最大空闲连接
         max-idle: 8
         # 连接池中的最小空闲连接
-        min-idle: 0
+        min-idle: 1
 
 # Dubbo
 dubbo:
@@ -53,7 +53,7 @@ sys:
       expire-time: 10
     # 刷新令牌过期时长(分钟)，默认配置60分钟
     refresh-token:
-      expire-time: 60
+      expire-time: 1000
 
 # 账单管理 config
 bill:
@@ -93,7 +93,7 @@ spring:
         # 连接池中的最大空闲连接
         max-idle: 8
         # 连接池中的最小空闲连接
-        min-idle: 0
+        min-idle: 1
 
 # Dubbo
 dubbo:
@@ -124,10 +124,10 @@ sys:
     secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
      # 访问令牌过期时长(分钟)，默认配置5分钟
     access-token:
-      expire-time: 5
+      expire-time: 10
     # 刷新令牌过期时长(分钟)，默认配置60分钟
     refresh-token:
-      expire-time: 20
+      expire-time: 1000
 
 # 账单管理 config
 bill:

@@ -21,17 +21,18 @@ export function setAuthority(authority) {
   return localStorage.setItem('antd-pro-authority', JSON.stringify(proAuthority));
 }
 
-//**保存权限认证token */
-export function setAuthorization(token) {
-  if (token) localStorage.setItem('authorization', token);
-}
-
 //**获取权限认证token */
 export function getAuthorization() {
   return localStorage.getItem('authorization');
 }
 
+//**保存权限认证token */
+export function setAuthorization(token) {
+  const oldTeken = getAuthorization();
+  if (!oldTeken || oldTeken !== token) localStorage.setItem('authorization', token);
+}
+
 //**删除权限认证token */
-export function removeAuthorization(token) {
+export function removeAuthorization() {
   localStorage.removeItem('authorization');
 }

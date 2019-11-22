@@ -37,6 +37,9 @@ public class ShiroConfig {
     //**访问令牌过期时间(分钟)
     @Value("${sys.jwt.access-token.expire-time}")
     private long accessTokenExpireTime;
+    //**生成签名后缓存时间(单位s，生成签名后在指定时间内不重新生成新的签名，而使用缓存)
+    @Value("${sys.jwt.access-token.sign-cache-time}")
+    private int tokenSignCacheTime;
     //**刷新信息过期时间(分钟)
     @Value("${sys.jwt.refresh-token.expire-time}")
     private long refreshTokenExpireTime;
@@ -52,6 +55,7 @@ public class ShiroConfig {
         return RefreshTokenJwtVerifier.Builder.newBuilder(redisTemplate)
                 .accessTokenExpireTime(accessTokenExpireTime)
                 .refreshTokenExpireTime(refreshTokenExpireTime)
+                .tokenSignCacheTime(tokenSignCacheTime)
                 .secret(secret)
                 .build();
     }

@@ -1,9 +1,9 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Button, Modal, Divider, Select, DatePicker } from 'antd';
+import moment from 'moment';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import moment from 'moment';
 
 import { formatParams } from '@/utils/utils';
 import Authorized from '@/utils/Authorized';
@@ -15,6 +15,7 @@ const Option = Select.Option;
 @connect(({ debtRefund, debt, loading }) => ({
   debtRefund,
   allNotRefundDebt: debt.allNotRefundDebt,
+  allRefundDebt: debt.allRefundDebt,
   loading: loading.models.debtRefund,
 }))
 @Form.create()
@@ -34,6 +35,8 @@ class DebtRefundPage extends PureComponent {
 
   findAllNotRefundDebtUrl = 'debt/fetchAllNotRefundDebt'; //**查询未还清欠款单
 
+  findAllUrl = 'debt/fetchAllRefundDebt'; //**查询所有欠款单
+
   /**table columns */
   columns = [
     { title: '编号', dataIndex: 'id', key: 'id' },
@@ -44,8 +47,8 @@ class DebtRefundPage extends PureComponent {
       title: '欠款单',
       dataIndex: 'debtId',
       render: val => {
-        const { allNotRefundDebt } = this.props;
-        const debt = allNotRefundDebt.find(d => d.id === val);
+        const { allRefundDebt } = this.props;
+        const debt = allRefundDebt.find(d => d.id === val);
         return debt ? debt.name : '';
       },
     },
@@ -69,6 +72,7 @@ class DebtRefundPage extends PureComponent {
     const { dispatch } = this.props;
     dispatch({ type: this.findPageUrl });
     dispatch({ type: this.findAllNotRefundDebtUrl });
+    dispatch({ type: this.findAllUrl });
   }
 
   /**搜索 */
@@ -150,7 +154,7 @@ class DebtRefundPage extends PureComponent {
   //**搜索表单*/
   renderSearchForm() {
     const {
-      allNotRefundDebt,
+      allRefundDebt,
       form: { getFieldDecorator },
     } = this.props;
 
@@ -161,8 +165,8 @@ class DebtRefundPage extends PureComponent {
             <FormItem label="欠款单">
               {getFieldDecorator('debtId')(
                 <Select style={{ width: '100%' }} placeholder="请选择">
-                  {allNotRefundDebt &&
-                    allNotRefundDebt.map(debt => <Option key={debt.id}>{debt.name}</Option>)}
+                  {allRefundDebt &&
+                    allRefundDebt.map(debt => <Option key={debt.id}>{debt.name}</Option>)}
                 </Select>
               )}
             </FormItem>
