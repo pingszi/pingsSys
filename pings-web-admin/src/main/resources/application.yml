@@ -40,6 +40,14 @@ dubbo:
   config-center:
     address: zookeeper://www.pingssys.com:32568
 
+  # 禁用启动时检查
+  consumer:
+    check: false
+    timeout: 5000
+
+logging:
+  config: classpath:logback-dev.xml
+
 # sys config
 sys:
   # Service version
@@ -50,8 +58,6 @@ sys:
      # 访问令牌过期时长(分钟)，默认配置5分钟
     access-token:
       expire-time: 10
-      # 生成签名后缓存时间(单位s，生成签名后在指定时间内不重新生成新的签名，而使用缓存)
-      sign-cache-time: 5
     # 刷新令牌过期时长(分钟)，默认配置60分钟
     refresh-token:
       expire-time: 1000
@@ -110,6 +116,14 @@ dubbo:
   config-center:
     address: zookeeper://10.254.245.118:2181
 
+  # 禁用启动时检查
+  consumer:
+    check: false
+    timeout: 5000
+
+logging:
+  config: classpath:logback-prod.xml
+
 # sys config
 sys:
   # Service version
@@ -120,8 +134,6 @@ sys:
      # 访问令牌过期时长(分钟)，默认配置5分钟
     access-token:
       expire-time: 10
-      # 生成签名后缓存时间(单位s，生成签名后在指定时间内不重新生成新的签名，而使用缓存)
-      sign-cache-time: 5
     # 刷新令牌过期时长(分钟)，默认配置60分钟
     refresh-token:
       expire-time: 1000

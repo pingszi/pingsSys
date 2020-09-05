@@ -26,19 +26,14 @@
 			<MaxFileSize>10MB</MaxFileSize>
 		</triggeringPolicy>
 	</appender>
-	
+
 	<!-- root logger -->
-	<root level="debug">
+	<root level="info">
 		<appender-ref ref="stdout" />
 		<appender-ref ref="file" />
 	</root>
-	
-    <logger name="org.springframework" level="warn"/>
- 	<logger name="org.apache.http" level="warn"/>
 
-	<!-- custom logger -->
-	<logger name="cn.pings.service.sys" level="debug" additivity="false">
-		<appender-ref ref="stdout" />
-		<appender-ref ref="file" />
-	</logger>
+	<logger name="org.springframework" level="warn"/>
+	<logger name="org.apache.http" level="warn"/>
+	<logger name="org.redisson.connection" level="warn"/>
 </configuration>

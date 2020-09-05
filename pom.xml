@@ -51,7 +51,7 @@
         <pings-sys.version>0.0.1-SNAPSHOT</pings-sys.version>
         <pings-service-api.version>0.0.1-SNAPSHOT</pings-service-api.version>
         <pings-sys-commons.version>0.0.1-SNAPSHOT</pings-sys-commons.version>
-        <pings-shiro-jwt.version>0.0.1-SNAPSHOT</pings-shiro-jwt.version>
+        <pings-shiro-jwt.version>1.2-SNAPSHOT</pings-shiro-jwt.version>
     </properties>
 
     <build>

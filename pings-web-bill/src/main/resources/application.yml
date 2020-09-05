@@ -41,6 +41,14 @@ dubbo:
   config-center:
     address: zookeeper://www.pingssys.com:32568
 
+  # 禁用启动时检查
+  consumer:
+    check: false
+    timeout: 5000
+
+logging:
+  config: classpath:logback-dev.xml
+
 # 系统管理 config
 sys:
   # Service version
@@ -114,6 +122,14 @@ dubbo:
     address: zookeeper://10.254.245.118:2181
   config-center:
     address: zookeeper://10.254.245.118:2181
+
+  # 禁用启动时检查
+  consumer:
+    check: false
+    timeout: 5000
+
+logging:
+  config: classpath:logback-prod.xml
 
 # 系统管理 config
 sys:

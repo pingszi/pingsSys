@@ -91,6 +91,9 @@ dubbo:
   config-center:
     address: zookeeper://www.pingssys.com:32568
 
+logging:
+  config: classpath:logback-dev.xml
+
 # Service version
 bill:
   service:
@@ -169,6 +172,9 @@ dubbo:
     address: zookeeper://10.254.245.118:2181
   config-center:
     address: zookeeper://10.254.245.118:2181
+
+logging:
+  config: classpath:logback-prod.xml
 
 # Service version
 bill:

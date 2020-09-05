@@ -141,4 +141,6 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-07-25 pings-service-sys和pings-web-admin项目添加测试
 - 2019-11-14 修复了登录的部分bug
 - 2019-11-14 springboot升级到2.2.1，dubbo升级到2.7.4.1
-- 2019-11-22 pings-shiro-jwt包修复在accessToken过期时同一个用户的并发请求，同时请求签名，只有最后一个签名生效，其它的签名会失效的问题
+- 2019-11-22 pings-shiro-jwt包修复同一个用户的并发请求的问题
+- 2020-07-05 修改日志文件配置
+- 2020-09-05 pings-shiro-jwt包修复同一个用户的并发请求的问题
