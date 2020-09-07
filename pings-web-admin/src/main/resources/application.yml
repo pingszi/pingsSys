@@ -57,10 +57,10 @@ sys:
     secret: ==SFddfenfV2FuZzkyNjQ1NGRTQkFQSUpXVA==
      # 访问令牌过期时长(分钟)，默认配置5分钟
     access-token:
-      expire-time: 10
+      expire-time: 1
     # 刷新令牌过期时长(分钟)，默认配置60分钟
     refresh-token:
-      expire-time: 1000
+      expire-time: 5
 
 # 服务器配置
 #server:

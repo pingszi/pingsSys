@@ -144,3 +144,4 @@ public class Dept extends AbstractReactTreeEntity
 - 2019-11-22 pings-shiro-jwt包修复同一个用户的并发请求的问题
 - 2020-07-05 修改日志文件配置
 - 2020-09-05 pings-shiro-jwt包修复同一个用户的并发请求的问题
+- 2020-09-07 部分优化

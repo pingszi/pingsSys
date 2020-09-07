@@ -20,7 +20,6 @@ public class MybatisPlusConfig {
     /**分页配置*/
     @Bean
     public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-        return paginationInterceptor;
+        return new PaginationInterceptor();
     }
 }
